@@ -6,14 +6,37 @@
     <style>
       body {
         margin: 0;
+        overflow: hidden;
       }
       canvas {
         display: block;
+      }
+      .button-container {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .button-container button {
+        border: none;
+        font-size: 20px;
+        color: white; /* 텍스트 색상 변경 */
+        background-color: #5bba7b; /* 배경 색상 변경 */
+        border-radius: 50px;
+        padding: 10px 20px; /* 내부 여백 설정 */
+        cursor: pointer; /* 커서 모양 변경 */
+      }
+      .button-container button:hover {
+        background-color: #4da0ff; /* 마우스 호버 시 배경 색상 변경 */
+        color: black;
       }
     </style>
   </head>
   <body>
     <canvas id="canvas" width="800" height="900"></canvas>
+    <div class="button-container">
+      <button onclick="toggleLeaves()">긍정긍정 파워</button>
+    </div>
     <script type="importmap">
       {
         "imports": {
@@ -39,7 +62,7 @@
       renderer.outputEncoding = THREE.sRGBEncoding;
 
       let camera = new THREE.PerspectiveCamera(30, 1);
-      camera.position.set(0, 2, 10); // 카메라 위치 설정
+      camera.position.set(0, 10, 60); // 카메라 위치 설정
 
       // OrbitControls를 추가합니다.
       let controls = new OrbitControls(camera, renderer.domElement);
@@ -50,7 +73,7 @@
       loader.load("tree/scene.gltf", function (gltf) {
         let model = gltf.scene;
         scene.add(gltf.scene);
-        scene.background = new THREE.Color("white");
+        scene.background = new THREE.Color("skyblue");
 
         let ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // 색상과 강도
         scene.add(ambientLight);
@@ -82,6 +105,39 @@
         }
         animate();
       });
+
+      let groundGeometry = new THREE.PlaneGeometry(100, 100, 50, 50); // 바닥의 크기 설정
+      groundGeometry.rotateX(-Math.PI / 2);
+      let groundMaterial = new THREE.MeshBasicMaterial({ color: 0x8b4513 }); // 바닥 색상 설정
+      let ground = new THREE.Mesh(groundGeometry, groundMaterial);
+      scene.add(ground);
+
+      // loader.load("cloud/scene.gltf", function (gltf) {
+      //   let cloudModel = gltf.scene;
+      //   scene.add(cloudModel);
+      //   cloudModel.position.set(0, 10, 0); // 구름의 위치 조정
+      //   cloudModel.scale.set(5, 5, 5); // 구름의 크기 조정
+      //   cloudModel.rotation.x = Math.PI;
+
+      //   scene.add(cloudModel);
+
+      //   scene.background = null;
+      // });
+
+      let leavesVisible = false;
+
+      function toggleLeaves() {
+        leavesVisible ? removeLeaves() : addLeaves();
+        leavesVisible = !leavesVisible;
+      }
+
+      function addLeaves() {
+        // 여기에 이파리를 추가하는 코드를 작성하세요.
+      }
+
+      function removeLeaves() {
+        // 여기에 이파리를 제거하는 코드를 작성하세요.
+      }
 
       window.addEventListener("resize", onWindowResize, false);
 
