@@ -1,4 +1,5 @@
 // import quill & css
+"use client";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useMemo, memo, useRef } from "react";
@@ -29,7 +30,7 @@ const TextEditor = memo(
           ],
         },
       }),
-      []
+      [],
     );
 
     return (
@@ -48,7 +49,7 @@ const TextEditor = memo(
         />
       </>
     );
-  }
+  },
 );
 
 TextEditor.displayName = "TextEditor";

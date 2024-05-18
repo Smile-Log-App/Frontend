@@ -1,10 +1,13 @@
-// Home.tsx
-
-import TextEditor from "components/TextEditor";
-import { useState, useRef } from "react";
+"use client";
+import React, { useState, useRef } from "react";
+import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
 
-export default function Home() {
+const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
+  ssr: false,
+});
+
+export default function HomePage() {
   const quillRef = useRef<ReactQuill | null>(null);
   const [htmlContent, setHtmlContent] = useState<string>("");
 

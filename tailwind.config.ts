@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 type AccType = Record<string, string>;
 const range = (start: number, end: number): number[] => {
-  const array: number[] = [];
+  const array = [];
   for (let i = start; i <= end; ++i) {
     array.push(i);
   }
@@ -34,6 +34,16 @@ const config: Config = {
           30: "#C4C4C4",
         },
       },
+      height: {
+        exceptNav: "calc(100vh - 3rem)",
+      },
+      backgroundImage: {
+        "gradient-to-b":
+          "linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0) , rgba(0, 0, 0, 1))",
+      },
+    },
+    animation: {
+      slide: "slide 1.5s linear infinite",
     },
   },
   plugins: [],

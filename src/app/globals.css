@@ -1,3 +1,4 @@
+@import url("https://fonts.cdnfonts.com/css/sf-pro-display");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,6 +35,9 @@
     -ms-overflow-style: none;
   }
 
+  input:focus {
+    outline: none;
+  }
   ::-webkit-scrollbar {
     display: none;
   }
