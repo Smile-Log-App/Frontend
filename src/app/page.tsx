@@ -3,6 +3,8 @@ import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
 import axios from "axios";
+import { instance } from "@/api/axiosInstance";
+import { postDiary } from "@/api/postDiary";
 
 const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
   ssr: false,
@@ -14,16 +16,9 @@ export default function HomePage() {
   const [response, setResponse] = useState<string>("");
 
   const handleSubmit = async () => {
-    try {
-      const res = await axios.post("http://localhost:3001/diary", {
-        content: htmlContent,
-      });
-      console.log("Response from server:", res.data);
-      setResponse(JSON.stringify(res.data, null, 2)); // 응답 데이터를 보기 쉽게 JSON 문자열로 변환
-    } catch (error) {
-      console.error("Error submitting diary entry:", error);
-      setResponse("Error submitting diary entry. Please try again.");
-    }
+    const res = await postDiary(htmlContent);
+
+    setResponse(JSON.stringify(res, null, 2)); // 응답 데이터를 보기 쉽게 JSON 문자열로 변환
   };
 
   return (
