@@ -34,10 +34,16 @@ export class Tree {
   calculateDepth(hp) {
     if (hp <= 10) {
       return 1;
+    } else if (hp <= 20) {
+      return 3;
+    } else if (hp <= 30) {
+      return 5;
+    } else if (hp <= 40) {
+      return 7;
     } else if (hp <= 50) {
-      return 6;
+      return 9;
     } else {
-      return 11;
+      return 11; // Default value if hp is over 50
     }
   }
 
