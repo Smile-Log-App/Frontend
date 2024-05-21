@@ -2,9 +2,9 @@
 import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
-import axios from "axios";
-import { instance } from "@/api/axiosInstance";
 import { postDiary } from "@/api/postDiary";
+import TreeCanvas from "@/components/tree/TreeCanvas";
+// TreeCanvas 컴포넌트 경로에 맞게 수정
 
 const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
   ssr: false,
@@ -13,12 +13,24 @@ const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
 export default function HomePage() {
   const quillRef = useRef<ReactQuill | null>(null);
   const [htmlContent, setHtmlContent] = useState<string>("");
-  const [response, setResponse] = useState<string>("");
+  const [response, setResponse] = useState<any>(null);
+  const [showTree, setShowTree] = useState<boolean>(false);
+  const [hp, setHp] = useState<number>(0);
 
   const handleSubmit = async () => {
-    const res = await postDiary(htmlContent);
+    try {
+      const res = await postDiary(htmlContent);
 
-    setResponse(JSON.stringify(res, null, 2)); // 응답 데이터를 보기 쉽게 JSON 문자열로 변환
+      setResponse(res); // 전체 응답 객체 저장
+
+      // 응답 값에서 필요한 데이터를 추출
+      setHp(res.document.confidence.neutral); // hp 값을 상태로 설정
+
+      setShowTree(true); // TreeCanvas를 보여주도록 설정
+    } catch (error) {
+      console.error("Error submitting diary entry:", error);
+      setResponse("Error submitting diary entry. Please try again.");
+    }
   };
 
   return (
@@ -41,7 +53,13 @@ export default function HomePage() {
       {response && (
         <div className="mt-4 p-4 bg-white rounded shadow">
           <h2 className="text-2xl font-bold mb-2">응답값</h2>
-          <pre>{response}</pre>
+          <pre>{JSON.stringify(response, null, 2)}</pre>
+        </div>
+      )}
+
+      {showTree && (
+        <div className="mt-8 w-full flex justify-center">
+          <TreeCanvas hp={hp} day={true} />
         </div>
       )}
     </div>
