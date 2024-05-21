@@ -1,0 +1,51 @@
+@import url("https://fonts.cdnfonts.com/css/sf-pro-display");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    height: 100%;
+  }
+
+  body {
+  }
+
+  html,
+  body,
+  button,
+  input,
+  h1,
+  h2 {
+    line-height: normal;
+    font-style: normal;
+    font-weight: 400;
+    margin: 0; /* 기본 마진 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  body {
+    -ms-overflow-style: none;
+  }
+
+  input:focus {
+    outline: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-column {
+    @apply flex flex-col;
+  }
+}

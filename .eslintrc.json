@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  // 어떤 규칙들과 설정으로 eslint를 사용할지 명시
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:react/recommended", //ESLint의 내장되어있는 추천 설정을 사용
+    "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/recommended" //  타입스크립트 전용 규칙을 추가적으로 사용할 수 있음
+  ],
+  "parser": "@typescript-eslint/parser", // 타입스크립트용 eslint parser
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "react/react-in-jsx-scope": "off", // JSX를 사용할 때 React가 일일이 import되지 않으면 에러(리액트 17 이후부터는 안해줘도 됨)-> off
+    "no-unused-vars": "warn", // 사용하지 않는 변수가 있을 때 -> warn
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react/prop-types": "off", // prop의 타입을 정의해주지 않으면  -> warn
+    "@typescript-eslint/no-explicit-any": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
