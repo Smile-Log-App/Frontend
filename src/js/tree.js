@@ -35,12 +35,20 @@ export class Tree {
     if (hp <= 10) {
       return 1;
     } else if (hp <= 20) {
-      return 3;
+      return 2;
     } else if (hp <= 30) {
-      return 5;
+      return 3;
     } else if (hp <= 40) {
-      return 7;
+      return 4;
     } else if (hp <= 50) {
+      return 5;
+    } else if (hp <= 60) {
+      return 6;
+    } else if (hp <= 70) {
+      return 7;
+    } else if (hp <= 80) {
+      return 8;
+    } else if (hp <= 90) {
       return 9;
     } else {
       return 11; // Default value if hp is over 50
@@ -59,6 +67,9 @@ export class Tree {
   createBranch(startX, startY, angle, depth) {
     if (depth === this.depth) return;
 
+    const lengthFactor = 1.5; // 가지 길이 조정 인자
+    const baseLength = 15; // 기본 가지 길이
+    
     const len = depth === 0 ? this.random(10, 13) : this.random(0, 11);
 
     const endX = startX + this.cos(angle) * len * (this.depth - depth);
