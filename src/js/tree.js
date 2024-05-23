@@ -66,10 +66,9 @@ export class Tree {
 
   createBranch(startX, startY, angle, depth) {
     if (depth === this.depth) return;
-
+    
     const lengthFactor = 1.5; // 가지 길이 조정 인자
     const baseLength = 15; // 기본 가지 길이
-    
     const len = depth === 0 ? this.random(10, 13) : this.random(0, 11);
 
     const endX = startX + this.cos(angle) * len * (this.depth - depth);
