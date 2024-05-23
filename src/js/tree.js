@@ -35,23 +35,23 @@ export class Tree {
     if (hp <= 10) {
       return 1;
     } else if (hp <= 20) {
-      return 2;
-    } else if (hp <= 30) {
       return 3;
-    } else if (hp <= 40) {
-      return 4;
-    } else if (hp <= 50) {
+    } else if (hp <= 30) {
       return 5;
-    } else if (hp <= 60) {
+    } else if (hp <= 40) {
       return 6;
-    } else if (hp <= 70) {
+    } else if (hp <= 50) {
       return 7;
-    } else if (hp <= 80) {
+    } else if (hp <= 60) {
       return 8;
-    } else if (hp <= 90) {
+    } else if (hp <= 70) {
       return 9;
+    } else if (hp <= 80) {
+      return 10;
+    } else if (hp <= 90) {
+      return 11;
     } else {
-      return 11; // Default value if hp is over 50
+      return 12; // Default value if hp is over 50
     }
   }
 
