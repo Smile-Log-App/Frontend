@@ -174,8 +174,8 @@ const TreeCanvas = ({ hp, day }) => {
     const ctx = canvas.getContext("2d");
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
     const resize = () => {
-      const stageWidth = document.body.clientWidth;
-      const stageHeight = document.body.clientHeight;
+      const stageWidth = canvas.clientWidth;
+      const stageHeight = canvas.clientHeight;
 
       canvas.width = stageWidth * pixelRatio;
       canvas.height = stageHeight * pixelRatio;
@@ -208,7 +208,7 @@ const TreeCanvas = ({ hp, day }) => {
     };
   }, [hp, day]);
 
-  return <canvas ref={canvasRef}></canvas>;
+  return <canvas ref={canvasRef} className="w-600pxr h-500pxr"></canvas>;
 };
 
 export default TreeCanvas;

@@ -18,11 +18,16 @@ const DiaryPage = () => {
   }
 
   return (
-    <div>
-      {/* <h1>{diary.title}</h1>
-      <p>{diary.content}</p> */}
-      <div>
-        <button onClick={toggleDay}>{day ? "Night" : "Day"}</button>
+    <div className="relative w-full h-full bg-[#f0eedd] overflow-hidden">
+      <div className="absolute right-5 top-5">
+        <button
+          onClick={toggleDay}
+          className={`cursor-pointer ${day ? "text-white" : ""}`}
+        >
+          <span className="text-4xl">{day ? "Night" : "Day"}</span>
+        </button>
+      </div>
+      <div className="absolute left-5 top-5 flex items-center">
         <input
           type="range"
           min="0"
@@ -30,8 +35,11 @@ const DiaryPage = () => {
           value={hp}
           onChange={(e) => setHp(parseInt(e.target.value))}
           id="hpSlider"
+          className="mr-2"
         />
-        <span id="hpValue">{hp}</span>
+        <span id="hpValue" className="text-lg font-bold">
+          {hp}
+        </span>
       </div>
       <TreeCanvas hp={hp} day={day} />
     </div>
