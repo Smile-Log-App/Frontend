@@ -1,9 +1,9 @@
 "use client";
-import { ResponseData, postDiary } from "@/api/postDiary";
-import TreeCanvas from "@/components/tree/TreeCanvas";
+import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
 import ReactQuill from "react-quill";
+import { postDiary, ResponseData } from "@/api/postDiary";
+import TreeCanvas from "@/components/tree/TreeCanvas";
 // TreeCanvas 컴포넌트 경로에 맞게 수정
 
 const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
