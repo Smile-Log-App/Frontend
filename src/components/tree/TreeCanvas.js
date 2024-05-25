@@ -208,7 +208,7 @@ const TreeCanvas = ({ hp, day }) => {
     };
   }, [hp, day]);
 
-  return <canvas ref={canvasRef} className="w-600pxr h-500pxr"></canvas>;
+  return <canvas ref={canvasRef} className="w-700pxr h-500pxr"></canvas>;
 };
 
 export default TreeCanvas;
