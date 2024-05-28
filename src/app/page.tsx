@@ -18,6 +18,7 @@ export default function HomePage() {
     const storedHp = localStorage.getItem("treeHp");
     return storedHp ? parseInt(storedHp, 10) : 50; // 기본 HP를 50으로 설정
   });
+  const [day, setDay] = useState<boolean>(true);
 
   useEffect(() => {
     localStorage.setItem("treeHp", hp.toString());
@@ -44,6 +45,12 @@ export default function HomePage() {
     setHp(50); // HP 초기화
     localStorage.setItem("treeHp", "50");
   };
+
+  const toggleDayNight = () => {
+    setDay((prevDay) => !prevDay);
+    document.body.classList.toggle("black");
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 gap-30pxr">
       <h1 className="text-4xl font-bold mb-8 text-center">유담이의 일기</h1>
@@ -67,6 +74,15 @@ export default function HomePage() {
           초기화하기
         </button>
       </div>
+      <div>
+        <button
+          onClick={toggleDayNight}
+          className="font-bold py-2 px-4 rounded"
+          style={{ marginLeft: "10px" }}
+        >
+          {day ? "Night" : "Day"}
+        </button>
+      </div>
 
       {response && (
         <div className="mt-4 p-4 bg-white rounded shadow">
@@ -84,7 +100,7 @@ export default function HomePage() {
 
       {showTree && (
         <div className="mt-8 w-full flex justify-center">
-          <TreeCanvas hp={hp} day={true} />
+          <TreeCanvas hp={hp} day={day} />
         </div>
       )}
     </div>
