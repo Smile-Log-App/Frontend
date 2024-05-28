@@ -26,7 +26,7 @@
 
 1. **레포지토리 클론**
    ```sh
-   git clone <repository-url>
+   git clone https://github.com/Smile-Log-App/Frontend.git
    cd frontend
    
 2. **의존성 설치 및 개발 서버 시작**
