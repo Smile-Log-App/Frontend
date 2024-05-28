@@ -181,7 +181,7 @@ const TreeCanvas = ({ hp, day }) => {
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
     // Set a fixed canvas height or make it responsive to 'hp'
-    const fixedHeight = 800; // Adjust based on maximum tree size
+    const fixedHeight = 200; // Adjust based on maximum tree size
     const stageWidth = window.innerWidth;
     const stageHeight = Math.max(window.innerHeight, fixedHeight);
 

@@ -37,7 +37,7 @@ export default function HomePage() {
 
   const calculateHpChange = (response: any) => {
     const { positive, negative } = response.document.confidence;
-    // 긍정적인 영향은 긍정 점수에, 부정적인 영향은 부정 점수에 2를 곱하여 더 큰 영향을 줌
+    // ( 긍정 - 부정 ) 0.1
     return Math.floor(positive * 0.1 - negative * 0.1);
   };
 
@@ -99,7 +99,7 @@ export default function HomePage() {
       </div>
 
       {showTree && (
-        <div className="mt-8 w-full flex justify-center">
+        <div className="mt-8 flex justify-center tree-container">
           <TreeCanvas hp={hp} day={day} />
         </div>
       )}

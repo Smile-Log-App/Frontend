@@ -24,6 +24,13 @@ canvas {
   height: 500px;
 }
 
+.tree-container {
+  width: 300px; /* 원하는 너비로 조정 */
+  height: 400px; /* 적절한 높이 설정 */
+  border: 1px solid #ccc; /* 선택적: 시각적 경계 표시 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 선택적: 그림자 추가 */
+}
+
 .hide {
   display: none;
 }
