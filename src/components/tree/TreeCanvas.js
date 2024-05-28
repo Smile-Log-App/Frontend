@@ -97,15 +97,15 @@ class Tree {
 
   calculateDepth(hp) {
     if (hp <= 10) {
-      return 3;
+      return 1;
     } else if (hp <= 30) {
-      return 5;
+      return 2;
     } else if (hp <= 50) {
-      return 7;
+      return 3;
     } else if (hp <= 70) {
-      return 9;
+      return 7;
     } else if (hp <= 90) {
-      return 10;
+      return 9;
     } else {
       return 11;
     }
