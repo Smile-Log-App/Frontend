@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
-echo "Azito FrontEnd 화이팅! (*ૂ❛ᴗ❛*ૂ)"
+echo "smile-log FrontEnd 화이팅! (*ૂ❛ᴗ❛*ૂ)"

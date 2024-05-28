@@ -4,7 +4,6 @@ import TreeCanvas from "@/components/tree/TreeCanvas";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
-// TreeCanvas 컴포넌트 경로에 맞게 수정
 
 const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
   ssr: false,
@@ -17,7 +16,7 @@ export default function HomePage() {
   const [showTree, setShowTree] = useState<boolean>(false);
   const [hp, setHp] = useState<number>(() => {
     const storedHp = localStorage.getItem("treeHp");
-    return storedHp ? parseInt(storedHp, 10) : 0;
+    return storedHp ? parseInt(storedHp, 10) : 50; // 기본 HP를 50으로 설정
   });
 
   useEffect(() => {
@@ -26,21 +25,25 @@ export default function HomePage() {
 
   const handleSubmit = async () => {
     const res = await postDiary(htmlContent);
-
     setResponse(res); // 전체 응답 객체 저장
 
-    // 응답 값에서 필요한 데이터를 추출
-    const newHp = res.document.confidence.positive * 0.1;
-    setHp((prevHp) => prevHp + newHp); // hp 값을 상태로 설정
+    // 감정 분석 결과에 따라 HP를 업데이트
+    const sentimentEffect = calculateHpChange(res);
+    setHp((prevHp) => Math.max(0, prevHp + sentimentEffect)); // HP가 0 미만으로 내려가지 않도록 설정
 
     setShowTree(true); // TreeCanvas를 보여주도록 설정
   };
 
-  const handleResetHp = () => {
-    setHp(0);
-    localStorage.setItem("treeHp", "0");
+  const calculateHpChange = (response: any) => {
+    const { positive, negative } = response.document.confidence;
+    // 긍정적인 영향은 긍정 점수에, 부정적인 영향은 부정 점수에 2를 곱하여 더 큰 영향을 줌
+    return Math.floor(positive * 0.1 - negative * 0.1);
   };
 
+  const handleResetHp = () => {
+    setHp(50); // HP 초기화
+    localStorage.setItem("treeHp", "50");
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 gap-30pxr">
       <h1 className="text-4xl font-bold mb-8 text-center">유담이의 일기</h1>
