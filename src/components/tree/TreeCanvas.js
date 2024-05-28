@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const COLOR_ARR = [
   "#FF0000",

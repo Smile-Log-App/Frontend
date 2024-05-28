@@ -51,9 +51,9 @@ export class Branch {
   }
 
   setColor() {
-    if (this.color !== '#000000') {
+    if (this.color !== "#000000") {
       if (this.lineWidth >= 10) {
-        this.color = '#FFFFFF';
+        this.color = "#FFFFFF";
       } else {
         let num = Math.floor((this.lineWidth / 10) * 15).toString(16);
         this.color = this.color.replace(/0/gi, num);
