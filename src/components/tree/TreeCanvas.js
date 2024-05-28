@@ -179,36 +179,32 @@ const TreeCanvas = ({ hp, day }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
-    const resize = () => {
-      const stageWidth = canvas.clientWidth;
-      const stageHeight = canvas.clientHeight;
 
-      canvas.width = stageWidth * pixelRatio;
-      canvas.height = stageHeight * pixelRatio;
-      ctx.scale(pixelRatio, pixelRatio);
+    // Set a fixed canvas height or make it responsive to 'hp'
+    const fixedHeight = 800; // Adjust based on maximum tree size
+    const stageWidth = window.innerWidth;
+    const stageHeight = Math.max(window.innerHeight, fixedHeight);
 
-      ctx.clearRect(0, 0, stageWidth, stageHeight);
+    canvas.width = stageWidth * pixelRatio;
+    canvas.height = stageHeight * pixelRatio;
+    ctx.scale(pixelRatio, pixelRatio);
 
-      return { stageWidth, stageHeight };
-    };
+    // Ensure the tree starts not from the very top to avoid clipping
+    const treeBaseY = stageHeight - 100; // Start the tree higher from the bottom
 
-    const { stageWidth, stageHeight } = resize();
+    const tree = new Tree(ctx, stageWidth / 2, treeBaseY, day, hp);
+    tree.draw();
 
     const handleResize = () => {
-      const { stageWidth, stageHeight } = resize();
-      new Tree(ctx, stageWidth / 2, stageHeight, day, hp);
+      canvas.width = window.innerWidth * pixelRatio;
+      canvas.height = Math.max(window.innerHeight, fixedHeight) * pixelRatio;
+      ctx.scale(pixelRatio, pixelRatio);
+
+      // Redraw the tree at the new center and adjusted base
+      new Tree(ctx, canvas.width / 2, treeBaseY, day, hp).draw();
     };
 
     window.addEventListener("resize", handleResize);
-
-    new Tree(
-      ctx,
-      canvas.width / 2 / pixelRatio,
-      canvas.height / pixelRatio,
-      day,
-      hp
-    );
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -217,7 +213,7 @@ const TreeCanvas = ({ hp, day }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="w-600pxr h-500pxr"
+      className="w-full h-full"
       style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
     ></canvas>
   );
