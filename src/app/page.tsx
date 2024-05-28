@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useRef } from "react";
-import dynamic from "next/dynamic";
-import ReactQuill from "react-quill";
-import { postDiary, ResponseData } from "@/api/postDiary";
+import { ResponseData, postDiary } from "@/api/postDiary";
 import TreeCanvas from "@/components/tree/TreeCanvas";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
+import ReactQuill from "react-quill";
 // TreeCanvas 컴포넌트 경로에 맞게 수정
 
 const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
@@ -15,7 +15,14 @@ export default function HomePage() {
   const [htmlContent, setHtmlContent] = useState<string>("");
   const [response, setResponse] = useState<ResponseData>();
   const [showTree, setShowTree] = useState<boolean>(false);
-  const [hp, setHp] = useState<number>(0);
+  const [hp, setHp] = useState<number>(() => {
+    const storedHp = localStorage.getItem("treeHp");
+    return storedHp ? parseInt(storedHp, 10) : 0;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("treeHp", hp.toString());
+  }, [hp]);
 
   const handleSubmit = async () => {
     const res = await postDiary(htmlContent);
@@ -23,9 +30,15 @@ export default function HomePage() {
     setResponse(res); // 전체 응답 객체 저장
 
     // 응답 값에서 필요한 데이터를 추출
-    setHp(res.document.confidence.positive); // hp 값을 상태로 설정
+    const newHp = res.document.confidence.positive * 0.1;
+    setHp((prevHp) => prevHp + newHp); // hp 값을 상태로 설정
 
     setShowTree(true); // TreeCanvas를 보여주도록 설정
+  };
+
+  const handleResetHp = () => {
+    setHp(0);
+    localStorage.setItem("treeHp", "0");
   };
 
   return (
@@ -43,6 +56,13 @@ export default function HomePage() {
         <button onClick={handleSubmit} className="font-bold py-2 px-4 rounded">
           제출하기
         </button>
+        <button
+          onClick={handleResetHp}
+          className="font-bold py-2 px-4 rounded ml-4"
+          style={{ marginLeft: "10px" }}
+        >
+          초기화하기
+        </button>
       </div>
 
       {response && (
@@ -54,6 +74,10 @@ export default function HomePage() {
           <pre>중립: {response.document.confidence.neutral.toFixed(2)}%</pre>
         </div>
       )}
+      <div className="mt-4 p-4 bg-white rounded shadow">
+        <h2 className="text-2xl font-bold mb-2">나무 HP</h2>
+        <pre>{hp}</pre>
+      </div>
 
       {showTree && (
         <div className="mt-8 w-full flex justify-center">
