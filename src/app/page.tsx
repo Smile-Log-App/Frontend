@@ -45,10 +45,10 @@ export default function HomePage() {
     localStorage.setItem("treeHp", "50");
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 gap-30pxr">
-      <h1 className="text-4xl font-bold mb-8 text-center">유담이의 일기</h1>
+    <div className="h-full p-20pxr min-h-screen flex flex-col items-center bg-gray-100 gap-30pxr">
+      <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
 
-      <div className="mb-4 w-full">
+      <div className="mb-4 w-600pxr">
         <TextEditor
           quillRef={quillRef}
           htmlContent={htmlContent}
@@ -78,12 +78,12 @@ export default function HomePage() {
         </div>
       )}
       <div className="mt-4 p-4 bg-white rounded shadow">
-        <h2 className="text-2xl font-bold mb-2">나무 HP</h2>
+        <h2 className="text-2xl font-bold">나무 HP</h2>
         <pre>{hp}</pre>
       </div>
 
       {showTree && (
-        <div className="mt-8 w-full flex justify-center">
+        <div className="w-full flex justify-center">
           <TreeCanvas hp={hp} day={true} />
         </div>
       )}
