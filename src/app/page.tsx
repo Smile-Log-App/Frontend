@@ -19,13 +19,18 @@ export default function HomePage() {
   const [response, setResponse] = useState<ResponseData>();
   // TreeCanvas를 보여줄지 여부를 저장할 상태
   const [showTree, setShowTree] = useState<boolean>(false);
-  // 나무 HP를 저장할 상태 (기본 HP는 50으로 설정, 로컬 스토리지에 저장됨)
-  const [hp, setHp] = useState<number>(() => {
-    const storedHp = localStorage.getItem("treeHp");
-    return storedHp ? parseInt(storedHp, 10) : 50; // 기본 HP를 50으로 설정
-  });
+  // 나무 HP를 저장할 상태 (기본 HP는 50으로 설정)
+  const [hp, setHp] = useState<number>(50);
   // 낮/밤 모드를 저장할 상태
   const [day, setDay] = useState<boolean>(true);
+
+  // 클라이언트 사이드에서만 실행되도록 useEffect 내부에서 localStorage에 접근
+  useEffect(() => {
+    const storedHp = localStorage.getItem("treeHp");
+    if (storedHp) {
+      setHp(parseInt(storedHp, 10));
+    }
+  }, []);
 
   // HP가 변경될 때마다 로컬 스토리지에 저장
   useEffect(() => {
@@ -68,17 +73,17 @@ export default function HomePage() {
       <div className="w-2/4 flex flex-col items-center gap-30pxr">
         <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
 
-        <div className="mb-4 w-600pxr ">
+        <div className="mb-4 w-600pxr">
           <TextEditor
             quillRef={quillRef}
             htmlContent={htmlContent}
             setHtmlContent={setHtmlContent}
           />
         </div>
-        <div className="w-full flex justify-center ">
+        <div className="w-full flex justify-center">
           <button
             onClick={handleSubmit}
-            className="font-bold py-2 px-4 rounded "
+            className="font-bold py-2 px-4 rounded"
           >
             제출하기
           </button>
@@ -116,7 +121,7 @@ export default function HomePage() {
       </div>
       {showTree && (
         <div
-          className="flex h-800pxr w-900pxr justify-center "
+          className="flex h-800pxr w-900pxr justify-center"
           style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
         >
           <TreeCanvas hp={hp} day={day} />
