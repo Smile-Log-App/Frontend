@@ -190,7 +190,7 @@ const TreeCanvas = ({ hp, day }) => {
     ctx.scale(pixelRatio, pixelRatio);
 
     // Ensure the tree starts not from the very top to avoid clipping
-    const treeBaseY = stageHeight - 100; // Start the tree higher from the bottom
+    const treeBaseY = stageHeight - 50; // Start the tree higher from the bottom
 
     const tree = new Tree(ctx, stageWidth / 2, treeBaseY, day, hp);
     tree.draw();
@@ -210,13 +210,7 @@ const TreeCanvas = ({ hp, day }) => {
     };
   }, [hp, day]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="h-700pxr w-1000pxr"
-      style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
-    ></canvas>
-  );
+  return <canvas ref={canvasRef}></canvas>;
 };
 
 export default TreeCanvas;

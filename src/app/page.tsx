@@ -52,7 +52,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="h-full min-h-screen p-30pxr flex items-center bg-gray-100 gap-30pxr">
+    <div className="h-full min-h-screen flex items-center bg-gray-100 gap-30pxr pr-40pxr">
       <div className="w-2/4 flex flex-col items-center gap-30pxr">
         <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
 
@@ -103,7 +103,10 @@ export default function HomePage() {
         </div>
       </div>
       {showTree && (
-        <div className="flex h-full w-2/4 justify-center">
+        <div
+          className="flex h-800pxr w-900pxr justify-center "
+          style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
+        >
           <TreeCanvas hp={hp} day={day} />
         </div>
       )}
