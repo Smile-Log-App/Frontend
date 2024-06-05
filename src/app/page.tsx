@@ -5,25 +5,34 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 
+// TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
   ssr: false,
 });
 
 export default function HomePage() {
+  // ReactQuill 에디터를 참조하기 위한 ref 생성
   const quillRef = useRef<ReactQuill | null>(null);
+  // 일기 내용을 저장할 상태
   const [htmlContent, setHtmlContent] = useState<string>("");
+  // API 응답을 저장할 상태
   const [response, setResponse] = useState<ResponseData>();
+  // TreeCanvas를 보여줄지 여부를 저장할 상태
   const [showTree, setShowTree] = useState<boolean>(false);
+  // 나무 HP를 저장할 상태 (기본 HP는 50으로 설정, 로컬 스토리지에 저장됨)
   const [hp, setHp] = useState<number>(() => {
     const storedHp = localStorage.getItem("treeHp");
     return storedHp ? parseInt(storedHp, 10) : 50; // 기본 HP를 50으로 설정
   });
+  // 낮/밤 모드를 저장할 상태
   const [day, setDay] = useState<boolean>(true);
 
+  // HP가 변경될 때마다 로컬 스토리지에 저장
   useEffect(() => {
     localStorage.setItem("treeHp", hp.toString());
   }, [hp]);
 
+  // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
     const res = await postDiary(htmlContent);
     setResponse(res); // 전체 응답 객체 저장
@@ -35,17 +44,20 @@ export default function HomePage() {
     setShowTree(true); // TreeCanvas를 보여주도록 설정
   };
 
+  // 감정 분석 결과를 기반으로 HP 변화를 계산하는 함수
   const calculateHpChange = (response: any) => {
     const { positive, negative } = response.document.confidence;
-    // ( 긍정 - 부정 ) 0.1
+    // HP 변화량 계산 (긍정 - 부정) * 0.1
     return Math.floor(positive * 0.1 - negative * 0.1);
   };
 
+  // HP를 초기화하는 함수
   const handleResetHp = () => {
     setHp(50); // HP 초기화
     localStorage.setItem("treeHp", "50");
   };
 
+  // 낮/밤 모드를 토글하는 함수
   const toggleDayNight = () => {
     setDay((prevDay) => !prevDay);
     document.body.classList.toggle("black");

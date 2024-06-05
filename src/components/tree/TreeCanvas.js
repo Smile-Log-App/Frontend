@@ -1,14 +1,16 @@
 import { useEffect, useRef } from "react";
 
+// 나무 색상 배열
 const COLOR_ARR = [
-  "#FF0000",
-  "#00FF00",
-  "#0000FF",
-  "#FFFF00",
-  "#FF00FF",
-  "#00FFFF",
+  "#FF0000", // 빨간색
+  "#00FF00", // 초록색
+  "#0000FF", // 파란색
+  "#FFFF00", // 노란색
+  "#FF00FF", // 분홍색
+  "#00FFFF", // 청록색
 ];
 
+// 가지 클래스
 class Branch {
   constructor(startX, startY, endX, endY, lineWidth, color) {
     this.startX = startX;
@@ -18,10 +20,10 @@ class Branch {
     this.color = color;
     this.lineWidth = lineWidth;
 
-    this.frame = 10;
-    this.cntFrame = 0;
-    this.gapX = (this.endX - this.startX) / this.frame;
-    this.gapY = (this.endY - this.startY) / this.frame;
+    this.frame = 10; // 가지가 자라나는 프레임 수
+    this.cntFrame = 0; // 현재 프레임
+    this.gapX = (this.endX - this.startX) / this.frame; // x축 이동 간격
+    this.gapY = (this.endY - this.startY) / this.frame; // y축 이동 간격
 
     this.currentX = this.startX;
     this.currentY = this.startY;
@@ -29,6 +31,7 @@ class Branch {
     this.setColor();
   }
 
+  // 가지를 그리는 메서드
   draw(ctx) {
     if (this.cntFrame === this.frame) return true;
 
@@ -61,6 +64,7 @@ class Branch {
     return false;
   }
 
+  // 가지의 색상을 설정하는 메서드
   setColor() {
     if (this.color !== "#000000") {
       if (this.lineWidth >= 10) {
@@ -73,13 +77,14 @@ class Branch {
   }
 }
 
+// 나무 클래스
 class Tree {
   constructor(ctx, posX, posY, day, hp) {
     this.ctx = ctx;
     this.posX = posX;
     this.posY = posY;
     this.branches = [];
-    this.depth = this.calculateDepth(hp);
+    this.depth = this.calculateDepth(hp); // 나무의 깊이 설정
     this.day = day;
     this.hp = hp;
 
@@ -95,6 +100,7 @@ class Tree {
     this.init();
   }
 
+  // HP에 따른 나무의 깊이 계산
   calculateDepth(hp) {
     if (hp <= 10) {
       return 3;
@@ -111,6 +117,7 @@ class Tree {
     }
   }
 
+  // 나무 초기화
   init() {
     for (let i = 0; i < this.depth; i++) {
       this.branches.push([]);
@@ -120,6 +127,7 @@ class Tree {
     this.draw();
   }
 
+  // 가지 생성
   createBranch(startX, startY, angle, depth) {
     if (depth === this.depth) return;
 
@@ -138,6 +146,7 @@ class Tree {
     }
   }
 
+  // 나무를 그리는 메서드
   draw() {
     if (this.cntDepth === this.depth) {
       cancelAnimationFrame(this.animation);
@@ -172,6 +181,7 @@ class Tree {
   }
 }
 
+// TreeCanvas 컴포넌트
 const TreeCanvas = ({ hp, day }) => {
   const canvasRef = useRef(null);
 
@@ -180,8 +190,8 @@ const TreeCanvas = ({ hp, day }) => {
     const ctx = canvas.getContext("2d");
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
-    // Set a fixed canvas height or make it responsive to 'hp'
-    const fixedHeight = 200; // Adjust based on maximum tree size
+    // 고정된 캔버스 높이 설정
+    const fixedHeight = 200; // 최대 나무 크기에 따라 조정
     const stageWidth = window.innerWidth;
     const stageHeight = Math.max(window.innerHeight, fixedHeight);
 
@@ -189,8 +199,8 @@ const TreeCanvas = ({ hp, day }) => {
     canvas.height = stageHeight * pixelRatio;
     ctx.scale(pixelRatio, pixelRatio);
 
-    // Ensure the tree starts not from the very top to avoid clipping
-    const treeBaseY = stageHeight - 50; // Start the tree higher from the bottom
+    // 나무가 화면 상단에서 시작하지 않도록 설정
+    const treeBaseY = stageHeight - 50; // 나무가 화면 하단에서 시작하도록 설정
 
     const tree = new Tree(ctx, stageWidth / 2, treeBaseY, day, hp);
     tree.draw();
@@ -200,7 +210,7 @@ const TreeCanvas = ({ hp, day }) => {
       canvas.height = Math.max(window.innerHeight, fixedHeight) * pixelRatio;
       ctx.scale(pixelRatio, pixelRatio);
 
-      // Redraw the tree at the new center and adjusted base
+      // 새로운 중심과 조정된 베이스에서 나무 다시 그리기
       new Tree(ctx, canvas.width / 2, treeBaseY, day, hp).draw();
     };
 
