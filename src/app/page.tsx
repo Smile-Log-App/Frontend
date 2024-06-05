@@ -52,21 +52,21 @@ export default function HomePage() {
   };
 
   return (
-    <div className="h-full min-h-screen flex items-center bg-gray-100 gap-30pxr pr-40pxr">
+    <div className="h-full min-h-screen flex items-center bg-gray-100 gap-30pxr pr-40pxr text-30pxr">
       <div className="w-2/4 flex flex-col items-center gap-30pxr">
         <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
 
-        <div className="mb-4 w-600pxr">
+        <div className="mb-4 w-600pxr ">
           <TextEditor
             quillRef={quillRef}
             htmlContent={htmlContent}
             setHtmlContent={setHtmlContent}
           />
         </div>
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center ">
           <button
             onClick={handleSubmit}
-            className="font-bold py-2 px-4 rounded"
+            className="font-bold py-2 px-4 rounded "
           >
             제출하기
           </button>
