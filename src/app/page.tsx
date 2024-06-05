@@ -52,54 +52,58 @@ export default function HomePage() {
   };
 
   return (
-    <div className="h-full p-20pxr min-h-screen flex flex-col items-center bg-gray-100 gap-30pxr">
-      <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
+    <div className="h-full min-h-screen p-30pxr flex items-center bg-gray-100 gap-30pxr">
+      <div className="w-2/4 flex flex-col items-center gap-30pxr">
+        <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
 
-      <div className="mb-4 w-600pxr">
-        <TextEditor
-          quillRef={quillRef}
-          htmlContent={htmlContent}
-          setHtmlContent={setHtmlContent}
-        />
-      </div>
-      <div className="w-full flex justify-center">
-        <button onClick={handleSubmit} className="font-bold py-2 px-4 rounded">
-          제출하기
-        </button>
-        <button
-          onClick={handleResetHp}
-          className="font-bold py-2 px-4 rounded ml-4"
-          style={{ marginLeft: "10px" }}
-        >
-          초기화하기
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={toggleDayNight}
-          className="font-bold py-2 px-4 rounded"
-          style={{ marginLeft: "10px" }}
-        >
-          {day ? "Night" : "Day"}
-        </button>
-      </div>
-
-      {response && (
-        <div className="mt-4 p-4 bg-white rounded shadow">
-          <h2 className="text-2xl font-bold mb-2">응답값</h2>
-          <pre>감정: {response.document.sentiment}</pre>
-          <pre>부정: {response.document.confidence.negative.toFixed(2)}%</pre>
-          <pre>긍정: {response.document.confidence.positive.toFixed(2)}%</pre>
-          <pre>중립: {response.document.confidence.neutral.toFixed(2)}%</pre>
+        <div className="mb-4 w-600pxr">
+          <TextEditor
+            quillRef={quillRef}
+            htmlContent={htmlContent}
+            setHtmlContent={setHtmlContent}
+          />
         </div>
-      )}
-      <div className="mt-4 p-4 bg-white rounded shadow">
-        <h2 className="text-2xl font-bold">나무 HP</h2>
-        <pre>{hp}</pre>
-      </div>
-
-      {showTree && (
         <div className="w-full flex justify-center">
+          <button
+            onClick={handleSubmit}
+            className="font-bold py-2 px-4 rounded"
+          >
+            제출하기
+          </button>
+          <button
+            onClick={handleResetHp}
+            className="font-bold py-2 px-4 rounded ml-4"
+            style={{ marginLeft: "10px" }}
+          >
+            초기화하기
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={toggleDayNight}
+            className="font-bold py-2 px-4 rounded"
+            style={{ marginLeft: "10px" }}
+          >
+            {day ? "Night" : "Day"}
+          </button>
+        </div>
+
+        {response && (
+          <div className="mt-4 p-4 bg-white rounded shadow">
+            <h2 className="text-2xl font-bold mb-2">응답값</h2>
+            <pre>감정: {response.document.sentiment}</pre>
+            <pre>부정: {response.document.confidence.negative.toFixed(2)}%</pre>
+            <pre>긍정: {response.document.confidence.positive.toFixed(2)}%</pre>
+            <pre>중립: {response.document.confidence.neutral.toFixed(2)}%</pre>
+          </div>
+        )}
+        <div className="mt-4 p-4 bg-white rounded shadow">
+          <h2 className="text-2xl font-bold">나무 HP</h2>
+          <pre>{hp}</pre>
+        </div>
+      </div>
+      {showTree && (
+        <div className="flex h-full w-2/4 justify-center">
           <TreeCanvas hp={hp} day={day} />
         </div>
       )}

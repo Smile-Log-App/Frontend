@@ -97,17 +97,17 @@ class Tree {
 
   calculateDepth(hp) {
     if (hp <= 10) {
-      return 1;
-    } else if (hp <= 30) {
-      return 2;
-    } else if (hp <= 50) {
       return 3;
-    } else if (hp <= 70) {
+    } else if (hp <= 30) {
+      return 5;
+    } else if (hp <= 50) {
       return 7;
-    } else if (hp <= 90) {
+    } else if (hp <= 70) {
       return 9;
-    } else {
+    } else if (hp <= 90) {
       return 11;
+    } else {
+      return 12;
     }
   }
 
@@ -213,7 +213,7 @@ const TreeCanvas = ({ hp, day }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-600pxr"
+      className="h-700pxr w-1000pxr"
       style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
     ></canvas>
   );
