@@ -105,15 +105,15 @@ class Tree {
     if (hp <= 10) {
       return 3;
     } else if (hp <= 30) {
-      return 5;
+      return 4;
     } else if (hp <= 50) {
       return 7;
     } else if (hp <= 70) {
-      return 9;
+      return 10;
     } else if (hp <= 90) {
-      return 11;
-    } else {
       return 12;
+    } else {
+      return 14;
     }
   }
 
@@ -205,19 +205,7 @@ const TreeCanvas = ({ hp, day }) => {
     const tree = new Tree(ctx, stageWidth / 2, treeBaseY, day, hp);
     tree.draw();
 
-    const handleResize = () => {
-      canvas.width = window.innerWidth * pixelRatio;
-      canvas.height = Math.max(window.innerHeight, fixedHeight) * pixelRatio;
-      ctx.scale(pixelRatio, pixelRatio);
-
-      // 새로운 중심과 조정된 베이스에서 나무 다시 그리기
-      new Tree(ctx, canvas.width / 2, treeBaseY, day, hp).draw();
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => {};
   }, [hp, day]);
 
   return <canvas ref={canvasRef}></canvas>;
