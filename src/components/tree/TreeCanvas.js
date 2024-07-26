@@ -12,12 +12,13 @@ const COLOR_ARR = [
 
 // 가지 클래스
 class Branch {
-  constructor(startX, startY, endX, endY, lineWidth, color) {
+  constructor(startX, startY, endX, endY, lineWidth, colorStart, colorEnd) {
     this.startX = startX;
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
-    this.color = color;
+    this.colorStart = colorStart;
+    this.colorEnd = colorEnd;
     this.lineWidth = lineWidth;
 
     this.frame = 10; // 가지가 자라나는 프레임 수
@@ -28,7 +29,24 @@ class Branch {
     this.currentX = this.startX;
     this.currentY = this.startY;
 
-    this.setColor();
+    this.color = this.calculateColor();
+  }
+
+  // 두 색상 사이의 중간 색상을 계산하는 메서드
+  calculateColor() {
+    const ratio = this.lineWidth / 12; // 가지의 굵기에 따른 비율 계산 (0에서 1 사이)
+    const hex = (start, end) => {
+      const s = parseInt(start.slice(1), 16);
+      const e = parseInt(end.slice(1), 16);
+      const r = Math.round((e >> 16) * ratio + (s >> 16) * (1 - ratio));
+      const g = Math.round(
+        ((e >> 8) & 0xff) * ratio + ((s >> 8) & 0xff) * (1 - ratio)
+      );
+      const b = Math.round((e & 0xff) * ratio + (s & 0xff) * (1 - ratio));
+      return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+    };
+
+    return hex(this.colorStart, this.colorEnd);
   }
 
   // 가지를 그리는 메서드
@@ -89,9 +107,11 @@ class Tree {
     this.hp = hp;
 
     if (this.day) {
-      this.color = "#000000";
+      this.colorStart = "#000000";
+      this.colorEnd = "#666666";
     } else {
-      this.color = COLOR_ARR[Math.floor(Math.random() * COLOR_ARR.length)];
+      this.colorStart = "#FF0000";
+      this.colorEnd = "#0000FF";
     }
 
     this.cntDepth = 0;
@@ -137,7 +157,15 @@ class Tree {
     const endY = startY + this.sin(angle) * len * (this.depth - depth);
 
     this.branches[depth].push(
-      new Branch(startX, startY, endX, endY, this.depth - depth, this.color)
+      new Branch(
+        startX,
+        startY,
+        endX,
+        endY,
+        this.depth - depth,
+        this.colorStart,
+        this.colorEnd
+      )
     );
 
     if (depth < this.depth - 1) {
