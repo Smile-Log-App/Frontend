@@ -8,6 +8,7 @@ const COLOR_ARR = [
   "#FFFF00", // 노란색
   "#FF00FF", // 분홍색
   "#00FFFF", // 청록색
+  "#FFA500", // 주황색
 ];
 
 // 가지 클래스
@@ -97,7 +98,7 @@ class Branch {
 
 // 나무 클래스
 class Tree {
-  constructor(ctx, posX, posY, day, hp) {
+  constructor(ctx, posX, posY, day, hp, colorStart, colorEnd) {
     this.ctx = ctx;
     this.posX = posX;
     this.posY = posY;
@@ -106,13 +107,8 @@ class Tree {
     this.day = day;
     this.hp = hp;
 
-    if (this.day) {
-      this.colorStart = "#000000";
-      this.colorEnd = "#666666";
-    } else {
-      this.colorStart = "#FF0000";
-      this.colorEnd = "#0000FF";
-    }
+    this.colorStart = colorStart;
+    this.colorEnd = colorEnd;
 
     this.cntDepth = 0;
     this.animation = null;
@@ -129,11 +125,11 @@ class Tree {
     } else if (hp <= 50) {
       return 7;
     } else if (hp <= 70) {
-      return 10;
+      return 9;
     } else if (hp <= 90) {
-      return 12;
+      return 11;
     } else {
-      return 14;
+      return 13;
     }
   }
 
@@ -230,7 +226,20 @@ const TreeCanvas = ({ hp, day }) => {
     // 나무가 화면 상단에서 시작하지 않도록 설정
     const treeBaseY = stageHeight - 50; // 나무가 화면 하단에서 시작하도록 설정
 
-    const tree = new Tree(ctx, stageWidth / 2, treeBaseY, day, hp);
+    const selectedColors = COLOR_ARR.sort(() => Math.random() - 0.5).slice(
+      0,
+      3
+    );
+
+    const tree = new Tree(
+      ctx,
+      stageWidth / 2,
+      treeBaseY,
+      day,
+      hp,
+      selectedColors[0],
+      selectedColors[1]
+    );
     tree.draw();
 
     return () => {};
