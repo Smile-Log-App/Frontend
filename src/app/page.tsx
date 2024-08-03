@@ -58,8 +58,8 @@ export default function HomePage() {
 
   // HP를 초기화하는 함수
   const handleResetHp = () => {
-    setHp(30); // HP 초기화
-    localStorage.setItem("treeHp", "30");
+    setHp(50); // HP 초기화
+    localStorage.setItem("treeHp", "50");
   };
 
   // 낮/밤 모드를 토글하는 함수

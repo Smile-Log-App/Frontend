@@ -33,7 +33,7 @@ class Branch {
     this.color = this.calculateColor();
   }
 
-  // 두 색상 사이의 중간 색상을 계산하는 메서드
+  // 두 색상 사이의 중간 색상을 계산하는 메서드 그래서 중간 가지가 그라데이션으로 보이는 거임.
   calculateColor() {
     const ratio = this.lineWidth / 12; // 가지의 굵기에 따른 비율 계산 (0에서 1 사이)
     const hex = (start, end) => {
