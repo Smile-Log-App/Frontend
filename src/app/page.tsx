@@ -58,8 +58,8 @@ export default function HomePage() {
 
   // HP를 초기화하는 함수
   const handleResetHp = () => {
-    setHp(50); // HP 초기화
-    localStorage.setItem("treeHp", "50");
+    setHp(30); // HP 초기화
+    localStorage.setItem("treeHp", "30");
   };
 
   // 낮/밤 모드를 토글하는 함수
@@ -83,13 +83,13 @@ export default function HomePage() {
         <div className="w-full flex justify-center">
           <button
             onClick={handleSubmit}
-            className="font-bold py-2 px-4 rounded"
+            className="font-bold py-2 px-4 bg-white rounded shadow"
           >
             제출하기
           </button>
           <button
             onClick={handleResetHp}
-            className="font-bold py-2 px-4 rounded ml-4"
+            className="font-bold py-2 px-4 bg-white rounded shadow ml-4"
             style={{ marginLeft: "10px" }}
           >
             초기화하기

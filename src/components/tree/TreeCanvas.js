@@ -22,7 +22,7 @@ class Branch {
     this.colorEnd = colorEnd;
     this.lineWidth = lineWidth;
 
-    this.frame = 10; // 가지가 자라나는 프레임 수
+    this.frame = 15; // 가지가 자라나는 프레임 수
     this.cntFrame = 0; // 현재 프레임
     this.gapX = (this.endX - this.startX) / this.frame; // x축 이동 간격
     this.gapY = (this.endY - this.startY) / this.frame; // y축 이동 간격
@@ -121,15 +121,15 @@ class Tree {
     if (hp <= 10) {
       return 3;
     } else if (hp <= 30) {
-      return 4;
+      return 6;
     } else if (hp <= 50) {
-      return 7;
+      return 8;
     } else if (hp <= 70) {
-      return 9;
+      return 10;
     } else if (hp <= 90) {
-      return 11;
+      return 12;
     } else {
-      return 13;
+      return 14;
     }
   }
 
@@ -224,7 +224,7 @@ const TreeCanvas = ({ hp, day }) => {
     ctx.scale(pixelRatio, pixelRatio);
 
     // 나무가 화면 상단에서 시작하지 않도록 설정
-    const treeBaseY = stageHeight - 50; // 나무가 화면 하단에서 시작하도록 설정
+    const treeBaseY = stageHeight - 0; // 나무가 화면 하단에서 시작하도록 설정
 
     const selectedColors = COLOR_ARR.sort(() => Math.random() - 0.5).slice(
       0,
