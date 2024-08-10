@@ -69,11 +69,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="h-full min-h-screen flex items-center bg-gray-100 gap-30pxr pr-40pxr text-30pxr">
-      <div className="w-2/4 flex flex-col items-center gap-30pxr">
-        <h1 className="text-40pxr font-bold mb-8 text-center">유담이의 일기</h1>
+    <div className="h-full min-h-screen flex items-center bg-gray-100 gap-30 pr-40 text-30">
+      <div className="w-2/4 flex flex-col items-center gap-30">
+        <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
 
-        <div className="mb-4 w-600pxr">
+        <div className="mb-4 w-600">
           <TextEditor
             quillRef={quillRef}
             htmlContent={htmlContent}
@@ -121,7 +121,7 @@ export default function HomePage() {
       </div>
       {showTree && (
         <div
-          className="flex h-800pxr w-900pxr justify-center"
+          className="flex h-800 w-900 justify-center"
           style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
         >
           <TreeCanvas hp={hp} day={day} />
