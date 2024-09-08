@@ -1,9 +1,6 @@
 "use client";
 import { ResponseData, postDiary } from "@/api/postDiary";
-import {
-  EmotionBarList,
-  emotionsData,
-} from "@/components/calendar/EmotionBarList";
+import { Emotion, EmotionBarList } from "@/components/calendar/EmotionBarList";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
@@ -72,11 +69,19 @@ export default function DiaryPage() {
     document.body.classList.toggle("black");
   };
 
-  return (
-    <div className="h-full min-h-screen flex items-center bg-gray-100 justify-between px-40 text-30">
-      <div className="w-2/4 flex flex-col items-center gap-30">
-        <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
+  // 감정 데이터
+  const emotionsData: Emotion[] = [
+    { label: "행복", percentage: 80, color: "#FFD700" }, // 노란색
+    { label: "짜증", percentage: 40, color: "#FF4500" }, // 빨간색
+    { label: "슬픔", percentage: 20, color: "#1E90FF" }, // 파란색
+    { label: "우울", percentage: 50, color: "#6A5ACD" }, // 보라색
+    { label: "화남", percentage: 10, color: "#FF0000" }, // 진한 빨간색
+  ];
 
+  return (
+    <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
+      <div className=" flex flex-col items-center gap-30">
+        <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
         <div className="mb-4 w-600">
           <TextEditor
             quillRef={quillRef}
@@ -125,11 +130,8 @@ export default function DiaryPage() {
       </div>
       {showTree && (
         <>
-          <div
-            className="flex h-800 w-900 justify-center"
-            style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
-          >
-            <TreeCanvas hp={hp} day={day} />
+          <div className="px-20 flex h-800 w-700 justify-center ">
+            <TreeCanvas hp={50} day={1} widthRatio={1 / 5} />
           </div>
           <EmotionBarList emotions={emotionsData} />
         </>

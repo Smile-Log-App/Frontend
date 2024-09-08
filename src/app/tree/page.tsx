@@ -10,7 +10,7 @@ export default function TreePage() {
 
   return (
     <div className="flex h-800 w-full justify-center">
-      <TreeCanvas hp={hp} day={day} />
+      <TreeCanvas hp={hp} day={day} widthRatio={4 / 5} />
     </div>
   );
 }

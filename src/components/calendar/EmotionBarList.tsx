@@ -1,7 +1,7 @@
 import React from "react";
 
 // Emotion 타입 정의
-interface Emotion {
+export interface Emotion {
   label: string;
   percentage: number;
   color: string;
@@ -51,12 +51,3 @@ export function EmotionBarList({ emotions }: EmotionBarListProps) {
     </div>
   );
 }
-
-// 감정 데이터
-export const emotionsData: Emotion[] = [
-  { label: "행복", percentage: 80, color: "#FFD700" }, // 노란색
-  { label: "짜증", percentage: 40, color: "#FF4500" }, // 빨간색
-  { label: "슬픔", percentage: 20, color: "#1E90FF" }, // 파란색
-  { label: "우울", percentage: 50, color: "#6A5ACD" }, // 보라색
-  { label: "화남", percentage: 10, color: "#FF0000" }, // 진한 빨간색
-];
