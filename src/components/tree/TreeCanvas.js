@@ -191,9 +191,8 @@ class Tree {
     return min + Math.floor(Math.random() * (max - min + 1));
   }
 }
-
 // TreeCanvas 컴포넌트
-const TreeCanvas = ({ hp, day }) => {
+const TreeCanvas = ({ hp, day, widthRatio }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -202,7 +201,7 @@ const TreeCanvas = ({ hp, day }) => {
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
     const fixedHeight = 200;
-    const stageWidth = window.innerWidth;
+    const stageWidth = window.innerWidth * widthRatio; // 화면 너비의 비율을 적용
     const stageHeight = Math.max(window.innerHeight, fixedHeight);
 
     canvas.width = stageWidth * pixelRatio;
@@ -229,7 +228,7 @@ const TreeCanvas = ({ hp, day }) => {
     tree.draw(); // 나무 그리기
 
     return () => {}; // 컴포넌트 언마운트 시 정리 작업
-  }, [hp, day]);
+  }, [hp, day, widthRatio]);
 
   return <canvas ref={canvasRef}></canvas>;
 };
