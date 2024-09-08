@@ -1,16 +1,20 @@
 "use client";
 import { ResponseData, postDiary } from "@/api/postDiary";
+import {
+  EmotionBarList,
+  emotionsData,
+} from "@/components/calendar/EmotionBarList";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
-const TextEditor = dynamic(() => import("@/components/Home/TextEditor"), {
+const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
   ssr: false,
 });
 
-export default function HomePage() {
+export default function DiaryPage() {
   // ReactQuill 에디터를 참조하기 위한 ref 생성
   const quillRef = useRef<ReactQuill | null>(null);
   // 일기 내용을 저장할 상태
@@ -69,7 +73,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="h-full min-h-screen flex items-center bg-gray-100 gap-30 pr-40 text-30">
+    <div className="h-full min-h-screen flex items-center bg-gray-100 justify-between px-40 text-30">
       <div className="w-2/4 flex flex-col items-center gap-30">
         <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
 
@@ -120,12 +124,15 @@ export default function HomePage() {
         </div>
       </div>
       {showTree && (
-        <div
-          className="flex h-800 w-900 justify-center"
-          style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
-        >
-          <TreeCanvas hp={hp} day={day} />
-        </div>
+        <>
+          <div
+            className="flex h-800 w-900 justify-center"
+            style={{ backgroundColor: day ? "#ffffff" : "#000000" }}
+          >
+            <TreeCanvas hp={hp} day={day} />
+          </div>
+          <EmotionBarList emotions={emotionsData} />
+        </>
       )}
     </div>
   );

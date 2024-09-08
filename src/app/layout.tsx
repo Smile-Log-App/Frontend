@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import Providers from "@/app/ReactQueryProvider";
+import Navbar from "@/components/common/navbar";
 
 export const metadata: Metadata = {
   title: "",
@@ -17,7 +18,8 @@ export default function RootLayout({
     <html lang="ko">
       <body className=" min-h-screen w-screen ">
         <Providers>
-          <div className="flex flex-col min-h-screen h-full w-screen">
+          <Navbar />
+          <div className="bg-blue-50 flex flex-col min-h-screen h-full w-screen">
             {children}
           </div>
         </Providers>
