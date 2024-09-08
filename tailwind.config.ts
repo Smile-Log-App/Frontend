@@ -33,16 +33,9 @@ const config: Config = {
           30: "#C4C4C4",
         },
       },
-      backgroundImage: {
-        "gradient-to-b":
-          "linear-gradient(to bottom, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0) , rgba(0, 0, 0, 1))",
-      },
-      height: {
-        exceptNav: "calc(100vh - 3rem)",
-      },
-      animation: {
-        slide: "slide 1.5s linear infinite",
-      },
+      backgroundImage: {},
+      height: {},
+      animation: {},
     },
   },
   plugins: [],

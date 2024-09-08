@@ -15,9 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="flex min-h-screen justify-center items-center">
+      <body className=" min-h-screen w-screen ">
         <Providers>
-          <div className="flex flex-col min-h-screen h-full w-full">
+          <div className="flex flex-col min-h-screen h-full w-screen">
             {children}
           </div>
         </Providers>
