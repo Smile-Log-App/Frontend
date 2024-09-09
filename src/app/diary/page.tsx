@@ -29,7 +29,7 @@ export default function DiaryPage() {
   useEffect(() => {
     const storedHp = localStorage.getItem("treeHp");
     if (storedHp) {
-      setHp(parseInt(storedHp, 10));
+      setHp(parseInt(storedHp, 50));
     }
   }, []);
 
@@ -131,7 +131,7 @@ export default function DiaryPage() {
       {showTree && (
         <>
           <div className="px-20 flex h-800 w-700 justify-center ">
-            <TreeCanvas hp={50} day={1} widthRatio={1 / 5} />
+            <TreeCanvas hp={60} day={1} widthRatio={1 / 5} />
           </div>
           <EmotionBarList emotions={emotionsData} />
         </>

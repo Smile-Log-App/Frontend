@@ -47,7 +47,7 @@ interface CalendarDayProps {
 
 const CalendarDay: React.FC<CalendarDayProps> = ({ day, onClick }) => (
   <div
-    className={`p-2 h-150 font-bold text-30 text-center relative cursor-pointer`}
+    className={`p-10 h-100 font-bold text-20 text-center relative cursor-pointer border-1 border-gray-300`}
     onClick={onClick}
   >
     {day}
@@ -76,35 +76,37 @@ function Calendar() {
   };
 
   return (
-    <div className=" w-[1000px] mx-auto p-4 bg-gray-100 rounded-lg shadow-md">
-      <CalendarHeader
-        year={year}
-        month={month}
-        onPrevMonth={handlePrevMonth}
-        onNextMonth={handleNextMonth}
-      />
+    <div className=" flex justify-center items-center h-screen mt-30">
+      <div className="w-[800px] h-[650px] p-6 bg-white/50 rounded-2xl shadow-lg">
+        <CalendarHeader
+          year={year}
+          month={month}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
+        />
 
-      <div className="grid grid-cols-7 gap-2">
-        {WEEK.map((day) => (
-          <div
-            key={day}
-            className="flex items-center justify-center h-50 text-center font-bold text-30"
-          >
-            {day}
-          </div>
-        ))}
+        <div className="grid grid-cols-7 gap-0">
+          {WEEK.map((day) => (
+            <div
+              key={day}
+              className="flex items-center justify-center h-50 text-center font-bold text-25"
+            >
+              {day}
+            </div>
+          ))}
 
-        {emptyFirstCards.map((_, idx) => (
-          <div key={idx} className="p-2"></div>
-        ))}
+          {emptyFirstCards.map((_, idx) => (
+            <div key={idx} className="p-2"></div>
+          ))}
 
-        {allDays.map((day) => (
-          <CalendarDay
-            key={day}
-            day={day}
-            onClick={() => setDay(day)}
-          ></CalendarDay>
-        ))}
+          {allDays.map((day) => (
+            <CalendarDay
+              key={day}
+              day={day}
+              onClick={() => setDay(day)}
+            ></CalendarDay>
+          ))}
+        </div>
       </div>
     </div>
   );
