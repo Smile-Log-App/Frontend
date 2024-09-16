@@ -124,9 +124,9 @@ function SignupPage() {
     <main className="flex min-h-screen justify-center">
       <form
         onSubmit={handleSubmit(handleOnSubmit)}
-        className="flex-center w-full bg-blue-base"
+        className="flex-center w-full "
       >
-        <div className="flex-column min-h-800 w-800 gap-20 rounded-24 bg-white px-60 py-30">
+        <div className="flex-column min-h-800 w-800 gap-20 rounded-24 px-60 py-30">
           <Input
             control={control}
             name="name"
@@ -173,7 +173,7 @@ function SignupPage() {
             {/* <Button disabled={!isValid || signupMutation.isPending}>
               {signupMutation.isPending ? "회원가입 중..." : "회원가입"}
             </Button> */}
-            <Button disabled={!isValid}>{"회원가입"}</Button>
+            <Button disabled={!isValid}>회원가입</Button>
           </div>
           <div className="flex justify-center gap-7">
             <p>이미 회원이신가요?</p>

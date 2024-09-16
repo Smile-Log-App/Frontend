@@ -69,9 +69,9 @@ function LoginPage() {
     <main className="flex  w-full min-h-screen justify-center">
       <form
         onSubmit={handleSubmit(handleOnSubmit)}
-        className="flex-center w-full bg-blue-base"
+        className="flex-center w-full "
       >
-        <div className="flex-center flex-column min-h-520 w-800 gap-20 rounded-24 bg-white">
+        <div className="flex-center flex-column min-h-520 w-800 gap-20 rounded-24 ">
           <Input
             control={control}
             name="username"
