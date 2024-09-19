@@ -65,6 +65,8 @@ function SignupPage() {
       password: data.password,
     };
 
+    console.log(userData);
+
     signUpMutation.mutate(userData, {
       onSuccess: (response) => {
         alert("회원가입이 성공적으로 완료되었습니다.");
