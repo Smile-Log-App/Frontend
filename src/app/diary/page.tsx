@@ -1,8 +1,8 @@
-// pages/diary.tsx
 "use client";
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
+import TreeCanvas from "@/components/tree/TreeCanvas";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
@@ -35,7 +35,7 @@ export default function DiaryPage() {
   useEffect(() => {
     const storedHp = localStorage.getItem("treeHp");
     if (storedHp) {
-      setHp(parseInt(storedHp, 10));
+      setHp(parseInt(storedHp, 50));
     }
   }, []);
 
@@ -136,10 +136,8 @@ export default function DiaryPage() {
       {showTree && (
         <>
           <div className="px-20 flex h-800 w-700 justify-center ">
-            {/* TreeCanvas 컴포넌트는 구현된 경우 사용, 없으면 주석 처리 */}
-            {/* <TreeCanvas hp={50} day={1} widthRatio={1 / 5} /> */}
+            <TreeCanvas hp={60} day={1} widthRatio={1 / 5} />
           </div>
-          {/* 나무 상태를 보여줄 그래프 */}
         </>
       )}
     </div>
