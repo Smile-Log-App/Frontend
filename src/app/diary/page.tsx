@@ -1,9 +1,7 @@
+// pages/diary.tsx
 "use client";
-import { ResponseData, postDiary } from "@/api/postDiary";
-import { Emotion, EmotionBarList } from "@/components/calendar/EmotionBarList";
-import TreeCanvas from "@/components/tree/TreeCanvas";
-import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
@@ -11,13 +9,21 @@ const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
   ssr: false,
 });
 
+interface AnalyzeResponse {
+  analysis: string;
+}
+
+interface ErrorResponse {
+  error: string;
+}
+
 export default function DiaryPage() {
   // ReactQuill 에디터를 참조하기 위한 ref 생성
   const quillRef = useRef<ReactQuill | null>(null);
   // 일기 내용을 저장할 상태
   const [htmlContent, setHtmlContent] = useState<string>("");
   // API 응답을 저장할 상태
-  const [response, setResponse] = useState<ResponseData>();
+  const [response, setResponse] = useState<AnalyzeResponse | null>(null);
   // TreeCanvas를 보여줄지 여부를 저장할 상태
   const [showTree, setShowTree] = useState<boolean>(false);
   // 나무 HP를 저장할 상태 (기본 HP는 50으로 설정)
@@ -40,21 +46,32 @@ export default function DiaryPage() {
 
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
-    const res = await postDiary(htmlContent);
-    setResponse(res); // 전체 응답 객체 저장
+    try {
+      // Next.js API 라우트로 POST 요청을 보냄
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ entry: htmlContent }),
+      });
 
-    // 감정 분석 결과에 따라 HP를 업데이트
-    const sentimentEffect = calculateHpChange(res);
-    setHp((prevHp) => Math.max(0, prevHp + sentimentEffect)); // HP가 0 미만으로 내려가지 않도록 설정
+      if (!response.ok) {
+        throw new Error("감정 분석 요청에 실패했습니다.");
+      }
 
-    setShowTree(true); // TreeCanvas를 보여주도록 설정
-  };
+      const data = (await response.json()) as AnalyzeResponse | ErrorResponse;
 
-  // 감정 분석 결과를 기반으로 HP 변화를 계산하는 함수
-  const calculateHpChange = (response: any) => {
-    const { positive, negative } = response.document.confidence;
-    // HP 변화량 계산 (긍정 - 부정) * 0.1
-    return Math.floor(positive * 0.1 - negative * 0.1);
+      if ("error" in data) {
+        alert("감정 분석에 실패했습니다. 다시 시도해 주세요.");
+      } else {
+        setResponse(data); // 응답 저장
+        setShowTree(true); // TreeCanvas를 보여주도록 설정
+      }
+    } catch (error) {
+      console.error("감정 분석 중 오류가 발생했습니다.", error);
+      alert("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
   };
 
   // HP를 초기화하는 함수
@@ -68,15 +85,6 @@ export default function DiaryPage() {
     setDay((prevDay) => !prevDay);
     document.body.classList.toggle("black");
   };
-
-  // 감정 데이터
-  const emotionsData: Emotion[] = [
-    { label: "행복", percentage: 80, color: "#FFD700" }, // 노란색
-    { label: "짜증", percentage: 40, color: "#FF4500" }, // 빨간색
-    { label: "슬픔", percentage: 20, color: "#1E90FF" }, // 파란색
-    { label: "우울", percentage: 50, color: "#6A5ACD" }, // 보라색
-    { label: "화남", percentage: 10, color: "#FF0000" }, // 진한 빨간색
-  ];
 
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
@@ -117,10 +125,7 @@ export default function DiaryPage() {
         {response && (
           <div className="mt-4 p-4 bg-white rounded shadow">
             <h2 className="text-2xl font-bold mb-2">응답값</h2>
-            <pre>감정: {response.document.sentiment}</pre>
-            <pre>부정: {response.document.confidence.negative.toFixed(2)}%</pre>
-            <pre>긍정: {response.document.confidence.positive.toFixed(2)}%</pre>
-            <pre>중립: {response.document.confidence.neutral.toFixed(2)}%</pre>
+            <pre>감정 분석: {response.analysis}</pre>
           </div>
         )}
         <div className="mt-4 p-4 bg-white rounded shadow">
@@ -131,9 +136,10 @@ export default function DiaryPage() {
       {showTree && (
         <>
           <div className="px-20 flex h-800 w-700 justify-center ">
-            <TreeCanvas hp={50} day={1} widthRatio={1 / 5} />
+            {/* TreeCanvas 컴포넌트는 구현된 경우 사용, 없으면 주석 처리 */}
+            {/* <TreeCanvas hp={50} day={1} widthRatio={1 / 5} /> */}
           </div>
-          <EmotionBarList emotions={emotionsData} />
+          {/* 나무 상태를 보여줄 그래프 */}
         </>
       )}
     </div>

@@ -9,8 +9,8 @@ export default function TreePage() {
   const [day, setDay] = useState<boolean>(true);
 
   return (
-    <div className="flex h-800 w-full justify-center">
-      <TreeCanvas hp={hp} day={day} widthRatio={4 / 5} />
+    <div className="flex h-800 bg-white w-full justify-center">
+      <TreeCanvas hp={hp} day={day} widthRatio={2 / 5} />
     </div>
   );
 }
