@@ -5,7 +5,8 @@ interface postSignUpReq {
   user_login_id: string;
   password: string;
 }
-const postSignUp = (userData: postSignUpReq) => {
-  return instance.post("/auth/register", { userData });
+const postSignUp = async (userData: postSignUpReq) => {
+  const result = await instance.post("/auth/register", { userData });
+  return result;
 };
-export const useSignUpMutation = useMutation({ mutationFn: postSignUp });
+export const useSignUpMutation = () => useMutation({ mutationFn: postSignUp });

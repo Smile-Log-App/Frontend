@@ -7,13 +7,13 @@ import Link from "next/link";
 import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 import { FieldValues, useForm, useWatch } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { AxiosError } from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Input from "@/components/common/input";
+import { useSignUpMutation } from "@/api/use-sign-up";
 
 function SignupPage() {
+  const signUpMutation = useSignUpMutation();
   const method = useForm<FieldValues>({
     mode: "onTouched",
     reValidateMode: "onChange",
@@ -57,52 +57,23 @@ function SignupPage() {
   const queryClient = useQueryClient();
 
   // const [, setIsLoggedIn] = useAtom(isLoggedInAtom); // useAtom을 사용합니다
-
-  const signupMutation = useMutation({
-    // mutationFn: (data: PostSignUpReq) => postSignUp(data),
-
-    onSuccess: async () => {
-      // try {
-      //   const result = await postSignIn({
-      //     username: getValues("username"),
-      //     password: getValues("password"),
-      //   });
-      //   if (result.status === 200) {
-      //     toast.success("회원가입이 완료되었습니다.");
-      //     queryClient.invalidateQueries({ queryKey: ["userInfo"] });
-      //     setIsLoggedIn(true);
-      //     router.push("/");
-      //   }
-      // } catch (loginError) {
-      //   console.error("로그인 시도 실패:", loginError);
-      //   toast.error("회원가입은 성공했지만, 자동 로그인이 실패했습니다.");
-      // }
-    },
-    onError: (e) => {
-      if (e instanceof AxiosError) {
-        if (e.response?.data?.message === "이미 존재하는 아이디입니다.") {
-          setError("username", {
-            type: "validate",
-            message: String(e.response?.data?.message),
-          });
-        }
-        if (e.response?.data?.message === "이미 존재하는 이메일입니다.") {
-          setError("email", {
-            type: "validate",
-            message: String(e.response?.data?.message),
-          });
-        }
-      }
-    },
-  });
-
+  // 회원가입 처리 함수
   const handleOnSubmit = async (data: FieldValues) => {
     const userData = {
       username: data.username,
-      userId: data.useId,
+      user_login_id: data.userId, // user_login_id를 올바르게 사용
       password: data.password,
     };
-    // signupMutation.mutate(userData);
+
+    signUpMutation.mutate(userData, {
+      onSuccess: (response) => {
+        alert("회원가입이 성공적으로 완료되었습니다.");
+        router.push("/login"); // 회원가입 성공 후 로그인 페이지로 이동
+      },
+      onError: (error) => {
+        alert(`회원가입 중 오류가 발생했습니다: ${error.message}`);
+      },
+    });
   };
   return (
     <main className="flex min-h-screen justify-center">
