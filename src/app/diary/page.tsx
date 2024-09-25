@@ -1,15 +1,15 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 
-import toast from "react-hot-toast";
-import { getTodayDate } from "@/utils/get-today-date";
 import { useAnalyzeEmotionMutation } from "@/api/use-analyze-emotion-mutation";
 import { EmotionBarList } from "@/components/calendar/EmotionBarList";
-import { EmotionType } from "@/types/emotion";
-import { EMOTION_COLORS } from "@/constants/emotion-color";
 import TreeCanvas from "@/components/tree/TreeCanvas";
+import { EMOTION_COLORS } from "@/constants/emotion-color";
+import { EmotionType } from "@/types/emotion";
+import { getTodayDate } from "@/utils/get-today-date";
+import toast from "react-hot-toast";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
@@ -50,19 +50,22 @@ export default function DiaryPage() {
   // 오늘 날짜 가져오기
   const todayDate = getTodayDate();
 
-  // 상위 3개의 감정에 해당하는 색상 배열을 생성하는 함수
-  const topThreeColors = useMemo(() => {
-    if (!response) return [];
+  // 상위 3개의 감정에 해당하는 색상과 비율을 함께 추출
+  const [topThreeColors, topThreeRatios] = useMemo(() => {
+    if (!response) return [[], []];
 
     // 응답 객체를 배열로 변환하고 퍼센트를 기준으로 정렬
     const sortedEmotions = Object.entries(response)
-      .sort(([, a], [, b]) => b - a) // 퍼센트 내림차순으로 정렬
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 3); // 상위 3개의 감정만 추출
 
-    // 상위 3개의 감정에 해당하는 색상 추출
-    return sortedEmotions.map(
+    // 상위 3개의 감정에 해당하는 색상 및 비율 추출
+    const colors = sortedEmotions.map(
       ([emotion]) => EMOTION_COLORS[emotion as EmotionType],
     );
+    const ratios = sortedEmotions.map(([, ratio]) => ratio / 100);
+
+    return [colors, ratios];
   }, [response]);
 
   return (
@@ -95,6 +98,7 @@ export default function DiaryPage() {
             hp={90}
             day={1}
             widthRatio={3 / 5}
+            emotionRatios={topThreeRatios} // 비율 전달
           />
         </div>
       </>

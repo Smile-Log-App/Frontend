@@ -12,7 +12,7 @@ class Branch {
     this.colorStart = colorStart || "#000000";
     this.colorEnd = colorEnd || "#000000";
 
-    this.frame = 15;
+    this.frame = 10;
     this.cntFrame = 0;
     this.gapX = (this.endX - this.startX) / this.frame;
     this.gapY = (this.endY - this.startY) / this.frame;
@@ -48,6 +48,16 @@ class Branch {
     this.currentX += this.gapX;
     this.currentY += this.gapY;
 
+    // 그라데이션 생성
+    const gradient = ctx.createLinearGradient(
+      this.startX,
+      this.startY,
+      this.endX,
+      this.endY
+    );
+    gradient.addColorStop(0, this.colorStart); // 시작 색상
+    gradient.addColorStop(1, this.colorEnd); // 끝 색상
+
     ctx.moveTo(this.startX, this.startY);
     ctx.lineTo(this.currentX, this.currentY);
 
@@ -60,8 +70,8 @@ class Branch {
     } else {
       ctx.lineWidth = this.lineWidth;
     }
-
-    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.lineWidth;
+    ctx.strokeStyle = gradient; // 그라데이션 적용
 
     ctx.stroke();
     ctx.closePath();
@@ -80,8 +90,9 @@ class Tree {
     posY,
     day,
     hp,
-    colorStart = "#000000",
-    colorEnd = "#000000"
+    color1 = "#000000",
+    color2 = "#000000",
+    color3 = "#000000"
   ) {
     this.ctx = ctx;
     this.posX = posX;
@@ -91,9 +102,7 @@ class Tree {
     this.day = day;
     this.hp = hp;
 
-    this.colorStart = colorStart;
-    this.colorEnd = colorEnd;
-
+    this.colors = [color1, color2, color3];
     this.cntDepth = 0;
     this.animation = null;
     this.maxDepth = this.depth;
@@ -101,19 +110,12 @@ class Tree {
   }
 
   calculateDepth(hp) {
-    if (hp <= 10) {
-      return 3;
-    } else if (hp <= 30) {
-      return 5;
-    } else if (hp <= 50) {
-      return 7;
-    } else if (hp <= 70) {
-      return 9;
-    } else if (hp <= 90) {
-      return 11;
-    } else {
-      return 14;
-    }
+    if (hp <= 10) return 3;
+    if (hp <= 30) return 5;
+    if (hp <= 50) return 7;
+    if (hp <= 70) return 9;
+    if (hp <= 90) return 11;
+    return 14;
   }
 
   init() {
@@ -123,6 +125,19 @@ class Tree {
 
     this.createBranch(this.posX, this.posY, -90, 0);
     this.draw();
+  }
+
+  // `depth`에 따라 가지의 색상 그라데이션 결정
+  getGradientColorsForDepth(depth) {
+    const thirdDepth = Math.ceil(this.depth / 3); // 깊이를 3등분
+
+    if (depth < thirdDepth) {
+      return [this.colors[2], this.colors[1]]; // 아래쪽에서 중간으로 그라데이션
+    } else if (depth < thirdDepth * 2) {
+      return [this.colors[1], this.colors[0]]; // 중간에서 위쪽으로 그라데이션
+    } else {
+      return [this.colors[0], this.colors[0]]; // 위쪽은 마지막 색상으로 유지
+    }
   }
 
   createBranch(startX, startY, angle, depth) {
@@ -139,6 +154,8 @@ class Tree {
     const endX = startX + this.cos(angle) * len * (this.depth - depth);
     const endY = startY + this.sin(angle) * len * (this.depth - depth);
 
+    const [colorStart, colorEnd] = this.getGradientColorsForDepth(depth);
+
     this.branches[depth].push(
       new Branch(
         startX,
@@ -146,8 +163,8 @@ class Tree {
         endX,
         endY,
         this.depth - depth,
-        this.colorStart,
-        this.colorEnd
+        colorStart,
+        colorEnd
       )
     );
 
@@ -195,9 +212,9 @@ const TreeCanvas = ({
   hp,
   day,
   widthRatio,
-  colors = ["#000000", "#000000"],
+  colors = ["#000000", "#000000", "#000000"],
+  emotionRatios = [1, 0, 0], // 감정 비율을 추가
 }) => {
-  // 기본값 설정
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -206,7 +223,7 @@ const TreeCanvas = ({
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
     const fixedHeight = 100;
-    const stageWidth = window.innerWidth * widthRatio; // 화면 너비의 비율을 적용
+    const stageWidth = window.innerWidth * widthRatio;
     const stageHeight = Math.max(window.innerHeight, fixedHeight);
 
     canvas.width = stageWidth * pixelRatio;
@@ -215,8 +232,9 @@ const TreeCanvas = ({
 
     const treeBaseY = stageHeight - 0;
 
-    // `colors` prop이 없을 경우 기본값으로 설정된 색상 배열 사용
-    const selectedColors = colors;
+    const selectedColors = colors.map((color, index) => {
+      return emotionRatios[index] === 0 ? "#000000" : color; // 0%는 검정색 처리
+    });
 
     const tree = new Tree(
       ctx,
@@ -225,13 +243,14 @@ const TreeCanvas = ({
       day,
       hp,
       selectedColors[0],
-      selectedColors[1]
+      selectedColors[1],
+      selectedColors[2]
     );
 
-    tree.draw(); // 나무 그리기
+    tree.draw();
 
     return () => {}; // 컴포넌트 언마운트 시 정리 작업
-  }, [hp, day, widthRatio, colors]);
+  }, [hp, day, widthRatio, colors, emotionRatios]);
 
   return <canvas ref={canvasRef}></canvas>;
 };
