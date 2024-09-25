@@ -5,20 +5,15 @@ import ReactQuill from "react-quill";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 import toast from "react-hot-toast";
 import { getTodayDate } from "@/utils/get-today-date";
+import {
+  AnalyzeResponse,
+  useAnalyzeEmotionMutation,
+} from "@/api/use-analyze-emotion-mutation";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
   ssr: false,
 });
-
-interface AnalyzeResponse {
-  joy: number;
-  sad: number;
-  anxiety: number;
-  angry: number;
-  peace: number;
-  tired: number;
-}
 
 export default function DiaryPage() {
   // ReactQuill 에디터를 참조하기 위한 ref 생성
@@ -28,29 +23,25 @@ export default function DiaryPage() {
   // API 응답을 저장할 상태
   const [response, setResponse] = useState<AnalyzeResponse | null>(null);
 
+  // 감정 분석 API 호출 훅
+  const analyzeEmotionMutation = useAnalyzeEmotionMutation();
+
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
-    try {
-      const res = await fetch("/api/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    // 감정 분석 API 호출
+    analyzeEmotionMutation.mutate(
+      { entry: htmlContent },
+      {
+        onSuccess: (data) => {
+          setResponse(data); // 성공 시 응답 저장
+          toast.success("감정 분석이 완료되었습니다.");
         },
-        body: JSON.stringify({ entry: htmlContent }),
-      });
-
-      // 응답 상태 코드 확인
-      if (!res.ok) {
-        throw new Error("감정 분석 요청에 실패했습니다."); // API 요청 실패 시 에러 발생
-      }
-
-      // 응답 데이터 파싱
-      const data: AnalyzeResponse = await res.json();
-      setResponse(data); // 응답 저장
-    } catch (error) {
-      console.error("감정 분석 중 오류가 발생했습니다.", error);
-      toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    }
+        onError: (error) => {
+          console.error("감정 분석 중 오류가 발생했습니다.", error);
+          toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        },
+      },
+    );
   };
 
   // 오늘 날짜 가져오기
@@ -72,8 +63,9 @@ export default function DiaryPage() {
           <button
             onClick={handleSubmit}
             className="font-bold py-2 px-4 bg-white rounded shadow"
+            disabled={analyzeEmotionMutation.isPending}
           >
-            제출하기
+            {analyzeEmotionMutation.isPending ? "분석 중..." : "제출하기"}
           </button>
         </div>
 

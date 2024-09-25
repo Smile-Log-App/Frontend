@@ -27,7 +27,7 @@ export const analyzeEmotion = async (
 };
 
 // 감정 분석 API를 호출하는 React Query 훅
-export const useAnalyzeEmotion = () => {
+export const useAnalyzeEmotionMutation = () => {
   return useMutation({
     mutationFn: analyzeEmotion,
   });
