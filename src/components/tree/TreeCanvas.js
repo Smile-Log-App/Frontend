@@ -37,21 +37,21 @@ class Branch {
     const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
     let blendedColor;
 
-    if (ratio <= 0.33) {
-      // 첫 번째 구간: colorStart에서 colorMid로 전환
-      const segmentRatio = ratio / 0.33; // 0~0.33 비율을 0~1로 변환
+    if (ratio <= 0.5) {
+      // 첫 번째 구간: colorStart에서 colorMid로 전환 (50% 길이)
+      const segmentRatio = ratio / 0.5; // 0~0.5 비율을 0~1로 변환
       blendedColor = this.hexBlend(
         this.colorStart,
         this.colorMid,
         segmentRatio
       );
-    } else if (ratio <= 0.66) {
-      // 두 번째 구간: colorMid에서 colorEnd로 전환
-      const segmentRatio = (ratio - 0.33) / 0.33; // 0.33~0.66 비율을 0~1로 변환
+    } else if (ratio <= 0.8) {
+      // 두 번째 구간: colorMid에서 colorEnd로 전환 (30% 길이)
+      const segmentRatio = (ratio - 0.5) / 0.3; // 0.5~0.8 비율을 0~1로 변환
       blendedColor = this.hexBlend(this.colorMid, this.colorEnd, segmentRatio);
     } else {
-      // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환
-      const segmentRatio = (ratio - 0.66) / 0.34; // 0.66~1 비율을 0~1로 변환
+      // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환 (20% 길이)
+      const segmentRatio = (ratio - 0.8) / 0.2; // 0.8~1 비율을 0~1로 변환
       blendedColor = this.hexBlend(this.colorEnd, "#FFFFFF", segmentRatio); // 흰색으로 부드럽게 전환
     }
 
