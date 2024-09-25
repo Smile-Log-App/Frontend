@@ -1,4 +1,5 @@
 import { instance } from "@/api/axiosInstance";
+import { useAuthGlobalAtom } from "@/app/store/auth.store";
 import { useMutation } from "@tanstack/react-query";
 
 interface postLoginReq {
@@ -11,17 +12,23 @@ interface PostLoginRes {
   refreshToken: string;
 }
 
+// 로그인 요청 함수
 const postLogin = async (userData: postLoginReq): Promise<PostLoginRes> => {
-  return await instance.post("/auth/login", { ...userData });
+  return await instance.post("/auth/login", userData);
 };
 
-export const useLoginMutation = () =>
-  useMutation({
+// useLoginMutation 훅 정의
+export const useLoginMutation = () => {
+  const [, setAuth] = useAuthGlobalAtom(); // Jotai의 상태 관리 훅 사용
+
+  return useMutation({
     mutationFn: postLogin,
     onSuccess: (data: PostLoginRes) => {
-      // 로그인 성공 시 accessToken을 localStorage에 저장
-      localStorage.setItem("accessToken", data.accessToken);
-      // 필요한 경우 refreshToken도 저장
-      localStorage.setItem("refreshToken", data.refreshToken);
+      // Jotai 상태 업데이트: accessToken과 isLoggedIn 설정
+      setAuth({
+        accessToken: data.accessToken,
+        isLoggedIn: true,
+      });
     },
   });
+};

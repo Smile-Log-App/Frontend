@@ -1,7 +1,6 @@
 "use client";
 import Button from "@/components/common/button";
 import CheckBox from "@/components/common/check-box";
-
 import { ERROR_PASSWORD_SECOND_EMPTY } from "@/constants/validation";
 import Link from "next/link";
 import { DevTool } from "@hookform/devtools";
