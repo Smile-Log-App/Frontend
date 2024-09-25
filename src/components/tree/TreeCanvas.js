@@ -200,7 +200,7 @@ const TreeCanvas = ({ hp, day, widthRatio }) => {
     const ctx = canvas.getContext("2d");
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
-    const fixedHeight = 200;
+    const fixedHeight = 100;
     const stageWidth = window.innerWidth * widthRatio; // 화면 너비의 비율을 적용
     const stageHeight = Math.max(window.innerHeight, fixedHeight);
 

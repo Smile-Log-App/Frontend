@@ -31,14 +31,9 @@ export async function POST(req: NextRequest) {
     );
 
     const analysis = openaiResponse.data.choices[0].message.content;
-    return NextResponse.json({ analysis });
+    return NextResponse.json({ analysis }); // 성공적인 응답
   } catch (error) {
     console.error("GPT API 요청 오류: ", error);
-    return NextResponse.json({ error: "감정 분석 실패" }, { status: 500 });
+    return NextResponse.json({ error: "감정 분석 실패" }, { status: 500 }); // 실패 시 500 에러 반환
   }
-}
-
-// 필요에 따라 다른 HTTP 메서드도 네임드 익스포트로 추가
-export async function GET(req: NextRequest) {
-  return NextResponse.json({ message: "GET 메서드 호출됨" });
 }
