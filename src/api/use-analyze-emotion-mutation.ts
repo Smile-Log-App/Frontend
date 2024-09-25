@@ -1,14 +1,6 @@
+import { EmotionType } from "@/types/emotion";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-
-export interface AnalyzeResponse {
-  joy: number;
-  sad: number;
-  anxiety: number;
-  angry: number;
-  peace: number;
-  tired: number;
-}
 
 export interface AnalyzeRequest {
   entry: string;
@@ -17,8 +9,8 @@ export interface AnalyzeRequest {
 // 감정 분석 API 호출 함수
 export const analyzeEmotion = async (
   entry: AnalyzeRequest,
-): Promise<AnalyzeResponse> => {
-  const response = await axios.post<AnalyzeResponse>("/api/analyze", entry, {
+): Promise<Record<EmotionType, number>> => {
+  const response = await axios.post("/api/analyze", entry, {
     headers: {
       "Content-Type": "application/json",
     },

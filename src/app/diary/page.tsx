@@ -5,10 +5,9 @@ import ReactQuill from "react-quill";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 import toast from "react-hot-toast";
 import { getTodayDate } from "@/utils/get-today-date";
-import {
-  AnalyzeResponse,
-  useAnalyzeEmotionMutation,
-} from "@/api/use-analyze-emotion-mutation";
+import { useAnalyzeEmotionMutation } from "@/api/use-analyze-emotion-mutation";
+import { EmotionBarList } from "@/components/calendar/EmotionBarList";
+import { EmotionType } from "@/types/emotion";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
@@ -21,7 +20,9 @@ export default function DiaryPage() {
   // 일기 내용을 저장할 상태
   const [htmlContent, setHtmlContent] = useState<string>("");
   // API 응답을 저장할 상태
-  const [response, setResponse] = useState<AnalyzeResponse | null>(null);
+  const [response, setResponse] = useState<Record<EmotionType, number> | null>(
+    null,
+  );
 
   // 감정 분석 API 호출 훅
   const analyzeEmotionMutation = useAnalyzeEmotionMutation();
@@ -68,20 +69,6 @@ export default function DiaryPage() {
             {analyzeEmotionMutation.isPending ? "분석 중..." : "제출하기"}
           </button>
         </div>
-
-        {response && (
-          <div className="mt-4 p-4 rounded shadow">
-            <h2 className="text-2xl font-bold mb-2">감정 분석 결과</h2>
-            <div className="space-y-2">
-              <p>기쁨 (Joy): {response.joy}%</p>
-              <p>슬픔 (Sad): {response.sad}%</p>
-              <p>불안 (Anxiety): {response.anxiety}%</p>
-              <p>화남 (Angry): {response.angry}%</p>
-              <p>평온 (Peace): {response.peace}%</p>
-              <p>피곤 (Tired): {response.tired}%</p>
-            </div>
-          </div>
-        )}
       </div>
 
       <>
@@ -89,6 +76,12 @@ export default function DiaryPage() {
           <TreeCanvas hp={90} day={1} widthRatio={3 / 5} />
         </div>
       </>
+      {/* 감정 분석 결과를 EmotionBarList로 표시 */}
+      {response && (
+        <div className="mt-4 p-4 rounded shadow">
+          <EmotionBarList emotions={response} />
+        </div>
+      )}
     </div>
   );
 }
