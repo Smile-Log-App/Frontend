@@ -33,56 +33,6 @@ class Branch {
     this.color = this.calculateColor();
   }
 
-  calculateColor() {
-    const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
-    let blendedColor;
-
-    if (ratio <= 0.6) {
-      // 첫 번째 구간: colorStart에서 colorMid로 전환 (60% 길이)
-      const segmentRatio = ratio / 0.6; // 0~0.6 비율을 0~1로 변환
-      blendedColor = this.hexBlend(
-        this.colorStart,
-        this.colorMid,
-        segmentRatio
-      );
-    } else if (ratio <= 0.8) {
-      // 두 번째 구간: colorMid에서 colorEnd로 전환 (20% 길이)
-      const segmentRatio = (ratio - 0.6) / 0.2; // 0.6~0.8 비율을 0~1로 변환
-      blendedColor = this.hexBlend(this.colorMid, this.colorEnd, segmentRatio);
-    } else {
-      // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환 (20% 길이)
-      const segmentRatio = (ratio - 0.8) / 0.2; // 0.8~1 비율을 0~1로 변환
-      blendedColor = this.hexBlend(this.colorMid, this.colorEnd, segmentRatio); // 흰색으로 부드럽게 전환
-    }
-
-    return blendedColor;
-  }
-
-  calculateColor() {
-    const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
-    let blendedColor;
-
-    if (ratio <= 0.5) {
-      // 첫 번째 구간: colorStart에서 colorMid로 전환 (50% 길이)
-      const segmentRatio = ratio / 0.5; // 0~0.5 비율을 0~1로 변환
-      blendedColor = this.hexBlend(
-        this.colorStart,
-        this.colorMid,
-        segmentRatio
-      );
-    } else if (ratio <= 0.8) {
-      // 두 번째 구간: colorMid에서 colorEnd로 전환 (30% 길이)
-      const segmentRatio = (ratio - 0.5) / 0.3; // 0.5~0.8 비율을 0~1로 변환
-      blendedColor = this.hexBlend(this.colorMid, this.colorEnd, segmentRatio);
-    } else {
-      // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환 (20% 길이)
-      const segmentRatio = (ratio - 0.8) / 0.2; // 0.8~1 비율을 0~1로 변환
-      blendedColor = this.hexBlend(this.colorEnd, "#FFFFFF", segmentRatio); // 흰색으로 부드럽게 전환
-    }
-
-    return blendedColor;
-  }
-
   // hex 색상을 블렌딩하는 함수
   hexBlend(start, end, ratio) {
     const s = parseInt(start.slice(1), 16);
@@ -93,6 +43,46 @@ class Branch {
     );
     const b = Math.round((e & 0xff) * ratio + (s & 0xff) * (1 - ratio));
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  }
+
+  calculateColor() {
+    const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
+    let blendedColor;
+
+    // colorEnd가 존재하지 않는 경우 (colorStart와 colorMid만 있는 경우)
+    if (!this.colorEnd) {
+      // colorStart와 colorMid를 반반으로 블렌딩
+      const segmentRatio = ratio; // 0 ~ 1 사이 비율로 변환
+      blendedColor = this.hexBlend(
+        this.colorStart,
+        this.colorMid,
+        segmentRatio
+      );
+    } else {
+      // colorStart, colorMid, colorEnd 모두 존재하는 경우
+      if (ratio <= 0.5) {
+        // 첫 번째 구간: colorStart에서 colorMid로 전환 (50% 길이)
+        const segmentRatio = ratio / 0.5; // 0~0.5 비율을 0~1로 변환
+        blendedColor = this.hexBlend(
+          this.colorStart,
+          this.colorMid,
+          segmentRatio
+        );
+      } else if (ratio <= 0.8) {
+        // 두 번째 구간: colorMid에서 colorEnd로 전환 (30% 길이)
+        const segmentRatio = (ratio - 0.5) / 0.3; // 0.5~0.8 비율을 0~1로 변환
+        blendedColor = this.hexBlend(
+          this.colorMid,
+          this.colorEnd,
+          segmentRatio
+        );
+      } else {
+        // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환 (20% 길이)
+        const segmentRatio = (ratio - 0.8) / 0.2; // 0.8~1 비율을 0~1로 변환
+        blendedColor = this.hexBlend(this.colorEnd, "#FFFFFF", segmentRatio); // 흰색으로 부드럽게 전환
+      }
+    }
+    return blendedColor;
   }
 
   draw(ctx) {
@@ -270,7 +260,7 @@ const TreeCanvas = ({ hp, day, widthRatio, colors }) => {
       hp,
       selectedColors[0],
       selectedColors[1],
-      selectedColors[2]
+      selectedColors[2] ? selectedColors[2] : null
     );
 
     tree.draw(); // 나무 그리기
