@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 // POST 메서드 처리
 export async function POST(req: NextRequest) {
   const { entry } = await req.json();
-
+  console.log(entry);
   try {
     // OpenAI API 호출
     const openaiResponse = await axios.post(
@@ -15,11 +15,20 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: "system",
-            content: `You're a mental health counselor analyzing diary entries.`,
+            content: `You are a mental health counselor who specializes in analyzing the emotions expressed in diary entries. Your task is to categorize the emotions into the following six categories: joy, sad, anxiety, angry, peace, and tired. You should provide the analysis in the following format: 
+
+- joy: X%
+- sad: X%
+- anxiety: X%
+- angry: X%
+- peace: X%
+- tired: X%
+
+Please ensure that the percentages add up to 100%. If multiple emotions are expressed, distribute the percentages accordingly. Be concise and provide the analysis in English.`,
           },
           {
             role: "user",
-            content: `다음 텍스트의 감정을 기쁨, 슬픔, 불안/걱정, 짜증/화남, 평온함/중립, 피곤함/지침 총 6가지 카테고리로 퍼센트 분석해줘: ${entry}`,
+            content: `Analyze the emotions expressed in the following text and provide the percentage distribution for each of the six categories: ${entry}`,
           },
         ],
       },
@@ -30,15 +39,33 @@ export async function POST(req: NextRequest) {
       },
     );
 
-    const analysis = openaiResponse.data.choices[0].message.content;
-    return NextResponse.json({ analysis });
+    // OpenAI 응답 파싱
+    const analysisText = openaiResponse.data.choices[0].message.content;
+    const emotionPercentages = parseEmotionAnalysis(analysisText); // 감정 분석 파싱
+    console.log(emotionPercentages);
+    return NextResponse.json(emotionPercentages); // 성공적인 응답
   } catch (error) {
     console.error("GPT API 요청 오류: ", error);
-    return NextResponse.json({ error: "감정 분석 실패" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to analyze emotions" },
+      { status: 500 },
+    ); // 실패 시 500 에러 반환
   }
 }
 
-// 필요에 따라 다른 HTTP 메서드도 네임드 익스포트로 추가
-export async function GET(req: NextRequest) {
-  return NextResponse.json({ message: "GET 메서드 호출됨" });
+// 감정 분석 결과 파싱 함수
+function parseEmotionAnalysis(text: string) {
+  const lines = text.split("\n");
+  const emotionPercentages: Record<string, number> = {};
+
+  lines.forEach((line) => {
+    const match = line.match(/(\w+):\s*(\d+)%/);
+    if (match) {
+      const emotion = match[1];
+      const percentage = parseInt(match[2], 10);
+      emotionPercentages[emotion] = percentage;
+    }
+  });
+
+  return emotionPercentages;
 }
