@@ -1,13 +1,17 @@
 "use client";
 import Button from "@/components/common/button";
 import { FieldValues, useForm, useWatch } from "react-hook-form";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { DevTool } from "@hookform/devtools";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import Input from "@/components/common/input";
 import CheckBox from "@/components/common/check-box";
+import toast from "react-hot-toast";
+import { useLoginMutation } from "@/api/use-login";
+import { useAtom } from "jotai";
+import { isLoggedInAtom } from "@/app/store/store";
 
 function LoginPage() {
   const method = useForm<FieldValues>({
@@ -35,34 +39,32 @@ function LoginPage() {
 
   const queryClient = useQueryClient();
 
-  // const [, setIsLoggedIn] = useAtom(isLoggedInAtom); // useAtom을 사용합니다
+  const [, setIsLoggedIn] = useAtom(isLoggedInAtom); // useAtom을 사용합니다
 
-  // const loginMutation = useMutation({
-  //   mutationFn: (data: PostSignInReq) => postSignIn(data),
-  //   onSuccess: () => {
-  //     toast.success("로그인이 완료되었습니다.");
-  //     setIsLoggedIn(true);
-  //     queryClient.invalidateQueries({ queryKey: ["userInfo"] });
-  //     router.push("/");
-  //   },
-  //   onError: (e) => {
-  //     if (e instanceof AxiosError) {
-  //       if (e.response?.status === 401) {
-  //         setError("password", {
-  //           type: "validate",
-  //           message: "비밀번호가 틀렸습니다.",
-  //         });
-  //       }
-  //     }
-  //   },
-  // });
+  const loginMutation = useLoginMutation();
 
   const handleOnSubmit = async (data: FieldValues) => {
     const userData = {
-      username: data.username,
+      user_login_id: data.userId,
       password: data.password,
     };
-    // loginMutation.mutate(userData);
+    loginMutation.mutate(userData, {
+      onSuccess: () => {
+        toast.success("로그인이 완료되었습니다.");
+        // queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+        router.push("/");
+      },
+      onError: (e) => {
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 401) {
+            setError("password", {
+              type: "validate",
+              message: "비밀번호가 틀렸습니다.",
+            });
+          }
+        }
+      },
+    });
   };
 
   return (
@@ -74,7 +76,7 @@ function LoginPage() {
         <div className="flex-center flex-column min-h-520 w-800 gap-20 rounded-24 ">
           <Input
             control={control}
-            name="username"
+            name="userId"
             label="아이디"
             placeholder="아이디를 입력하세요."
             type="text"
