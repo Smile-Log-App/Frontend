@@ -6,7 +6,6 @@ interface postSignUpReq {
   password: string;
 }
 const postSignUp = async (userData: postSignUpReq) => {
-  console.log({ ...userData });
   const result = await instance.post("/auth/register", { ...userData });
   return result;
 };

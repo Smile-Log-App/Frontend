@@ -47,7 +47,6 @@ export default function DiaryPage() {
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
     try {
-      // Next.js API 라우트로 POST 요청을 보냄
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: {
@@ -104,15 +103,8 @@ export default function DiaryPage() {
           >
             제출하기
           </button>
-          <button
-            onClick={handleResetHp}
-            className="font-bold py-2 px-4 bg-white rounded shadow ml-4"
-            style={{ marginLeft: "10px" }}
-          >
-            초기화하기
-          </button>
         </div>
-        <div>
+        {/* <div>
           <button
             onClick={toggleDayNight}
             className="font-bold py-2 px-4 rounded"
@@ -120,18 +112,18 @@ export default function DiaryPage() {
           >
             {day ? "Night" : "Day"}
           </button>
-        </div>
+        </div> */}
 
         {response && (
-          <div className="mt-4 p-4 bg-white rounded shadow">
+          <div className="mt-4 p-4 rounded shadow">
             <h2 className="text-2xl font-bold mb-2">응답값</h2>
             <pre>감정 분석: {response.analysis}</pre>
           </div>
         )}
-        <div className="mt-4 p-4 bg-white rounded shadow">
+        {/* <div className="mt-4 p-4  rounded shadow">
           <h2 className="text-2xl font-bold">나무 HP</h2>
           <pre>{hp}</pre>
-        </div>
+        </div> */}
       </div>
       {showTree && (
         <>

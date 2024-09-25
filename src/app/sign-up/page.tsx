@@ -11,6 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Input from "@/components/common/input";
 import { useSignUpMutation } from "@/api/use-sign-up";
+import toast from "react-hot-toast";
 
 function SignupPage() {
   const signUpMutation = useSignUpMutation();
@@ -58,18 +59,17 @@ function SignupPage() {
 
   // const [, setIsLoggedIn] = useAtom(isLoggedInAtom); // useAtom을 사용합니다
   // 회원가입 처리 함수
+
   const handleOnSubmit = async (data: FieldValues) => {
     const userData = {
       username: data.username,
-      user_login_id: data.userId, // user_login_id를 올바르게 사용
+      user_login_id: data.userId,
       password: data.password,
     };
 
-    console.log(userData);
-
     signUpMutation.mutate(userData, {
       onSuccess: (response) => {
-        alert("회원가입이 성공적으로 완료되었습니다.");
+        toast.success("회원가입이 성공적으로 완료되었습니다.");
         router.push("/login"); // 회원가입 성공 후 로그인 페이지로 이동
       },
       onError: (error) => {
@@ -127,10 +127,9 @@ function SignupPage() {
             text="비밀번호 표시"
           />
           <div className="flex-center mt-10">
-            {/* <Button disabled={!isValid || signupMutation.isPending}>
-              {signupMutation.isPending ? "회원가입 중..." : "회원가입"}
-            </Button> */}
-            <Button disabled={!isValid}>회원가입</Button>
+            <Button disabled={!isValid || signUpMutation.isPending}>
+              {signUpMutation.isPending ? "회원가입 중..." : "회원가입"}
+            </Button>
           </div>
           <div className="flex justify-center gap-7">
             <p>이미 회원이신가요?</p>
