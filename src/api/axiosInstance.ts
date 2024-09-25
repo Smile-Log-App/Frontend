@@ -8,16 +8,20 @@ export const instance = axios.create({
   },
 });
 
-// 로컬 스토리지에서 accessToken을 가져오는 함수
-const getAccessToken = (): string | null => {
+// 로컬 스토리지에서 'auth' 데이터를 가져오는 함수
+export const getAccessToken = (): string | null => {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("accessToken");
+  const authData = localStorage.getItem("auth"); // auth 키로 로컬 스토리지에서 데이터 가져오기
+  if (!authData) return null;
+  const auth = JSON.parse(authData); // JSON 파싱
+  return auth.accessToken; // accessToken 반환
 };
 
 // request 인터셉터 설정: 요청 전에 accessToken을 헤더에 추가
 instance.interceptors.request.use(
   (config) => {
     const accessToken = getAccessToken();
+
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

@@ -1,5 +1,5 @@
+import instance from "@/api/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
 // 요청에 필요한 데이터 타입 정의
 interface EmotionAnalysis {
@@ -19,13 +19,13 @@ interface PostDiaryRequest {
 
 // 감정 일기 POST 요청 함수
 const postDiary = async (data: PostDiaryRequest) => {
-  const response = await axios.post("/api/diary", { data });
-  return response.data;
+  const response = await instance.post("/diary", data);
+  return response;
 };
 
-// // usePostDiaryMutation 훅
-// export const usePostDiaryMutation = () => {
-//   return useMutation({
-//     mutationFn: () => postDiary(data),
-//   });
-// };
+// usePostDiaryMutation 훅
+export const usePostDiaryMutation = () => {
+  return useMutation({
+    mutationFn: postDiary,
+  });
+};

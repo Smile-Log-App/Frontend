@@ -10,6 +10,8 @@ import { EmotionBarList } from "@/components/calendar/EmotionBarList";
 import { EmotionType } from "@/types/emotion";
 import { EMOTION_COLORS } from "@/constants/emotion-color";
 import TreeCanvas from "@/components/tree/TreeCanvas";
+import { usePostDiaryMutation } from "@/api/use-post-diary-mutation";
+import { getAccessToken } from "@/api/axiosInstance";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
@@ -28,6 +30,8 @@ export default function DiaryPage() {
 
   // 감정 분석 API 호출 훅
   const analyzeEmotionMutation = useAnalyzeEmotionMutation();
+  // 일기 POST 요청 훅
+  const postDiaryMutation = usePostDiaryMutation();
 
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
@@ -42,11 +46,38 @@ export default function DiaryPage() {
         onError: (error) => {
           console.error("감정 분석 중 오류가 발생했습니다.", error);
           toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
+          return;
+        },
+      },
+    );
+
+    if (!response) return;
+
+    // 감정 분석이 완료된 후, 일기 데이터를 서버에 전송
+    postDiaryMutation.mutate(
+      {
+        user_id: 1,
+        content: htmlContent,
+        emotionAnalysis: {
+          joyful_pct: response.joy,
+          sad_pct: response.sadness,
+          anxious_pct: response.anxiety,
+          annoyed_pct: response.anger,
+          neutral_pct: response.neutrality,
+          tired_pct: response.fatigue,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success("일기가 성공적으로 저장되었습니다.");
+        },
+        onError: (error) => {
+          console.error("일기 저장 중 오류가 발생했습니다.", error);
+          toast.error("일기 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
         },
       },
     );
   };
-
   // 오늘 날짜 가져오기
   const todayDate = getTodayDate();
 
