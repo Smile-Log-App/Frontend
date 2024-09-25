@@ -25,6 +25,7 @@ const config: Config = {
     lineHeight: pxValues(200), // For line-height
     extend: {
       colors: {
+        // 기본 색상 설정
         white: "#ffffff",
         black: "#000000",
         gray: {
@@ -37,6 +38,13 @@ const config: Config = {
           disabled: "rgba(56, 64, 132, 0.5)",
           selected: "#87CEEB",
         },
+        // 감정 색상 설정
+        joy: "#FFFF9F", // 행복
+        peace: "#C2FFBA", // 평온
+        sad: "#BCDEFF", // 슬픔
+        anxiety: "#FFA44F", // 불안
+        angry: "#FF9796", // 화남
+        tired: "#B0B0B0", // 피곤
       },
       backgroundImage: {},
       height: {},

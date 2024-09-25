@@ -1,16 +1,5 @@
 import { useEffect, useRef } from "react";
 
-// 나무 색상 배열
-const COLOR_ARR = [
-  "#FF0000", // 빨간색
-  "#00FF00", // 초록색
-  "#0000FF", // 파란색
-  "#FFFF00", // 노란색
-  "#FF00FF", // 분홍색
-  "#00FFFF", // 청록색
-  "#FFA500", // 주황색
-];
-
 // 가지 클래스
 class Branch {
   constructor(startX, startY, endX, endY, lineWidth, colorStart, colorEnd) {
@@ -18,9 +7,10 @@ class Branch {
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
-    this.colorStart = colorStart;
-    this.colorEnd = colorEnd;
     this.lineWidth = lineWidth;
+    // 기본 색상 설정
+    this.colorStart = colorStart || "#000000";
+    this.colorEnd = colorEnd || "#000000";
 
     this.frame = 15;
     this.cntFrame = 0;
@@ -46,7 +36,8 @@ class Branch {
       return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
     };
 
-    return hex(this.colorStart, this.colorEnd);
+    // 기본 색상으로 "#000000"을 설정
+    return hex(this.colorStart || "#000000", this.colorEnd || "#000000");
   }
 
   draw(ctx) {
@@ -83,7 +74,15 @@ class Branch {
 
 // 나무 클래스
 class Tree {
-  constructor(ctx, posX, posY, day, hp, colorStart, colorEnd) {
+  constructor(
+    ctx,
+    posX,
+    posY,
+    day,
+    hp,
+    colorStart = "#000000",
+    colorEnd = "#000000"
+  ) {
     this.ctx = ctx;
     this.posX = posX;
     this.posY = posY;
@@ -191,8 +190,14 @@ class Tree {
     return min + Math.floor(Math.random() * (max - min + 1));
   }
 }
-// TreeCanvas 컴포넌트
-const TreeCanvas = ({ hp, day, widthRatio }) => {
+
+const TreeCanvas = ({
+  hp,
+  day,
+  widthRatio,
+  colors = ["#000000", "#000000"],
+}) => {
+  // 기본값 설정
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -200,7 +205,7 @@ const TreeCanvas = ({ hp, day, widthRatio }) => {
     const ctx = canvas.getContext("2d");
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
-    const fixedHeight = 200;
+    const fixedHeight = 100;
     const stageWidth = window.innerWidth * widthRatio; // 화면 너비의 비율을 적용
     const stageHeight = Math.max(window.innerHeight, fixedHeight);
 
@@ -210,10 +215,8 @@ const TreeCanvas = ({ hp, day, widthRatio }) => {
 
     const treeBaseY = stageHeight - 0;
 
-    const selectedColors = COLOR_ARR.sort(() => Math.random() - 0.5).slice(
-      0,
-      3
-    );
+    // `colors` prop이 없을 경우 기본값으로 설정된 색상 배열 사용
+    const selectedColors = colors;
 
     const tree = new Tree(
       ctx,
@@ -228,7 +231,7 @@ const TreeCanvas = ({ hp, day, widthRatio }) => {
     tree.draw(); // 나무 그리기
 
     return () => {}; // 컴포넌트 언마운트 시 정리 작업
-  }, [hp, day, widthRatio]);
+  }, [hp, day, widthRatio, colors]);
 
   return <canvas ref={canvasRef}></canvas>;
 };

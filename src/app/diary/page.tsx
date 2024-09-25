@@ -1,7 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
+
+import toast from "react-hot-toast";
+import { getTodayDate } from "@/utils/get-today-date";
+import { useAnalyzeEmotionMutation } from "@/api/use-analyze-emotion-mutation";
+import { EmotionBarList } from "@/components/calendar/EmotionBarList";
+import { EmotionType } from "@/types/emotion";
+import { EMOTION_COLORS } from "@/constants/emotion-color";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
@@ -9,85 +16,59 @@ const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
   ssr: false,
 });
 
-interface AnalyzeResponse {
-  analysis: string;
-}
-
-interface ErrorResponse {
-  error: string;
-}
-
 export default function DiaryPage() {
   // ReactQuill 에디터를 참조하기 위한 ref 생성
   const quillRef = useRef<ReactQuill | null>(null);
   // 일기 내용을 저장할 상태
   const [htmlContent, setHtmlContent] = useState<string>("");
   // API 응답을 저장할 상태
-  const [response, setResponse] = useState<AnalyzeResponse | null>(null);
-  // TreeCanvas를 보여줄지 여부를 저장할 상태
-  const [showTree, setShowTree] = useState<boolean>(false);
-  // 나무 HP를 저장할 상태 (기본 HP는 50으로 설정)
-  const [hp, setHp] = useState<number>(50);
-  // 낮/밤 모드를 저장할 상태
-  const [day, setDay] = useState<boolean>(true);
+  const [response, setResponse] = useState<Record<EmotionType, number> | null>(
+    null,
+  );
 
-  // 클라이언트 사이드에서만 실행되도록 useEffect 내부에서 localStorage에 접근
-  useEffect(() => {
-    const storedHp = localStorage.getItem("treeHp");
-    if (storedHp) {
-      setHp(parseInt(storedHp, 50));
-    }
-  }, []);
-
-  // HP가 변경될 때마다 로컬 스토리지에 저장
-  useEffect(() => {
-    localStorage.setItem("treeHp", hp.toString());
-  }, [hp]);
+  // 감정 분석 API 호출 훅
+  const analyzeEmotionMutation = useAnalyzeEmotionMutation();
 
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
-    try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    // 감정 분석 API 호출
+    analyzeEmotionMutation.mutate(
+      { entry: htmlContent },
+      {
+        onSuccess: (data) => {
+          setResponse(data); // 성공 시 응답 저장
+          toast.success("감정 분석이 완료되었습니다.");
         },
-        body: JSON.stringify({ entry: htmlContent }),
-      });
-
-      if (!response.ok) {
-        throw new Error("감정 분석 요청에 실패했습니다.");
-      }
-
-      const data = (await response.json()) as AnalyzeResponse | ErrorResponse;
-
-      if ("error" in data) {
-        alert("감정 분석에 실패했습니다. 다시 시도해 주세요.");
-      } else {
-        setResponse(data); // 응답 저장
-        setShowTree(true); // TreeCanvas를 보여주도록 설정
-      }
-    } catch (error) {
-      console.error("감정 분석 중 오류가 발생했습니다.", error);
-      alert("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    }
+        onError: (error) => {
+          console.error("감정 분석 중 오류가 발생했습니다.", error);
+          toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        },
+      },
+    );
   };
 
-  // HP를 초기화하는 함수
-  const handleResetHp = () => {
-    setHp(50); // HP 초기화
-    localStorage.setItem("treeHp", "50");
-  };
+  // 오늘 날짜 가져오기
+  const todayDate = getTodayDate();
 
-  // 낮/밤 모드를 토글하는 함수
-  const toggleDayNight = () => {
-    setDay((prevDay) => !prevDay);
-    document.body.classList.toggle("black");
-  };
+  // 상위 3개의 감정에 해당하는 색상 배열을 생성하는 함수
+  const topThreeColors = useMemo(() => {
+    if (!response) return [];
+
+    // 응답 객체를 배열로 변환하고 퍼센트를 기준으로 정렬
+    const sortedEmotions = Object.entries(response)
+      .sort(([, a], [, b]) => b - a) // 퍼센트 내림차순으로 정렬
+      .slice(0, 3); // 상위 3개의 감정만 추출
+
+    // 상위 3개의 감정에 해당하는 색상 추출
+    return sortedEmotions.map(
+      ([emotion]) => EMOTION_COLORS[emotion as EmotionType],
+    );
+  }, [response]);
 
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
       <div className=" flex flex-col items-center gap-30">
+        <p className="text-30">{todayDate}</p>
         <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
         <div className="mb-4 w-600">
           <TextEditor
@@ -100,37 +81,28 @@ export default function DiaryPage() {
           <button
             onClick={handleSubmit}
             className="font-bold py-2 px-4 bg-white rounded shadow"
+            disabled={analyzeEmotionMutation.isPending}
           >
-            제출하기
+            {analyzeEmotionMutation.isPending ? "분석 중..." : "제출하기"}
           </button>
         </div>
-        {/* <div>
-          <button
-            onClick={toggleDayNight}
-            className="font-bold py-2 px-4 rounded"
-            style={{ marginLeft: "10px" }}
-          >
-            {day ? "Night" : "Day"}
-          </button>
-        </div> */}
-
-        {response && (
-          <div className="mt-4 p-4 rounded shadow">
-            <h2 className="text-2xl font-bold mb-2">응답값</h2>
-            <pre>감정 분석: {response.analysis}</pre>
-          </div>
-        )}
-        {/* <div className="mt-4 p-4  rounded shadow">
-          <h2 className="text-2xl font-bold">나무 HP</h2>
-          <pre>{hp}</pre>
-        </div> */}
       </div>
-      {showTree && (
-        <>
-          <div className="px-20 flex h-800 w-700 justify-center ">
-            <TreeCanvas hp={60} day={1} widthRatio={1 / 5} />
-          </div>
-        </>
+
+      <>
+        <div className="px-20 flex h-600 w-600 justify-center ">
+          <TreeCanvas
+            colors={topThreeColors}
+            hp={90}
+            day={1}
+            widthRatio={3 / 5}
+          />
+        </div>
+      </>
+      {/* 감정 분석 결과를 EmotionBarList로 표시 */}
+      {response && (
+        <div className="mt-4 p-4 rounded shadow">
+          <EmotionBarList emotions={response} />
+        </div>
       )}
     </div>
   );

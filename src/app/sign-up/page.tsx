@@ -9,7 +9,7 @@ import { FieldValues, useForm, useWatch } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Input from "@/components/common/input";
-import { useSignUpMutation } from "@/api/use-sign-up";
+import { useSignUpMutation } from "@/api/use-sign-up-mutation";
 import toast from "react-hot-toast";
 
 function SignupPage() {
