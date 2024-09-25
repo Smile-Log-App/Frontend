@@ -1,13 +1,15 @@
 "use client";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
-import TreeCanvas from "@/components/tree/TreeCanvas";
+
 import toast from "react-hot-toast";
 import { getTodayDate } from "@/utils/get-today-date";
 import { useAnalyzeEmotionMutation } from "@/api/use-analyze-emotion-mutation";
 import { EmotionBarList } from "@/components/calendar/EmotionBarList";
 import { EmotionType } from "@/types/emotion";
+import { EMOTION_COLORS } from "@/constants/emotion-color";
+import TreeCanvas from "@/components/tree/TreeCanvas";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
@@ -48,6 +50,21 @@ export default function DiaryPage() {
   // 오늘 날짜 가져오기
   const todayDate = getTodayDate();
 
+  // 상위 3개의 감정에 해당하는 색상 배열을 생성하는 함수
+  const topThreeColors = useMemo(() => {
+    if (!response) return [];
+
+    // 응답 객체를 배열로 변환하고 퍼센트를 기준으로 정렬
+    const sortedEmotions = Object.entries(response)
+      .sort(([, a], [, b]) => b - a) // 퍼센트 내림차순으로 정렬
+      .slice(0, 3); // 상위 3개의 감정만 추출
+
+    // 상위 3개의 감정에 해당하는 색상 추출
+    return sortedEmotions.map(
+      ([emotion]) => EMOTION_COLORS[emotion as EmotionType],
+    );
+  }, [response]);
+
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
       <div className=" flex flex-col items-center gap-30">
@@ -73,7 +90,12 @@ export default function DiaryPage() {
 
       <>
         <div className="px-20 flex h-600 w-600 justify-center ">
-          <TreeCanvas hp={90} day={1} widthRatio={3 / 5} />
+          <TreeCanvas
+            colors={topThreeColors}
+            hp={90}
+            day={1}
+            widthRatio={3 / 5}
+          />
         </div>
       </>
       {/* 감정 분석 결과를 EmotionBarList로 표시 */}
