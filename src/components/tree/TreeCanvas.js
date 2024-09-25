@@ -244,7 +244,6 @@ const TreeCanvas = ({ hp, day, widthRatio, colors }) => {
   // 기본값 설정
   const canvasRef = useRef(null);
 
-  console.log(colors);
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");

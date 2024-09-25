@@ -124,21 +124,21 @@ export default function DiaryPage() {
         </div>
       </div>
 
-      <>
-        <div className="px-20 flex h-600 w-600 justify-center ">
-          <TreeCanvas
-            colors={topThreeColors}
-            hp={90}
-            day={1}
-            widthRatio={3 / 5}
-          />
-        </div>
-      </>
       {/* 감정 분석 결과를 EmotionBarList로 표시 */}
       {response && (
-        <div className="mt-4 p-4 rounded shadow">
-          <EmotionBarList emotions={response} />
-        </div>
+        <>
+          <div className="px-20 flex h-600 w-600 justify-center ">
+            <TreeCanvas
+              colors={topThreeColors}
+              hp={90}
+              day={1}
+              widthRatio={3 / 5}
+            />
+          </div>
+          <div className="mt-4 p-4 rounded shadow">
+            <EmotionBarList emotions={response} />
+          </div>
+        </>
       )}
     </div>
   );
