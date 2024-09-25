@@ -12,7 +12,12 @@ const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
 });
 
 interface AnalyzeResponse {
-  analysis: string;
+  joy: number;
+  sad: number;
+  anxiety: number;
+  angry: number;
+  peace: number;
+  tired: number;
 }
 
 export default function DiaryPage() {
@@ -26,7 +31,7 @@ export default function DiaryPage() {
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
     try {
-      const response = await fetch("/api/analyze", {
+      const res = await fetch("/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,12 +39,13 @@ export default function DiaryPage() {
         body: JSON.stringify({ entry: htmlContent }),
       });
 
-      // fetch API는 HTTP 응답 상태 코드가 4xx나 5xx일 때도 Promise를 정상적으로 반환합니다. 즉, fetch 호출 자체는 성공한 것으로 간주하고, 이를 catch 블록에서는 잡아내지 않습니다.
-      if (!response.ok) {
+      // 응답 상태 코드 확인
+      if (!res.ok) {
         throw new Error("감정 분석 요청에 실패했습니다."); // API 요청 실패 시 에러 발생
       }
 
-      const data = (await response.json()) as AnalyzeResponse;
+      // 응답 데이터 파싱
+      const data: AnalyzeResponse = await res.json();
       setResponse(data); // 응답 저장
     } catch (error) {
       console.error("감정 분석 중 오류가 발생했습니다.", error);
@@ -47,7 +53,9 @@ export default function DiaryPage() {
     }
   };
 
+  // 오늘 날짜 가져오기
   const todayDate = getTodayDate();
+
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
       <div className=" flex flex-col items-center gap-30">
@@ -71,8 +79,15 @@ export default function DiaryPage() {
 
         {response && (
           <div className="mt-4 p-4 rounded shadow">
-            <h2 className="text-2xl font-bold mb-2">응답값</h2>
-            <pre>감정 분석: {response.analysis}</pre>
+            <h2 className="text-2xl font-bold mb-2">감정 분석 결과</h2>
+            <div className="space-y-2">
+              <p>기쁨 (Joy): {response.joy}%</p>
+              <p>슬픔 (Sad): {response.sad}%</p>
+              <p>불안 (Anxiety): {response.anxiety}%</p>
+              <p>화남 (Angry): {response.angry}%</p>
+              <p>평온 (Peace): {response.peace}%</p>
+              <p>피곤 (Tired): {response.tired}%</p>
+            </div>
           </div>
         )}
       </div>
