@@ -33,10 +33,7 @@ export default function Navbar() {
               >
                 달력
               </Link>
-              <Link
-                href="/tree"
-                className="text-gray-700 hover:text-black-900 pr-50"
-              >
+              <Link href="/tree" className="text-gray-700 hover:text-black-900">
                 나무
               </Link>
               <button

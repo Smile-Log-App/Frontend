@@ -76,8 +76,8 @@ function Calendar() {
   };
 
   return (
-    <div className=" flex justify-center items-center h-screen mt-30">
-      <div className="w-[800px] h-[650px] p-6 bg-white/50 rounded-2xl shadow-lg">
+    <div className=" flex  justify-center items-center h-screen mt-30">
+      <div className="w-[800px] p-6 bg-white/50 rounded-2xl shadow-lg">
         <CalendarHeader
           year={year}
           month={month}

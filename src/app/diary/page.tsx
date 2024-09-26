@@ -10,6 +10,8 @@ import { EmotionBarList } from "@/components/calendar/EmotionBarList";
 import { EmotionType } from "@/types/emotion";
 import { EMOTION_COLORS } from "@/constants/emotion-color";
 import TreeCanvas from "@/components/tree/TreeCanvas";
+import { usePostDiaryMutation } from "@/api/use-post-diary-mutation";
+import { getAccessToken } from "@/api/axiosInstance";
 
 // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
 const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
@@ -28,6 +30,8 @@ export default function DiaryPage() {
 
   // 감정 분석 API 호출 훅
   const analyzeEmotionMutation = useAnalyzeEmotionMutation();
+  // 일기 POST 요청 훅
+  const postDiaryMutation = usePostDiaryMutation();
 
   // 일기 제출 버튼 클릭 시 호출되는 함수
   const handleSubmit = async () => {
@@ -42,14 +46,40 @@ export default function DiaryPage() {
         onError: (error) => {
           console.error("감정 분석 중 오류가 발생했습니다.", error);
           toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
+          return;
+        },
+      },
+    );
+
+    if (!response) return;
+
+    // 감정 분석이 완료된 후, 일기 데이터를 서버에 전송
+    postDiaryMutation.mutate(
+      {
+        user_id: 1,
+        content: htmlContent,
+        emotionAnalysis: {
+          joyful_pct: response.joy,
+          sad_pct: response.sadness,
+          anxious_pct: response.anxiety,
+          annoyed_pct: response.anger,
+          neutral_pct: response.neutrality,
+          tired_pct: response.fatigue,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success("일기가 성공적으로 저장되었습니다.");
+        },
+        onError: (error) => {
+          console.error("일기 저장 중 오류가 발생했습니다.", error);
+          toast.error("일기 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
         },
       },
     );
   };
-
   // 오늘 날짜 가져오기
   const todayDate = getTodayDate();
-
   // 상위 3개의 감정에 해당하는 색상 배열을 생성하는 함수
   const topThreeColors = useMemo(() => {
     if (!response) return [];
@@ -59,10 +89,33 @@ export default function DiaryPage() {
       .sort(([, a], [, b]) => b - a) // 퍼센트 내림차순으로 정렬
       .slice(0, 3); // 상위 3개의 감정만 추출
 
-    // 상위 3개의 감정에 해당하는 색상 추출
-    return sortedEmotions.map(
-      ([emotion]) => EMOTION_COLORS[emotion as EmotionType],
+    // 퍼센트가 0인 감정 필터링
+    const nonZeroEmotions = sortedEmotions.filter(
+      ([, percentage]) => percentage > 0,
     );
+
+    // 퍼센트가 0이 아닌 감정의 색상 추출
+    let colors = nonZeroEmotions.map(([emotion]) => {
+      return EMOTION_COLORS[emotion as EmotionType];
+    });
+
+    // 퍼센트가 0이 아닌 감정이 1개만 있는 경우, 최상위 감정을 반복해서 채워 길이를 3으로 맞춤
+    if (colors.length === 1) {
+      colors = Array(3).fill(colors[0]);
+    }
+
+    // 퍼센트가 0이 아닌 감정이 2개만 있는 경우, 해당 색상들로 배열 길이를 2로 설정
+    if (colors.length === 2) {
+      colors = [colors[0], colors[1]];
+    }
+
+    // 퍼센트가 0이 아닌 감정이 없는 경우, 상위 3개의 감정으로 검정색("#000000") 배열을 채움
+    if (colors.length === 0) {
+      colors = ["#000000", "#000000", "#000000"];
+    }
+
+    console.log(colors);
+    return colors;
   }, [response]);
 
   return (
@@ -88,21 +141,21 @@ export default function DiaryPage() {
         </div>
       </div>
 
-      <>
-        <div className="px-20 flex h-600 w-600 justify-center ">
-          <TreeCanvas
-            colors={topThreeColors}
-            hp={90}
-            day={1}
-            widthRatio={3 / 5}
-          />
-        </div>
-      </>
       {/* 감정 분석 결과를 EmotionBarList로 표시 */}
       {response && (
-        <div className="mt-4 p-4 rounded shadow">
-          <EmotionBarList emotions={response} />
-        </div>
+        <>
+          <div className="px-20 flex h-600 w-600 justify-center ">
+            <TreeCanvas
+              colors={topThreeColors}
+              hp={90}
+              day={1}
+              widthRatio={3 / 5}
+            />
+          </div>
+          <div className="mt-4 p-4 rounded shadow">
+            <EmotionBarList emotions={response} />
+          </div>
+        </>
       )}
     </div>
   );

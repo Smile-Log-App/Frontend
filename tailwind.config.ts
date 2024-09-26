@@ -40,11 +40,11 @@ const config: Config = {
         },
         // 감정 색상 설정
         joy: "#FFFF9F", // 행복
-        peace: "#C2FFBA", // 평온
-        sad: "#BCDEFF", // 슬픔
+        neutrality: "#C2FFBA", // 평온
+        sadness: "#BCDEFF", // 슬픔
         anxiety: "#FFA44F", // 불안
-        angry: "#FF9796", // 화남
-        tired: "#B0B0B0", // 피곤
+        anger: "#FF9796", // 화남
+        fatigue: "#B0B0B0", // 피곤
       },
       backgroundImage: {},
       height: {},

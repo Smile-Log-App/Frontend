@@ -2,15 +2,25 @@ import { useEffect, useRef } from "react";
 
 // 가지 클래스
 class Branch {
-  constructor(startX, startY, endX, endY, lineWidth, colorStart, colorEnd) {
+  constructor(
+    startX,
+    startY,
+    endX,
+    endY,
+    lineWidth,
+    colorStart,
+    colorMid,
+    colorEnd
+  ) {
     this.startX = startX;
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
     this.lineWidth = lineWidth;
     // 기본 색상 설정
-    this.colorStart = colorStart || "#000000";
-    this.colorEnd = colorEnd || "#000000";
+    this.colorStart = colorStart;
+    this.colorMid = colorMid;
+    this.colorEnd = colorEnd;
 
     this.frame = 15;
     this.cntFrame = 0;
@@ -23,21 +33,56 @@ class Branch {
     this.color = this.calculateColor();
   }
 
-  calculateColor() {
-    const ratio = this.lineWidth / 12;
-    const hex = (start, end) => {
-      const s = parseInt(start.slice(1), 16);
-      const e = parseInt(end.slice(1), 16);
-      const r = Math.round((e >> 16) * ratio + (s >> 16) * (1 - ratio));
-      const g = Math.round(
-        ((e >> 8) & 0xff) * ratio + ((s >> 8) & 0xff) * (1 - ratio)
-      );
-      const b = Math.round((e & 0xff) * ratio + (s & 0xff) * (1 - ratio));
-      return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-    };
+  // hex 색상을 블렌딩하는 함수
+  hexBlend(start, end, ratio) {
+    const s = parseInt(start.slice(1), 16);
+    const e = parseInt(end.slice(1), 16);
+    const r = Math.round((e >> 16) * ratio + (s >> 16) * (1 - ratio));
+    const g = Math.round(
+      ((e >> 8) & 0xff) * ratio + ((s >> 8) & 0xff) * (1 - ratio)
+    );
+    const b = Math.round((e & 0xff) * ratio + (s & 0xff) * (1 - ratio));
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  }
 
-    // 기본 색상으로 "#000000"을 설정
-    return hex(this.colorStart || "#000000", this.colorEnd || "#000000");
+  calculateColor() {
+    const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
+    let blendedColor;
+
+    // colorEnd가 존재하지 않는 경우 (colorStart와 colorMid만 있는 경우)
+    if (!this.colorEnd) {
+      // colorStart와 colorMid를 반반으로 블렌딩
+      const segmentRatio = ratio; // 0 ~ 1 사이 비율로 변환
+      blendedColor = this.hexBlend(
+        this.colorStart,
+        this.colorMid,
+        segmentRatio
+      );
+    } else {
+      // colorStart, colorMid, colorEnd 모두 존재하는 경우
+      if (ratio <= 0.5) {
+        // 첫 번째 구간: colorStart에서 colorMid로 전환 (50% 길이)
+        const segmentRatio = ratio / 0.5; // 0~0.5 비율을 0~1로 변환
+        blendedColor = this.hexBlend(
+          this.colorStart,
+          this.colorMid,
+          segmentRatio
+        );
+      } else if (ratio <= 0.8) {
+        // 두 번째 구간: colorMid에서 colorEnd로 전환 (30% 길이)
+        const segmentRatio = (ratio - 0.5) / 0.3; // 0.5~0.8 비율을 0~1로 변환
+        blendedColor = this.hexBlend(
+          this.colorMid,
+          this.colorEnd,
+          segmentRatio
+        );
+      } else {
+        // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환 (20% 길이)
+        const segmentRatio = (ratio - 0.8) / 0.2; // 0.8~1 비율을 0~1로 변환
+        blendedColor = this.hexBlend(this.colorEnd, "#FFFFFF", segmentRatio); // 흰색으로 부드럽게 전환
+      }
+    }
+    return blendedColor;
   }
 
   draw(ctx) {
@@ -74,15 +119,7 @@ class Branch {
 
 // 나무 클래스
 class Tree {
-  constructor(
-    ctx,
-    posX,
-    posY,
-    day,
-    hp,
-    colorStart = "#000000",
-    colorEnd = "#000000"
-  ) {
+  constructor(ctx, posX, posY, day, hp, colorStart, colorMid, colorEnd) {
     this.ctx = ctx;
     this.posX = posX;
     this.posY = posY;
@@ -92,6 +129,7 @@ class Tree {
     this.hp = hp;
 
     this.colorStart = colorStart;
+    this.colorMid = colorMid;
     this.colorEnd = colorEnd;
 
     this.cntDepth = 0;
@@ -147,6 +185,7 @@ class Tree {
         endY,
         this.depth - depth,
         this.colorStart,
+        this.colorMid,
         this.colorEnd
       )
     );
@@ -191,12 +230,7 @@ class Tree {
   }
 }
 
-const TreeCanvas = ({
-  hp,
-  day,
-  widthRatio,
-  colors = ["#000000", "#000000"],
-}) => {
+const TreeCanvas = ({ hp, day, widthRatio, colors }) => {
   // 기본값 설정
   const canvasRef = useRef(null);
 
@@ -225,7 +259,8 @@ const TreeCanvas = ({
       day,
       hp,
       selectedColors[0],
-      selectedColors[1]
+      selectedColors[1],
+      selectedColors[2] ? selectedColors[2] : null
     );
 
     tree.draw(); // 나무 그리기
