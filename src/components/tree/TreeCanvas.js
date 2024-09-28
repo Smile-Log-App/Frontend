@@ -231,6 +231,7 @@ class Tree {
 }
 
 const TreeCanvas = ({ hp, day, widthRatio, colors }) => {
+  if (colors.length === 0) return;
   // 기본값 설정
   const canvasRef = useRef(null);
 

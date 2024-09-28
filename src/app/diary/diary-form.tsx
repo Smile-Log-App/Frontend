@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useAnalyzeEmotionMutation } from "@/api/diary/use-analyze-emotion-mutation";
 import { usePostDiaryMutation } from "@/api/diary/use-post-diary-mutation";
-import { EmotionType } from "@/types/emotion";
+import { EmotionAnalysis, EmotionType } from "@/types/emotion";
 import toast from "react-hot-toast";
 
 interface DiaryFormProps {
-  onDiarySubmit: (emotionAnalysisResult: Record<EmotionType, number>) => void;
+  onDiarySubmit: (emotionAnalysisResult: EmotionAnalysis) => void;
 }
 
 export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
@@ -24,17 +24,26 @@ export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
       {
         onSuccess: (data) => {
           toast.success("감정 분석이 완료되었습니다.");
+          const {
+            joy_pct,
+            sadness_pct,
+            anxiety_pct,
+            anger_pct,
+            neutrality_pct,
+            fatigue_pct,
+          } = data;
+
           // 감정 분석이 완료된 후, 일기 데이터를 서버에 전송
           postDiaryMutation.mutate(
             {
               content: htmlContent,
               emotionAnalysis: {
-                joy_pct: data.joy,
-                sadness_pct: data.sadness,
-                anxiety_pct: data.anxiety,
-                anger_pct: data.anger,
-                neutrality_pct: data.neutrality,
-                fatigue_pct: data.fatigue,
+                joy_pct,
+                sadness_pct,
+                anxiety_pct,
+                anger_pct,
+                neutrality_pct,
+                fatigue_pct,
               },
             },
             {

@@ -1,5 +1,5 @@
 import { EMOTION_COLORS } from "@/constants/emotion-color";
-import { EmotionType } from "@/types/emotion";
+import { EmotionAnalysis, EmotionType } from "@/types/emotion";
 
 /**
  * 상위 3개의 감정에 해당하는 색상 배열을 생성하는 함수
@@ -7,7 +7,7 @@ import { EmotionType } from "@/types/emotion";
  * @returns 상위 3개의 감정 색상 배열
  */
 export const getTopThreeEmotionColors = (
-  emotion: Record<EmotionType, number> | null,
+  emotion: EmotionAnalysis | null,
 ): string[] => {
   if (!emotion) return [];
 
