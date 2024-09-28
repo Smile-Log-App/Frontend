@@ -11,11 +11,6 @@ import TreeCanvas from "@/components/tree/TreeCanvas";
 import { usePostDiaryMutation } from "@/api/diary/use-post-diary-mutation";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 
-// // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
-// const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
-//   ssr: false,
-// });
-
 export default function DiaryPage() {
   // ReactQuill 에디터를 참조하기 위한 ref 생성
   const quillRef = useRef<ReactQuill | null>(null);
@@ -87,13 +82,6 @@ export default function DiaryPage() {
       <div className=" flex flex-col items-center gap-30">
         <p className="text-30">{todayDate}</p>
         <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
-        {/* <div className="mb-4 w-600">
-          <TextEditor
-            quillRef={quillRef}
-            htmlContent={htmlContent}
-            setHtmlContent={setHtmlContent}
-          />
-        </div> */}
         <textarea
           className="w-600 h-200 text-20"
           value={htmlContent}

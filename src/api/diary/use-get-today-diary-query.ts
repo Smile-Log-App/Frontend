@@ -1,9 +1,17 @@
 import instance from "@/api/axiosInstance";
+import { EmotionAnalysis } from "@/types/emotion";
 import { useQuery } from "@tanstack/react-query";
 
-const getTodayDiary = async (date: string) => {
-  const response = await instance.get(`/diary?date=${date}`);
-  return response.data;
+interface getTodayDiaryRes {
+  diary_id: number; // 일기 ID
+  user_id: number; // 사용자 ID
+  date: string; // 일기 작성 날짜 (ISO 형식의 문자열)
+  content: string; // 일기 내용
+  emotionAnalysis: EmotionAnalysis & { analysis_id: number }; // 감정 분석 결과 객체
+}
+
+const getTodayDiary = async (date: string): Promise<getTodayDiaryRes> => {
+  return await instance.get(`/diary?date=${date}`);
 };
 
 export const useGetTodayDiaryQuery = (date: string) => {

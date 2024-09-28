@@ -6,3 +6,12 @@ export type EmotionType =
   | "anxiety"
   | "anger"
   | "fatigue";
+
+export interface EmotionAnalysis {
+  joy_pct: number;
+  sadness_pct: number;
+  anxiety_pct: number;
+  anger_pct: number;
+  neutrality_pct: number;
+  fatigue_pct: number;
+}

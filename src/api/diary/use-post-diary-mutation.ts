@@ -1,15 +1,6 @@
 import instance from "@/api/axiosInstance";
+import { EmotionAnalysis } from "@/types/emotion";
 import { useMutation } from "@tanstack/react-query";
-
-// 요청에 필요한 데이터 타입 정의
-interface EmotionAnalysis {
-  joy_pct: number;
-  sadness_pct: number;
-  anxiety_pct: number;
-  anger_pct: number;
-  neutrality_pct: number;
-  fatigue_pct: number;
-}
 
 interface PostDiaryRequest {
   date?: string; // 날짜는 선택적 필드로 설정 (생략 가능)
