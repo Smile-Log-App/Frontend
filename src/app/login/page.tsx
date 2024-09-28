@@ -9,7 +9,7 @@ import { AxiosError } from "axios";
 import Input from "@/components/common/input";
 import CheckBox from "@/components/common/check-box";
 import toast from "react-hot-toast";
-import { useLoginMutation } from "@/api/use-login-mutation";
+import { useLoginMutation } from "@/api/auth/use-login-mutation";
 import { useAtom } from "jotai";
 import { isLoggedInAtom } from "@/app/store/store";
 

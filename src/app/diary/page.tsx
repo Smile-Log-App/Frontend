@@ -4,11 +4,11 @@ import dynamic from "next/dynamic";
 import ReactQuill from "react-quill";
 import toast from "react-hot-toast";
 import { getTodayDate } from "@/utils/get-today-date";
-import { useAnalyzeEmotionMutation } from "@/api/use-analyze-emotion-mutation";
+import { useAnalyzeEmotionMutation } from "@/api/diary/use-analyze-emotion-mutation";
 import { EmotionBarList } from "@/components/calendar/EmotionBarList";
 import { EmotionType } from "@/types/emotion";
 import TreeCanvas from "@/components/tree/TreeCanvas";
-import { usePostDiaryMutation } from "@/api/use-post-diary-mutation";
+import { usePostDiaryMutation } from "@/api/diary/use-post-diary-mutation";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 
 // // TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
