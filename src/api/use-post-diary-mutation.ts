@@ -3,24 +3,30 @@ import { useMutation } from "@tanstack/react-query";
 
 // 요청에 필요한 데이터 타입 정의
 interface EmotionAnalysis {
-  joyful_pct: number;
-  sad_pct: number;
-  anxious_pct: number;
-  annoyed_pct: number;
-  neutral_pct: number;
-  tired_pct: number;
+  joy_pct: number;
+  sadness_pct: number;
+  anxiety_pct: number;
+  anger_pct: number;
+  neutrality_pct: number;
+  fatigue_pct: number;
 }
 
 interface PostDiaryRequest {
-  user_id: number; // Int형
+  date?: string; // 날짜는 선택적 필드로 설정 (생략 가능)
   content: string; // 일기 내용
   emotionAnalysis: EmotionAnalysis; // 감정 분석 결과
 }
 
 // 감정 일기 POST 요청 함수
 const postDiary = async (data: PostDiaryRequest) => {
+  // date가 없는 경우, 현재 날짜로 설정
+  if (!data.date) {
+    data.date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD 형식의 현재 날짜
+  }
+
+  // 일기 데이터를 서버로 전송
   const response = await instance.post("/diary", data);
-  return response;
+  return response.data;
 };
 
 // usePostDiaryMutation 훅
