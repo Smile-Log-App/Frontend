@@ -25,7 +25,7 @@ const postDiary = async (data: PostDiaryRequest) => {
   }
 
   // 일기 데이터를 서버로 전송
-  const response = await instance.post("/diary", data);
+  const response = await instance.post("/daily", data);
   return response.data;
 };
 
