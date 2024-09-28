@@ -15,3 +15,17 @@ export interface EmotionAnalysis {
   neutrality_pct: number;
   fatigue_pct: number;
 }
+
+// EmotionAnalysis 타입을 변환하여 pct를 제거한 새로운 객체를 반환
+export const removePctFromEmotionAnalysis = (
+  emotions: EmotionAnalysis,
+): Record<EmotionType, number> => {
+  return {
+    joy: emotions.joy_pct,
+    sadness: emotions.sadness_pct,
+    anxiety: emotions.anxiety_pct,
+    anger: emotions.anger_pct,
+    neutrality: emotions.neutrality_pct,
+    fatigue: emotions.fatigue_pct,
+  };
+};
