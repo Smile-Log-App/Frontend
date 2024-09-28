@@ -1,10 +1,15 @@
 "use client";
 import Link from "next/link";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
+import { format } from "date-fns"; // date-fns 라이브러리 임포트
+import { formatDate } from "@/utils/format-date";
 
 export default function Navbar() {
   const [auth, setAuth] = useAuthGlobalAtom();
   const { isLoggedIn } = auth;
+
+  // 오늘 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
+  const todayDate = formatDate("yyyy-MM-dd", new Date());
 
   const handleLogout = () => {
     setAuth({
@@ -12,6 +17,7 @@ export default function Navbar() {
       isLoggedIn: false,
     });
   };
+
   return (
     <nav className="bg-white p-20 shadow-md border-solid border-1 border-gray-300">
       <div className="flex justify-between items-center">
@@ -22,7 +28,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <>
               <Link
-                href="/diary"
+                href={`/diary?date=${todayDate}`} // 현재 날짜를 쿼리 파라미터로 추가
                 className="text-gray-700 hover:text-black-900"
               >
                 일기
