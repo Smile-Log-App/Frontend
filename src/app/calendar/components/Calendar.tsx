@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // 요일 배열
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -57,22 +55,32 @@ function CalendarHeader({
   );
 }
 
-// CalendarDay 컴포넌트
-const CalendarDay: React.FC<CalendarDayProps> = ({ day, emotion, onClick }) => (
-  <div
-    className={`p-10 h-100 font-bold text-20 text-center relative cursor-pointer border-1 border-gray-300 ${
-      emotion ? "bg-yellow-100" : "" // 감정 데이터가 있을 경우 배경색 변경
-    }`}
-    onClick={onClick}
-  >
-    {day}
-    {emotion && (
-      <span className="absolute top-2 right-2 text-xs bg-gray-200 p-1 rounded">
-        {emotion}
-      </span>
-    )}
-  </div>
-);
+import Image from "next/image";
+
+interface CalendarDayProps {
+  day: number;
+  emotion?: string;
+  onClick: () => void;
+}
+
+function CalendarDay({ day, emotion, onClick }: CalendarDayProps) {
+  return (
+    <div
+      className={`p-10 h-100 font-bold text-20 text-center items-center flex flex-col relative cursor-pointer border-1 border-gray-300`}
+      onClick={onClick}
+    >
+      {day}
+      {emotion && (
+        <Image
+          src={`/images/emoji/${emotion}.png`}
+          alt={emotion}
+          width={60}
+          height={70}
+        />
+      )}
+    </div>
+  );
+}
 
 // Calendar 컴포넌트
 function Calendar({
