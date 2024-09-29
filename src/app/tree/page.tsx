@@ -26,7 +26,7 @@ export default function TreePage() {
 
   return (
     <div className="h-full flex justify-center">
-      <div className="flex h-800 w-900 mt-[-150px] ">
+      <div className="flex h-800 w-900 translate-y-[-25%]  ">
         {emotionDistribution && (
           <TreeCanvas
             colors={topThreeColors} // 상위 3개의 감정 색상

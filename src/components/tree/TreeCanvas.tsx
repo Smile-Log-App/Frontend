@@ -276,6 +276,12 @@ interface TreeCanvasProps {
   widthRatio: number;
   colors: string[];
 }
+interface TreeCanvasProps {
+  hp: number;
+  day: number;
+  widthRatio: number;
+  colors: string[];
+}
 
 const TreeCanvas = ({ hp, day, widthRatio, colors }: TreeCanvasProps) => {
   if (colors.length === 0) return null;
@@ -303,12 +309,13 @@ const TreeCanvas = ({ hp, day, widthRatio, colors }: TreeCanvasProps) => {
     canvas.height = stageHeight * pixelRatio;
     ctx.scale(pixelRatio, pixelRatio);
 
-    const treeBaseY = stageHeight - 0;
+    // treeBaseY 값을 stageHeight * 0.7으로 설정하여 위쪽으로 이동
+    const treeBaseY = stageHeight;
 
     const tree = new Tree(
       ctx,
       stageWidth / 2,
-      treeBaseY,
+      treeBaseY, // 위쪽에 위치하도록 조정된 Y 좌표
       day,
       hp,
       colors[0],

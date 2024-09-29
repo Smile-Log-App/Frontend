@@ -37,15 +37,15 @@ export default function DiaryPage() {
       </div>
       {diary && diary.emotionAnalysis && (
         <>
-          <div className="px-20 flex h-600 w-600 justify-center">
+          <div className="px-20 flex h-650 w-600 justify-center">
             <TreeCanvas
               colors={topThreeColors}
-              hp={90}
+              hp={80}
               day={1}
               widthRatio={3 / 5}
             />
           </div>
-          <div className="mt-4 p-4 rounded shadow">
+          <div className="mt-4 rounded shadow">
             <EmotionBarList
               label="Today Feeling"
               emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
