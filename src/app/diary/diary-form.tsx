@@ -1,14 +1,11 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAnalyzeEmotionMutation } from "@/api/diary/use-analyze-emotion-mutation";
 import { usePostDiaryMutation } from "@/api/diary/use-post-diary-mutation";
-import { EmotionAnalysis, EmotionType } from "@/types/emotion";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 
-interface DiaryFormProps {
-  onDiarySubmit: (emotionAnalysisResult: EmotionAnalysis) => void;
-}
-
-export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
+export default function DiaryForm() {
   const [htmlContent, setHtmlContent] = useState<string>("");
 
   // 감정 분석 API 호출 훅
@@ -16,8 +13,13 @@ export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
   // 일기 POST 요청 훅
   const postDiaryMutation = usePostDiaryMutation();
 
+  const queryClient = useQueryClient();
+  const searchParam = useSearchParams();
+  const date = searchParam.get("date");
+
   // 일기 제출 버튼 클릭 시 호출되는 함수
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     // 감정 분석 API 호출
     analyzeEmotionMutation.mutate(
       { entry: htmlContent },
@@ -32,10 +34,10 @@ export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
             neutrality_pct,
             fatigue_pct,
           } = data;
-
-          // 감정 분석이 완료된 후, 일기 데이터를 서버에 전송
+          if (!date) return; // 감정 분석이 완료된 후, 일기 데이터를 서버에 전송
           postDiaryMutation.mutate(
             {
+              date: date,
               content: htmlContent,
               emotionAnalysis: {
                 joy_pct,
@@ -49,7 +51,7 @@ export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
             {
               onSuccess: () => {
                 toast.success("일기가 성공적으로 저장되었습니다.");
-                onDiarySubmit(data); // 부모 컴포넌트로 감정 분석 결과 전달
+                queryClient.invalidateQueries({ queryKey: ["diary", date] });
               },
               onError: (error) => {
                 console.error("일기 저장 중 오류가 발생했습니다.", error);
@@ -63,14 +65,16 @@ export default function DiaryForm({ onDiarySubmit }: DiaryFormProps) {
         onError: (error) => {
           console.error("감정 분석 중 오류가 발생했습니다.", error);
           toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
-          return;
         },
       },
     );
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-30">
+    <form
+      onSubmit={(e) => handleSubmit(e)}
+      className="flex flex-col items-center gap-30"
+    >
       <textarea
         className="w-600 h-200 text-20"
         value={htmlContent}

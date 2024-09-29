@@ -10,11 +10,6 @@ interface PostDiaryRequest {
 
 // 감정 일기 POST 요청 함수
 const postDiary = async (data: PostDiaryRequest) => {
-  // date가 없는 경우, 현재 날짜로 설정
-  if (!data.date) {
-    data.date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD 형식의 현재 날짜
-  }
-
   // 일기 데이터를 서버로 전송
   const response = await instance.post("/daily", data);
   return response.data;

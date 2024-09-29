@@ -1,60 +1,41 @@
 "use client";
-import { useMemo, useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { getTodayDate } from "@/utils/get-today-date";
-import { EmotionAnalysis, removePctFromEmotionAnalysis } from "@/types/emotion";
+import { useMemo } from "react";
+import { formatDate } from "@/utils/get-today-date";
+import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 import { EmotionBarList } from "@/components/calendar/EmotionBarList";
 import DiaryForm from "@/app/diary/diary-form";
-import { useGetTodayDiaryQuery } from "@/api/diary/use-get-today-diary-query";
+import { useGetDailyDiaryQuery } from "@/api/diary/use-get-daily-diary-query";
 import { useSearchParams } from "next/navigation";
 
 export default function DiaryPage() {
+  const { data: diary } = useGetDailyDiaryQuery();
   const searchParam = useSearchParams();
-  const date = searchParam.get("date") || getTodayDate();
-
-  const { data: diary } = useGetTodayDiaryQuery(date);
-
-  // 감정 분석 결과 상태
-  const [emotionAnalysisResult, setEmotionAnalysisResult] =
-    useState<EmotionAnalysis | null>(null);
-
-  // diary가 업데이트될 때마다 emotionAnalysisResult를 설정
-  useEffect(() => {
-    if (diary && diary.emotionAnalysis) {
-      setEmotionAnalysisResult(diary.emotionAnalysis);
-    }
-  }, [diary]);
+  const date = searchParam.get("date");
 
   // 상위 3개의 감정 색상 계산
   const topThreeColors = useMemo(() => {
-    if (!emotionAnalysisResult) return [];
+    if (!diary || !diary.emotionAnalysis) return [];
     return getTopThreeEmotionColors(
-      removePctFromEmotionAnalysis(emotionAnalysisResult),
+      removePctFromEmotionAnalysis(diary.emotionAnalysis),
     );
-  }, [emotionAnalysisResult]);
+  }, [diary]);
 
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
       <div className="flex flex-col items-center gap-30">
-        <p className="text-30">{date}</p>
+        <p className="text-30">{date && formatDate(date)}</p>
         <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
         {diary ? (
-          <div className="bg-white p-6 rounded shadow-md max-w-lg">
-            <h2 className="text-25 font-bold mb-4">작성된 일기</h2>
+          <div className="p-6 rounded shadow-md max-w-lg">
             <p className="text-20 mb-4">{diary.content}</p>
           </div>
         ) : (
-          <DiaryForm
-            onDiarySubmit={(emotionAnalysisResult) => {
-              setEmotionAnalysisResult(emotionAnalysisResult);
-              toast.success("일기가 성공적으로 저장되었습니다.");
-            }}
-          />
+          <DiaryForm />
         )}
       </div>
-      {emotionAnalysisResult && (
+      {diary && diary.emotionAnalysis && (
         <>
           <div className="px-20 flex h-600 w-600 justify-center">
             <TreeCanvas
@@ -66,7 +47,7 @@ export default function DiaryPage() {
           </div>
           <div className="mt-4 p-4 rounded shadow">
             <EmotionBarList
-              emotions={removePctFromEmotionAnalysis(emotionAnalysisResult)}
+              emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
             />
           </div>
         </>
