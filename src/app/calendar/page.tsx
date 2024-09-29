@@ -3,8 +3,6 @@ import { useState, useMemo } from "react";
 import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query";
 import Calendar from "@/app/calendar/components/Calendar";
 import { EmotionBarList } from "@/components/calendar/EmotionBarList";
-
-import { EmotionType } from "@/types/emotion";
 import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
 
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
