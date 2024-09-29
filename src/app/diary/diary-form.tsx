@@ -51,7 +51,7 @@ export default function DiaryForm() {
             {
               onSuccess: () => {
                 toast.success("일기가 성공적으로 저장되었습니다.");
-                queryClient.invalidateQueries({ queryKey: ["diary", date] });
+                queryClient.invalidateQueries({ queryKey: ["diary"] });
               },
               onError: (error) => {
                 console.error("일기 저장 중 오류가 발생했습니다.", error);

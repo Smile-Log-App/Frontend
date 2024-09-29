@@ -47,6 +47,7 @@ export default function DiaryPage() {
           </div>
           <div className="mt-4 p-4 rounded shadow">
             <EmotionBarList
+              label="Today Feeling"
               emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
             />
           </div>

@@ -1,8 +1,11 @@
 "use client";
-import { useState } from "react";
-
+import { useState, useMemo } from "react";
 import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query";
 import Calendar from "@/app/calendar/components/Calendar";
+import { EmotionBarList } from "@/components/calendar/EmotionBarList";
+
+import { EmotionType } from "@/types/emotion";
+import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
 
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -40,14 +43,32 @@ function CalendarPage() {
     setMonth((prev) => (prev === 12 ? 1 : prev + 1));
   };
 
+  // 감정 비중 계산 로직 호출
+  const emotionDistribution = useMemo(() => {
+    if (!monthlyDiary?.monthly_emotions) return null;
+
+    // 한 달 동안 감정 비중 계산
+    return calculateEmotionDistribution(monthlyDiary.monthly_emotions);
+  }, [monthlyDiary]);
+
   return (
-    <Calendar
-      year={year}
-      month={month}
-      emotions={monthlyDiary?.monthly_emotions || []} // 감정 데이터를 props로 전달
-      onPrevMonth={handlePrevMonth}
-      onNextMonth={handleNextMonth}
-    />
+    <div className="flex justify-center items-center px-150 gap-20 py-10">
+      <Calendar
+        year={year}
+        month={month}
+        emotions={monthlyDiary?.monthly_emotions || []} // 감정 데이터를 props로 전달
+        onPrevMonth={handlePrevMonth}
+        onNextMonth={handleNextMonth}
+      />
+
+      {/* 감정 비중 데이터를 EmotionBarList에 전달 */}
+      {emotionDistribution && (
+        <EmotionBarList
+          label="Monthly Feeling"
+          emotions={emotionDistribution}
+        />
+      )}
+    </div>
   );
 }
 
