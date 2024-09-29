@@ -2,22 +2,37 @@ import { useEffect, useRef } from "react";
 
 // 가지 클래스
 class Branch {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  lineWidth: number;
+  colorStart: string;
+  colorMid: string;
+  colorEnd?: string;
+  frame: number;
+  cntFrame: number;
+  gapX: number;
+  gapY: number;
+  currentX: number;
+  currentY: number;
+  color: string;
+
   constructor(
-    startX,
-    startY,
-    endX,
-    endY,
-    lineWidth,
-    colorStart,
-    colorMid,
-    colorEnd
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    lineWidth: number,
+    colorStart: string,
+    colorMid: string,
+    colorEnd?: string,
   ) {
     this.startX = startX;
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
     this.lineWidth = lineWidth;
-    // 기본 색상 설정
     this.colorStart = colorStart;
     this.colorMid = colorMid;
     this.colorEnd = colorEnd;
@@ -34,20 +49,20 @@ class Branch {
   }
 
   // hex 색상을 블렌딩하는 함수
-  hexBlend(start, end, ratio) {
+  hexBlend(start: string, end: string, ratio: number): string {
     const s = parseInt(start.slice(1), 16);
     const e = parseInt(end.slice(1), 16);
     const r = Math.round((e >> 16) * ratio + (s >> 16) * (1 - ratio));
     const g = Math.round(
-      ((e >> 8) & 0xff) * ratio + ((s >> 8) & 0xff) * (1 - ratio)
+      ((e >> 8) & 0xff) * ratio + ((s >> 8) & 0xff) * (1 - ratio),
     );
     const b = Math.round((e & 0xff) * ratio + (s & 0xff) * (1 - ratio));
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
   }
 
-  calculateColor() {
+  calculateColor(): string {
     const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
-    let blendedColor;
+    let blendedColor: string;
 
     // colorEnd가 존재하지 않는 경우 (colorStart와 colorMid만 있는 경우)
     if (!this.colorEnd) {
@@ -56,7 +71,7 @@ class Branch {
       blendedColor = this.hexBlend(
         this.colorStart,
         this.colorMid,
-        segmentRatio
+        segmentRatio,
       );
     } else {
       // colorStart, colorMid, colorEnd 모두 존재하는 경우
@@ -66,7 +81,7 @@ class Branch {
         blendedColor = this.hexBlend(
           this.colorStart,
           this.colorMid,
-          segmentRatio
+          segmentRatio,
         );
       } else if (ratio <= 0.8) {
         // 두 번째 구간: colorMid에서 colorEnd로 전환 (30% 길이)
@@ -74,7 +89,7 @@ class Branch {
         blendedColor = this.hexBlend(
           this.colorMid,
           this.colorEnd,
-          segmentRatio
+          segmentRatio,
         );
       } else {
         // 세 번째 구간: colorEnd에서 약간 더 밝은 색으로 전환 (20% 길이)
@@ -85,7 +100,7 @@ class Branch {
     return blendedColor;
   }
 
-  draw(ctx) {
+  draw(ctx: CanvasRenderingContext2D): boolean {
     if (this.cntFrame === this.frame) return true;
 
     ctx.beginPath();
@@ -119,7 +134,30 @@ class Branch {
 
 // 나무 클래스
 class Tree {
-  constructor(ctx, posX, posY, day, hp, colorStart, colorMid, colorEnd) {
+  ctx: CanvasRenderingContext2D;
+  posX: number;
+  posY: number;
+  branches: Branch[][];
+  depth: number;
+  day: number;
+  hp: number;
+  colorStart: string;
+  colorMid: string;
+  colorEnd?: string;
+  cntDepth: number;
+  animation: number | null;
+  maxDepth: number;
+
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    posX: number,
+    posY: number,
+    day: number,
+    hp: number,
+    colorStart: string,
+    colorMid: string,
+    colorEnd?: string,
+  ) {
     this.ctx = ctx;
     this.posX = posX;
     this.posY = posY;
@@ -138,7 +176,7 @@ class Tree {
     this.init();
   }
 
-  calculateDepth(hp) {
+  calculateDepth(hp: number): number {
     if (hp <= 10) {
       return 3;
     } else if (hp <= 30) {
@@ -163,7 +201,7 @@ class Tree {
     this.draw();
   }
 
-  createBranch(startX, startY, angle, depth) {
+  createBranch(startX: number, startY: number, angle: number, depth: number) {
     if (depth === this.depth) return;
 
     const len = depth === 0 ? this.random(10, 11) : this.random(0, 12);
@@ -186,8 +224,8 @@ class Tree {
         this.depth - depth,
         this.colorStart,
         this.colorMid,
-        this.colorEnd
-      )
+        this.colorEnd,
+      ),
     );
 
     if (depth < this.depth - 1) {
@@ -198,7 +236,9 @@ class Tree {
 
   draw() {
     if (this.cntDepth === this.depth) {
-      cancelAnimationFrame(this.animation);
+      if (this.animation) {
+        cancelAnimationFrame(this.animation);
+      }
     }
 
     for (let i = this.cntDepth; i < this.branches.length; i++) {
@@ -215,28 +255,40 @@ class Tree {
     this.animation = requestAnimationFrame(this.draw.bind(this));
   }
 
-  cos(angle) {
+  cos(angle: number): number {
     return Math.cos(this.degToRad(angle));
   }
-  sin(angle) {
+  sin(angle: number): number {
     return Math.sin(this.degToRad(angle));
   }
-  degToRad(angle) {
+  degToRad(angle: number): number {
     return (angle / 180.0) * Math.PI;
   }
 
-  random(min, max) {
+  random(min: number, max: number): number {
     return min + Math.floor(Math.random() * (max - min + 1));
   }
 }
 
-const TreeCanvas = ({ hp, day, widthRatio, colors }) => {
+interface TreeCanvasProps {
+  hp: number;
+  day: number;
+  widthRatio: number;
+  colors: string[];
+}
+
+const TreeCanvas = ({ hp, day, widthRatio, colors }: TreeCanvasProps) => {
+  if (colors.length === 0) return null;
   // 기본값 설정
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
     const fixedHeight = 100;
@@ -260,12 +312,16 @@ const TreeCanvas = ({ hp, day, widthRatio, colors }) => {
       hp,
       selectedColors[0],
       selectedColors[1],
-      selectedColors[2] ? selectedColors[2] : null
+      selectedColors[2] ? selectedColors[2] : undefined,
     );
 
     tree.draw(); // 나무 그리기
 
-    return () => {}; // 컴포넌트 언마운트 시 정리 작업
+    return () => {
+      if (tree.animation) {
+        cancelAnimationFrame(tree.animation);
+      }
+    }; // 컴포넌트 언마운트 시 정리 작업
   }, [hp, day, widthRatio, colors]);
 
   return <canvas ref={canvasRef}></canvas>;

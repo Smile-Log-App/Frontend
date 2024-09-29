@@ -1,150 +1,43 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import ReactQuill from "react-quill";
-
-import toast from "react-hot-toast";
-import { getTodayDate } from "@/utils/get-today-date";
-import { useAnalyzeEmotionMutation } from "@/api/use-analyze-emotion-mutation";
-import { EmotionBarList } from "@/components/calendar/EmotionBarList";
-import { EmotionType } from "@/types/emotion";
-import { EMOTION_COLORS } from "@/constants/emotion-color";
+import { useMemo } from "react";
+import { formatDate } from "@/utils/get-today-date";
+import { removePctFromEmotionAnalysis } from "@/types/emotion";
+import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import TreeCanvas from "@/components/tree/TreeCanvas";
-import { usePostDiaryMutation } from "@/api/use-post-diary-mutation";
-import { getAccessToken } from "@/api/axiosInstance";
-
-// TextEditor 컴포넌트를 동적 로딩 (SSR을 사용하지 않음)
-const TextEditor = dynamic(() => import("@/components/diary/TextEditor"), {
-  ssr: false,
-});
+import { EmotionBarList } from "@/components/calendar/EmotionBarList";
+import DiaryForm from "@/app/diary/diary-form";
+import { useGetDailyDiaryQuery } from "@/api/diary/use-get-daily-diary-query";
+import { useSearchParams } from "next/navigation";
 
 export default function DiaryPage() {
-  // ReactQuill 에디터를 참조하기 위한 ref 생성
-  const quillRef = useRef<ReactQuill | null>(null);
-  // 일기 내용을 저장할 상태
-  const [htmlContent, setHtmlContent] = useState<string>("");
-  // API 응답을 저장할 상태
-  const [response, setResponse] = useState<Record<EmotionType, number> | null>(
-    null,
-  );
+  const { data: diary } = useGetDailyDiaryQuery();
+  const searchParam = useSearchParams();
+  const date = searchParam.get("date");
 
-  // 감정 분석 API 호출 훅
-  const analyzeEmotionMutation = useAnalyzeEmotionMutation();
-  // 일기 POST 요청 훅
-  const postDiaryMutation = usePostDiaryMutation();
-
-  // 일기 제출 버튼 클릭 시 호출되는 함수
-  const handleSubmit = async () => {
-    // 감정 분석 API 호출
-    analyzeEmotionMutation.mutate(
-      { entry: htmlContent },
-      {
-        onSuccess: (data) => {
-          setResponse(data); // 성공 시 응답 저장
-          toast.success("감정 분석이 완료되었습니다.");
-        },
-        onError: (error) => {
-          console.error("감정 분석 중 오류가 발생했습니다.", error);
-          toast.error("감정 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
-          return;
-        },
-      },
-    );
-
-    if (!response) return;
-
-    // 감정 분석이 완료된 후, 일기 데이터를 서버에 전송
-    postDiaryMutation.mutate(
-      {
-        user_id: 1,
-        content: htmlContent,
-        emotionAnalysis: {
-          joyful_pct: response.joy,
-          sad_pct: response.sadness,
-          anxious_pct: response.anxiety,
-          annoyed_pct: response.anger,
-          neutral_pct: response.neutrality,
-          tired_pct: response.fatigue,
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success("일기가 성공적으로 저장되었습니다.");
-        },
-        onError: (error) => {
-          console.error("일기 저장 중 오류가 발생했습니다.", error);
-          toast.error("일기 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        },
-      },
-    );
-  };
-  // 오늘 날짜 가져오기
-  const todayDate = getTodayDate();
-  // 상위 3개의 감정에 해당하는 색상 배열을 생성하는 함수
+  // 상위 3개의 감정 색상 계산
   const topThreeColors = useMemo(() => {
-    if (!response) return [];
-
-    // 응답 객체를 배열로 변환하고 퍼센트를 기준으로 정렬
-    const sortedEmotions = Object.entries(response)
-      .sort(([, a], [, b]) => b - a) // 퍼센트 내림차순으로 정렬
-      .slice(0, 3); // 상위 3개의 감정만 추출
-
-    // 퍼센트가 0인 감정 필터링
-    const nonZeroEmotions = sortedEmotions.filter(
-      ([, percentage]) => percentage > 0,
+    if (!diary || !diary.emotionAnalysis) return [];
+    return getTopThreeEmotionColors(
+      removePctFromEmotionAnalysis(diary.emotionAnalysis),
     );
-
-    // 퍼센트가 0이 아닌 감정의 색상 추출
-    let colors = nonZeroEmotions.map(([emotion]) => {
-      return EMOTION_COLORS[emotion as EmotionType];
-    });
-
-    // 퍼센트가 0이 아닌 감정이 1개만 있는 경우, 최상위 감정을 반복해서 채워 길이를 3으로 맞춤
-    if (colors.length === 1) {
-      colors = Array(3).fill(colors[0]);
-    }
-
-    // 퍼센트가 0이 아닌 감정이 2개만 있는 경우, 해당 색상들로 배열 길이를 2로 설정
-    if (colors.length === 2) {
-      colors = [colors[0], colors[1]];
-    }
-
-    // 퍼센트가 0이 아닌 감정이 없는 경우, 상위 3개의 감정으로 검정색("#000000") 배열을 채움
-    if (colors.length === 0) {
-      colors = ["#000000", "#000000", "#000000"];
-    }
-
-    console.log(colors);
-    return colors;
-  }, [response]);
+  }, [diary]);
 
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
-      <div className=" flex flex-col items-center gap-30">
-        <p className="text-30">{todayDate}</p>
+      <div className="flex flex-col items-center gap-30">
+        <p className="text-30">{date && formatDate(date)}</p>
         <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
-        <div className="mb-4 w-600">
-          <TextEditor
-            quillRef={quillRef}
-            htmlContent={htmlContent}
-            setHtmlContent={setHtmlContent}
-          />
-        </div>
-        <div className="w-full flex justify-center">
-          <button
-            onClick={handleSubmit}
-            className="font-bold py-2 px-4 bg-white rounded shadow"
-            disabled={analyzeEmotionMutation.isPending}
-          >
-            {analyzeEmotionMutation.isPending ? "분석 중..." : "제출하기"}
-          </button>
-        </div>
+        {diary ? (
+          <div className="p-6 rounded shadow-md max-w-lg">
+            <p className="text-20 mb-4">{diary.content}</p>
+          </div>
+        ) : (
+          <DiaryForm />
+        )}
       </div>
-
-      {/* 감정 분석 결과를 EmotionBarList로 표시 */}
-      {response && (
+      {diary && diary.emotionAnalysis && (
         <>
-          <div className="px-20 flex h-600 w-600 justify-center ">
+          <div className="px-20 flex h-600 w-600 justify-center">
             <TreeCanvas
               colors={topThreeColors}
               hp={90}
@@ -153,7 +46,9 @@ export default function DiaryPage() {
             />
           </div>
           <div className="mt-4 p-4 rounded shadow">
-            <EmotionBarList emotions={response} />
+            <EmotionBarList
+              emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
+            />
           </div>
         </>
       )}

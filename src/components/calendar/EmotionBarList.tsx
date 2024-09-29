@@ -34,10 +34,11 @@ function EmotionBar({ label, percentage, color }: EmotionBarProps) {
 
 // EmotionBarList 컴포넌트 타입 정의
 interface EmotionBarListProps {
-  emotions: Record<EmotionType, number>;
+  emotions: Record<EmotionType, number> | null;
 }
 
 export function EmotionBarList({ emotions }: EmotionBarListProps) {
+  if (!emotions) return;
   return (
     <div className="p-4 bg-blue-100 rounded-lg shadow-md max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-center">Today Feeling</h2>

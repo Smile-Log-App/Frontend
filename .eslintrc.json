@@ -25,7 +25,8 @@
     "no-unused-vars": "warn", // 사용하지 않는 변수가 있을 때 -> warn
     "@typescript-eslint/no-unused-vars": "warn",
     "react/prop-types": "off", // prop의 타입을 정의해주지 않으면  -> warn
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-empty-pattern": "off" // 또는 'warn'
   },
   "settings": {
     "react": {

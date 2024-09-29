@@ -15,14 +15,14 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: "system",
-            content: `You are a mental health counselor who specializes in analyzing the emotions expressed in diary entries. Your task is to categorize the emotions into the following six categories: joy, sadness, anxiety, anger, neutrality, and fatigue. You should provide the analysis in the following format: 
+            content: `You are a mental health counselor who specializes in analyzing the emotions expressed in diary entries. Your task is to categorize the emotions into the following six categories: joy_pct, sadness_pct, anxiety_pct, anger_pct, neutrality_pct, and fatigue_pct. You should provide the analysis in the following format: 
 
-- joy: X%
-- sadness: X%
-- anxiety: X%
-- anger: X%
-- neutrality: X%
-- fatigue: X%
+- joy_pct: X%
+- sadness_pct: X%
+- anxiety_pct: X%
+- anger_pct: X%
+- neutrality_pct: X%
+- fatigue_pct: X%
 
 Please ensure that the percentages add up to 100%. If multiple emotions are expressed, distribute the percentages accordingly. Be concise and provide the analysis in English.`,
           },
