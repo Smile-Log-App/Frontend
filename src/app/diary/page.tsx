@@ -4,7 +4,7 @@ import { formatDate } from "@/utils/get-today-date";
 import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import TreeCanvas from "@/components/tree/TreeCanvas";
-import { EmotionBarList } from "@/components/calendar/EmotionBarList";
+import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 import DiaryForm from "@/app/diary/diary-form";
 import { useGetDailyDiaryQuery } from "@/api/diary/use-get-daily-diary-query";
 import { useSearchParams } from "next/navigation";
@@ -37,16 +37,17 @@ export default function DiaryPage() {
       </div>
       {diary && diary.emotionAnalysis && (
         <>
-          <div className="px-20 flex h-600 w-600 justify-center">
+          <div className="px-20 flex h-650 w-600 justify-center">
             <TreeCanvas
               colors={topThreeColors}
-              hp={90}
+              hp={80}
               day={1}
               widthRatio={3 / 5}
             />
           </div>
-          <div className="mt-4 p-4 rounded shadow">
+          <div className="mt-4 rounded shadow">
             <EmotionBarList
+              label="Today Feeling"
               emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
             />
           </div>

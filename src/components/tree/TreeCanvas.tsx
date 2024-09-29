@@ -276,10 +276,16 @@ interface TreeCanvasProps {
   widthRatio: number;
   colors: string[];
 }
+interface TreeCanvasProps {
+  hp: number;
+  day: number;
+  widthRatio: number;
+  colors: string[];
+}
 
 const TreeCanvas = ({ hp, day, widthRatio, colors }: TreeCanvasProps) => {
   if (colors.length === 0) return null;
-  // 기본값 설정
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -291,28 +297,30 @@ const TreeCanvas = ({ hp, day, widthRatio, colors }: TreeCanvasProps) => {
 
     const pixelRatio = window.devicePixelRatio > 1 ? 2 : 1;
 
-    const fixedHeight = 100;
-    const stageWidth = window.innerWidth * widthRatio; // 화면 너비의 비율을 적용
-    const stageHeight = Math.max(window.innerHeight, fixedHeight);
+    // 부모 div 크기를 기준으로 canvas 크기를 설정
+    const parent = canvas.parentElement;
+    if (!parent) return;
 
+    const stageWidth = parent.clientWidth; // 부모 요소의 너비에 맞추기
+    const stageHeight = parent.clientHeight; // 부모 요소의 높이에 맞추기
+
+    // 캔버스 크기 설정
     canvas.width = stageWidth * pixelRatio;
     canvas.height = stageHeight * pixelRatio;
     ctx.scale(pixelRatio, pixelRatio);
 
-    const treeBaseY = stageHeight - 0;
-
-    // `colors` prop이 없을 경우 기본값으로 설정된 색상 배열 사용
-    const selectedColors = colors;
+    // treeBaseY 값을 stageHeight * 0.7으로 설정하여 위쪽으로 이동
+    const treeBaseY = stageHeight;
 
     const tree = new Tree(
       ctx,
       stageWidth / 2,
-      treeBaseY,
+      treeBaseY, // 위쪽에 위치하도록 조정된 Y 좌표
       day,
       hp,
-      selectedColors[0],
-      selectedColors[1],
-      selectedColors[2] ? selectedColors[2] : undefined,
+      colors[0],
+      colors[1],
+      colors[2] ? colors[2] : undefined,
     );
 
     tree.draw(); // 나무 그리기
@@ -321,10 +329,12 @@ const TreeCanvas = ({ hp, day, widthRatio, colors }: TreeCanvasProps) => {
       if (tree.animation) {
         cancelAnimationFrame(tree.animation);
       }
-    }; // 컴포넌트 언마운트 시 정리 작업
+    };
   }, [hp, day, widthRatio, colors]);
 
-  return <canvas ref={canvasRef}></canvas>;
+  return (
+    <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }}></canvas>
+  );
 };
 
 export default TreeCanvas;

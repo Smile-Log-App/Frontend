@@ -35,13 +35,14 @@ function EmotionBar({ label, percentage, color }: EmotionBarProps) {
 // EmotionBarList 컴포넌트 타입 정의
 interface EmotionBarListProps {
   emotions: Record<EmotionType, number> | null;
+  label: string;
 }
 
-export function EmotionBarList({ emotions }: EmotionBarListProps) {
+export function EmotionBarList({ emotions, label }: EmotionBarListProps) {
   if (!emotions) return;
   return (
-    <div className="p-4 bg-blue-100 rounded-lg shadow-md max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center">Today Feeling</h2>
+    <div className=" p-4 bg-blue-100 rounded-lg shadow-md max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-6 text-center">{label}</h2>
       {Object.keys(emotions).map((emotion) => (
         <EmotionBar
           key={emotion}

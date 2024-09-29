@@ -18,7 +18,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white p-20 shadow-md border-solid border-1 border-gray-300">
+    <nav className="bg-white p-20 relative  z-10 shadow-md border-solid border-1 border-gray-300">
       <div className="flex justify-between items-center">
         <Link href="/home" className="text-25 p-10 pl-30 font-bold">
           Smile Log
