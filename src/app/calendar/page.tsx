@@ -21,7 +21,6 @@ function CalendarPage() {
   const { curYear, curMonth } = showTodayDate();
   const [year, setYear] = useState<number>(curYear);
   const [month, setMonth] = useState<number>(curMonth);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   // 감정 데이터를 가져오는 쿼리 훅 호출
   const { data: monthlyDiary } = useGetMonthlyDiaryQuery(
@@ -48,7 +47,6 @@ function CalendarPage() {
       emotions={monthlyDiary?.monthly_emotions || []} // 감정 데이터를 props로 전달
       onPrevMonth={handlePrevMonth}
       onNextMonth={handleNextMonth}
-      onSelectDay={(day) => setSelectedDay(day)} // 선택한 날짜 설정
     />
   );
 }

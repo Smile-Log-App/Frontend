@@ -1,15 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
-import { format } from "date-fns"; // date-fns 라이브러리 임포트
-import { formatDate } from "@/utils/format-date";
+import { formatDateToISO } from "@/utils/format-date";
 
 export default function Navbar() {
   const [auth, setAuth] = useAuthGlobalAtom();
   const { isLoggedIn } = auth;
 
   // 오늘 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
-  const todayDate = formatDate("yyyy-MM-dd", new Date());
+  const todayDate = formatDateToISO(new Date());
 
   const handleLogout = () => {
     setAuth({
