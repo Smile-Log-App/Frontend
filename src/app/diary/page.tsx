@@ -4,7 +4,7 @@ import { formatDate } from "@/utils/get-today-date";
 import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import TreeCanvas from "@/components/tree/TreeCanvas";
-import { EmotionBarList } from "@/components/calendar/EmotionBarList";
+import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 import DiaryForm from "@/app/diary/diary-form";
 import { useGetDailyDiaryQuery } from "@/api/diary/use-get-daily-diary-query";
 import { useSearchParams } from "next/navigation";

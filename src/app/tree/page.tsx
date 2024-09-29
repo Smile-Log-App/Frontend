@@ -6,6 +6,7 @@ import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query"; //
 import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import { removePctFromEmotionAnalysis } from "@/types/emotion";
+import EmotionList from "@/components/emotion/emotion-list";
 
 export default function TreePage() {
   const { data: monthlyDiary } = useGetMonthlyDiaryQuery(
@@ -25,7 +26,9 @@ export default function TreePage() {
   }, [emotionDistribution]);
 
   return (
-    <div className="h-full flex justify-center">
+    <div className="h-full flex items-center justify-center">
+      <EmotionList />
+
       <div className="flex h-800 w-900 translate-y-[-25%]  ">
         {emotionDistribution && (
           <TreeCanvas
