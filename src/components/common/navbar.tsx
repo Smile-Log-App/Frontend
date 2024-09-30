@@ -2,11 +2,12 @@
 import Link from "next/link";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
 import { formatDateToISO } from "@/utils/format-date";
+import useGetUser from "@/api/user/getUserQuery";
 
 export default function Navbar() {
   const [auth, setAuth] = useAuthGlobalAtom();
   const { isLoggedIn } = auth;
-
+  const { data: user } = useGetUser();
   // 오늘 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
   const todayDate = formatDateToISO(new Date());
 
@@ -47,6 +48,7 @@ export default function Navbar() {
               >
                 로그아웃
               </button>
+              <p>{user?.username}님 안녕하세요!</p>
             </>
           ) : (
             <>

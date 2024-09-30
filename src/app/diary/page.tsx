@@ -8,6 +8,7 @@ import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 import DiaryForm from "@/app/diary/diary-form";
 import { useGetDailyDiaryQuery } from "@/api/diary/use-get-daily-diary-query";
 import { useSearchParams } from "next/navigation";
+import useGetUser from "@/api/user/getUserQuery";
 
 export default function DiaryPage() {
   const { data: diary } = useGetDailyDiaryQuery();
@@ -22,11 +23,15 @@ export default function DiaryPage() {
     );
   }, [diary]);
 
+  const { data: user } = useGetUser();
+
   return (
     <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
       <div className="flex flex-col items-center gap-30">
         <p className="text-30">{date && formatDate(date)}</p>
-        <h1 className="text-40 font-bold mb-8 text-center">유담이의 일기</h1>
+        <h1 className="text-40 font-bold mb-8 text-center">
+          {user?.username}의 일기
+        </h1>
         {diary ? (
           <div className="p-6 rounded shadow-md max-w-lg">
             <p className="text-20 mb-4">{diary.content}</p>
