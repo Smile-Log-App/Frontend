@@ -1,6 +1,6 @@
 import { instance } from "@/api/axiosInstance";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface postLoginReq {
   user_login_id: string;
@@ -21,14 +21,17 @@ const postLogin = async (userData: postLoginReq): Promise<PostLoginRes> => {
 export const useLoginMutation = () => {
   const [, setAuth] = useAuthGlobalAtom(); // Jotai의 상태 관리 훅 사용
 
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: postLogin,
     onSuccess: (data: PostLoginRes) => {
       // Jotai 상태 업데이트: accessToken과 isLoggedIn 설정
       setAuth({
         accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
         isLoggedIn: true,
       });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 };

@@ -11,12 +11,14 @@ const LOCAL_STORAGE_KEY = "auth";
 interface AuthType {
   isLoggedIn: boolean;
   accessToken: string;
+  refreshToken: string;
 }
 
 // 초기 상태
 const initialAuthState: AuthType = {
   isLoggedIn: false,
   accessToken: "",
+  refreshToken: "",
 };
 
 // 로컬 스토리지와 연동되는 atom 생성
