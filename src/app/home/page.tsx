@@ -7,39 +7,37 @@ export default function HomePage() {
           <img
             src="/path/to/logo.png"
             alt="Smile Log Logo"
-            className="w-40 h-40 mb-4"
+            className="w-40 h-40 mb-30"
           />
-          <h1 className="text-5xl font-bold mb-4">Smile Log :)</h1>
+          <h1 className="text-7xl font-bold mb-30">Smile Log :)</h1>
         </div>
 
         {/* Steps and Description */}
-        <div className="w-full max-w-4xl grid grid-cols-2 gap-8">
+        <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50">
           <div className="bg-white p-6 shadow-lg rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">Step 1.</h2>
+            <h2 className="text-4xl font-bold mb-20 mt-20">Step 1.</h2>
+            <p className="text-lg mb-10">
+              오늘 하루 있었던 일을 되돌아보며 작성하세요.
+            </p>
             <p className="text-lg">
-              오늘 하루 있었던 일을 되돌아보며 작성하세요. 내가 무슨 상황에서
-              어떤 감정을 느꼈는지 다시 생각해봅시다.
+              내가 무슨 상황에서 어떤 감정을 느꼈는지 다시 생각해봅시다.
             </p>
           </div>
           <div className="bg-white p-6 shadow-lg rounded-lg">
             <h2 className="text-2xl font-bold mb-4">유담이의 일기</h2>
-            <textarea
-              className="w-full h-40 p-4 border rounded-lg"
-              placeholder="일기를 작성하세요..."
-            />
-            <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg">
-              제출하기
-            </button>
           </div>
         </div>
 
         {/* Step 2 */}
-        <div className="w-full max-w-4xl grid grid-cols-2 gap-8 mt-10">
+        <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
           <div className="bg-white p-6 shadow-lg rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">Step 2.</h2>
+            <h2 className="text-3xl font-bold mb-20 mt-20">Step 2.</h2>
+            <p className="text-lg mb-10">
+              제출하기를 누르면 AI가 일기를 분석해서
+            </p>
+            <p className="text-lg mb-10">오늘의 감정에 대해 알려줍니다.</p>
             <p className="text-lg">
-              제출하기를 누르면 AI가 일기를 분석해서 오늘의 감정에 대해
-              알려줍니다. 오늘의 감정에 따른 색이 반영된 나무가 자라나요.
+              오늘의 감정에 따른 색이 반영된 나무가 자라나요.
             </p>
           </div>
           <div className="bg-white p-6 shadow-lg rounded-lg">
@@ -59,6 +57,36 @@ export default function HomePage() {
                 <li>피곤: 35%</li>
               </ul>
             </div>
+          </div>
+        </div>
+
+        <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
+          <div className="bg-white p-6 shadow-lg rounded-lg">
+            <h2 className="text-4xl font-bold mb-20 mt-20">Step 3.</h2>
+            <p className="text-lg mb-10">
+              오늘 하루 있었던 일을 되돌아보며 작성하세요.
+            </p>
+            <p className="text-lg">
+              내가 무슨 상황에서 어떤 감정을 느꼈는지 다시 생각해봅시다.
+            </p>
+          </div>
+          <div className="bg-white p-6 shadow-lg rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">유담이의 일기</h2>
+          </div>
+        </div>
+
+        <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
+          <div className="bg-white p-6 shadow-lg rounded-lg">
+            <h2 className="text-4xl font-bold mb-20 mt-20">Step 4.</h2>
+            <p className="text-lg mb-10">
+              오늘 하루 있었던 일을 되돌아보며 작성하세요.
+            </p>
+            <p className="text-lg">
+              내가 무슨 상황에서 어떤 감정을 느꼈는지 다시 생각해봅시다.
+            </p>
+          </div>
+          <div className="bg-white p-6 shadow-lg rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">유담이의 일기</h2>
           </div>
         </div>
       </div>
