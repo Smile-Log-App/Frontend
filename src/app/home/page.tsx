@@ -3,19 +3,19 @@ export default function HomePage() {
     <>
       <div className="h-full w-screen min-h-screen flex flex-col items-center bg-blue-100 text-center gap-8 p-10">
         {/* Header */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-row items-center justify-center">
           <img
-            src="/path/to/logo.png"
+            src="/images/스마일로그logo.png"
             alt="Smile Log Logo"
-            className="w-40 h-40 mb-30"
+            className="w-300 h-300 mb-10"
           />
-          <h1 className="text-7xl font-bold mb-30">Smile Log :)</h1>
+          <h1 className="text-60 font-bold text-white">Smile Log :)</h1>
         </div>
 
         {/* Steps and Description */}
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50">
           <div className="bg-white p-6 shadow-lg rounded-lg">
-            <h2 className="text-4xl font-bold mb-20 mt-20">Step 1.</h2>
+            <h2 className="text-30 font-bold mb-20 mt-20">Step 1.</h2>
             <p className="text-lg mb-10">
               오늘 하루 있었던 일을 되돌아보며 작성하세요.
             </p>
@@ -31,7 +31,7 @@ export default function HomePage() {
         {/* Step 2 */}
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
           <div className="bg-white p-6 shadow-lg rounded-lg">
-            <h2 className="text-3xl font-bold mb-20 mt-20">Step 2.</h2>
+            <h2 className="text-30 font-bold mb-20 mt-20">Step 2.</h2>
             <p className="text-lg mb-10">
               제출하기를 누르면 AI가 일기를 분석해서
             </p>
@@ -62,7 +62,7 @@ export default function HomePage() {
 
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
           <div className="bg-white p-6 shadow-lg rounded-lg">
-            <h2 className="text-4xl font-bold mb-20 mt-20">Step 3.</h2>
+            <h2 className="text-30 font-bold mb-20 mt-20">Step 3.</h2>
             <p className="text-lg mb-10">
               오늘 하루 있었던 일을 되돌아보며 작성하세요.
             </p>
@@ -77,7 +77,7 @@ export default function HomePage() {
 
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
           <div className="bg-white p-6 shadow-lg rounded-lg">
-            <h2 className="text-4xl font-bold mb-20 mt-20">Step 4.</h2>
+            <h2 className="text-30 font-bold mb-20 mt-20">Step 4.</h2>
             <p className="text-lg mb-10">
               오늘 하루 있었던 일을 되돌아보며 작성하세요.
             </p>
