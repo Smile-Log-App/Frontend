@@ -14,7 +14,7 @@ export default function HomePage() {
 
         {/* Steps and Description */}
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50">
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="w-420 h-200 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-20 mt-20">Step 1.</h2>
             <p className="text-lg mb-10">
               오늘 하루 있었던 일을 되돌아보며 작성하세요.
@@ -23,14 +23,14 @@ export default function HomePage() {
               내가 무슨 상황에서 어떤 감정을 느꼈는지 다시 생각해봅시다.
             </p>
           </div>
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-2xl font-bold mb-4">유담이의 일기</h2>
           </div>
         </div>
 
         {/* Step 2 */}
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="w-420 h-200 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-20 mt-20">Step 2.</h2>
             <p className="text-lg mb-10">
               제출하기를 누르면 AI가 일기를 분석해서
@@ -40,28 +40,17 @@ export default function HomePage() {
               오늘의 감정에 따른 색이 반영된 나무가 자라나요.
             </p>
           </div>
-          <div className="bg-white p-6 shadow-lg rounded-lg">
-            <img
-              src="/path/to/tree-visual.png"
-              alt="Emotion Tree Visualization"
-              className="w-full h-40 object-contain"
-            />
-            <div className="text-lg mt-4">
-              <strong>Today Feeling:</strong>
-              <ul>
-                <li>행복: 30%</li>
-                <li>슬픔: 0%</li>
-                <li>불안: 0%</li>
-                <li>화남: 35%</li>
-                <li>평온: 0%</li>
-                <li>피곤: 35%</li>
-              </ul>
-            </div>
-          </div>
+          {/* <div className="bg-white p-6 shadow-lg rounded-10 items-center justify-center"> */}
+          <img
+            src="/images/tree1.png"
+            alt="Emotion Tree Visualization"
+            className="w-400 h-200 ml-10 rounded-10 shadow-lg"
+          />
+          {/* </div> */}
         </div>
 
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-20 mt-20">Step 3.</h2>
             <p className="text-lg mb-10">
               오늘 하루 있었던 일을 되돌아보며 작성하세요.
@@ -70,13 +59,13 @@ export default function HomePage() {
               내가 무슨 상황에서 어떤 감정을 느꼈는지 다시 생각해봅시다.
             </p>
           </div>
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-2xl font-bold mb-4">유담이의 일기</h2>
           </div>
         </div>
 
         <div className="w-900 h-200 max-w-4xl grid grid-cols-2 gap-50 mt-50">
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-20 mt-20">Step 4.</h2>
             <p className="text-lg mb-10">
               오늘 하루 있었던 일을 되돌아보며 작성하세요.
@@ -85,7 +74,7 @@ export default function HomePage() {
               내가 무슨 상황에서 어떤 감정을 느꼈는지 다시 생각해봅시다.
             </p>
           </div>
-          <div className="bg-white p-6 shadow-lg rounded-lg">
+          <div className="bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-2xl font-bold mb-4">유담이의 일기</h2>
           </div>
         </div>
