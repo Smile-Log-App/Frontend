@@ -16,7 +16,12 @@ export default function HomePage() {
             alt="Smile Log Logo"
             className="w-300 h-300 mb-10"
           />
-          <h1 className="text-70 font-bold text-white">Smile Log :)</h1>
+          <h1
+            className="text-70 font-bold text-white"
+            style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}
+          >
+            Smile Log :)
+          </h1>
         </div>
         <h1 className="text-20 font-light text-grey mb-15">
           가족과 다투고, 일은 마음대로 안되고, 괜히 우울한 밤에 마음껏 감정을
@@ -29,7 +34,9 @@ export default function HomePage() {
           깊어지는 고민에도 높은 비용의 상담을 시작하기가 망설여졌다면 언제든
         </h1>
         <h1 className="text-20 font-light text-grey mb-110">
-          가벼운 마음으로 시작할 수 있는 스마일리와 얘기해보세요!
+          가벼운 마음으로 시작할 수 있는{" "}
+          <span className="text-30 text-blue-600"> 스마일리 </span>와
+          얘기해보세요!
         </h1>
 
         <Link
@@ -54,6 +61,13 @@ export default function HomePage() {
             <h2 className="text-30 font-bold mb-40 mt-120">나무 시각화</h2>
           </div>
         </div>
+
+        <h1 className="text-30 font-light text-grey mb-30">
+          저희 서비스 스마일로그를 사용할 수 있는 방법을
+        </h1>
+        <h1 className="text-30 font-light text-grey mb-130">
+          자세하게 알려드릴게요 !
+        </h1>
 
         {/* Steps and Description */}
         <div className="w-1000 h-200 grid grid-cols-2 gap-100 mb-300">
@@ -110,7 +124,7 @@ export default function HomePage() {
         </div>
         <div className="w-1000 h-200 grid grid-cols-2 gap-100 mt-50 mb-200">
           <div className="w-450 h-260 bg-white p-6 shadow-lg rounded-10">
-            <h2 className="text-30 font-bold mb-30 mt-40">Step 4.</h2>
+            <h2 className="text-30 font-bold mb-30 mt-20">Step 4.</h2>
             <p className="text-lg mb-20">
               달력 화면에서 해당 날짜를 클릭했을 때 작성된 일기가 없다면
             </p>
