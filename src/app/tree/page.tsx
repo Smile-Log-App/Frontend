@@ -7,7 +7,7 @@ import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import EmotionList from "@/components/emotion/emotion-list";
 import { getYearMonth } from "@/utils/get-year-and-month";
 import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
-
+import TreeIcon from "#/icons/ic-tree.svg";
 export default function TreePage() {
   const { year, month } = getYearMonth(new Date());
   const { data: monthlyDiary } = useGetMonthlyDiaryQuery(year, month);
@@ -24,8 +24,9 @@ export default function TreePage() {
   }, [emotionDistribution]);
 
   return (
-    <div className="pt-160 h-full flex px-30 gap-40">
-      <EmotionList />
+    <div className="relative pt-160 h-full flex px-60 gap-40">
+      <EmotionBarList label="Monthly Feeling" emotions={emotionDistribution} />
+
       <div className="flex h-600 w-900 translate-y-[-20%]  ">
         {emotionDistribution && (
           <TreeCanvas
@@ -38,10 +39,12 @@ export default function TreePage() {
       </div>
 
       {emotionDistribution && (
-        <EmotionBarList
-          label="Monthly Feeling"
-          emotions={emotionDistribution}
-        />
+        <>
+          <button className="absolute bottom-120 right-40 flex flex-col gap-20 items-center">
+            <TreeIcon alt="나무 아이콘" />
+            <p className="text-24">나무 도감</p>
+          </button>
+        </>
       )}
     </div>
   );
