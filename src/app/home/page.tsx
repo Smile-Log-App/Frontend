@@ -16,7 +16,7 @@ export default function HomePage() {
             alt="Smile Log Logo"
             className="w-300 h-300 mb-10"
           />
-          <h1 className="text-60 font-bold text-white">Smile Log :)</h1>
+          <h1 className="text-70 font-bold text-white">Smile Log :)</h1>
         </div>
         <h1 className="text-20 font-light text-grey mb-15">
           가족과 다투고, 일은 마음대로 안되고, 괜히 우울한 밤에 마음껏 감정을
@@ -33,13 +33,30 @@ export default function HomePage() {
         </h1>
 
         <Link
-          className="flex justify-center items-center mb-100 w-200 h-50 shadow-lg rounded-10 bg-white text-20"
+          className="flex justify-center items-center mb-130 w-200 h-50 shadow-lg rounded-10 bg-white text-20"
           href={`/diary?date=${todayDate}`}
         >
           일기 쓰러가기
         </Link>
+
+        <h1 className="text-30 font-light text-grey mb-130">
+          저희 스마일로그는 다음과 같은 기능들을 제시합니다
+        </h1>
+
+        <div className="w-1000 h-200 grid grid-cols-3 gap-50 mb-400">
+          <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
+            <h2 className="text-30 font-bold mb-40 mt-120">일기 작성</h2>
+          </div>
+          <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
+            <h2 className="text-30 font-bold mb-40 mt-120">AI 챗봇</h2>
+          </div>
+          <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
+            <h2 className="text-30 font-bold mb-40 mt-120">나무 시각화</h2>
+          </div>
+        </div>
+
         {/* Steps and Description */}
-        <div className="w-1000 h-200 grid grid-cols-2 gap-100 mb-200">
+        <div className="w-1000 h-200 grid grid-cols-2 gap-100 mb-300">
           <div className="w-450 h-400 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-40 mt-120">Step 1.</h2>
             <p className="text-lg mb-20">
@@ -56,7 +73,7 @@ export default function HomePage() {
           />
         </div>
         {/* Step 2 */}
-        <div className="w-1000 h-200 grid grid-cols-2 gap-100 mt-50 mb-50">
+        <div className="w-1000 h-200 grid grid-cols-2 gap-100 mt-50 mb-150">
           <div className="w-450 h-240 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-30 mt-20">Step 2.</h2>
             <p className="text-lg mb-20">
@@ -75,8 +92,8 @@ export default function HomePage() {
           />
           {/* </div> */}
         </div>
-        <div className="w-1000 h-200 grid grid-cols-2 gap-100 mt-50 mb-50">
-          <div className="w-450 h-240 bg-white p-6 shadow-lg rounded-10">
+        <div className="w-1000 h-200 grid grid-cols-2 gap-100 mt-50 mb-170">
+          <div className="w-450 h-260 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-40 mt-40">Step 3.</h2>
             <p className="text-lg mb-20">
               달력 화면에는 이번 달 나의 감정들을 한 눈에 확인할 수 있어요 !
@@ -88,12 +105,12 @@ export default function HomePage() {
           <img
             src="/images/calendar.png"
             alt="Emotion Tree Visualization"
-            className="w-450 h-240 ml-0 rounded-10 shadow-lg"
+            className="w-450 h-260 ml-0 rounded-10 shadow-lg"
           />
         </div>
         <div className="w-1000 h-200 grid grid-cols-2 gap-100 mt-50 mb-200">
-          <div className="w-450 h-240 bg-white p-6 shadow-lg rounded-10">
-            <h2 className="text-30 font-bold mb-20 mt-20">Step 4.</h2>
+          <div className="w-450 h-260 bg-white p-6 shadow-lg rounded-10">
+            <h2 className="text-30 font-bold mb-30 mt-40">Step 4.</h2>
             <p className="text-lg mb-20">
               달력 화면에서 해당 날짜를 클릭했을 때 작성된 일기가 없다면
             </p>
@@ -105,7 +122,7 @@ export default function HomePage() {
           <img
             src="/images/diaryRecord.png"
             alt="Emotion Tree Visualization"
-            className="w-450 h-240 ml-0 rounded-10 shadow-lg"
+            className="w-450 h-260 ml-0 rounded-10 shadow-lg"
           />
         </div>
         <Link
