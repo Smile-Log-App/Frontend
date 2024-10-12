@@ -1,6 +1,13 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { postAccessToken } from "@/api/auth/use-post-aceess-token"; // 기존에 정의된 postAccessToken 함수
 
+// 토큰 재발급이 필요한지 판단하는 함수
+const shouldRetryToken = (url: string | undefined): boolean => {
+  // 회원가입, 로그인, 혹은 토큰 재발급이 필요하지 않은 API의 URL을 정의
+  const excludedUrls = ["/auth/signup"];
+  return !excludedUrls.includes(url || "");
+};
+
 // AxiosRequestConfig 확장
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean; // _retry 속성 추가
@@ -52,7 +59,7 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
+// Axios 인터셉터 설정
 instance.interceptors.response.use(
   (response) => {
     return response.data;
@@ -65,21 +72,24 @@ instance.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const authData = getAuthData(); // auth 객체에서 refreshToken 가져옴
-    const refreshToken = authData ? authData.refreshToken : null;
-
-    // 리프레시 토큰이 없거나 만료된 경우 에러 처리
-    if (!refreshToken) {
-      console.error("리프레시 토큰이 없습니다.");
-      localStorage.removeItem("auth");
-      return Promise.reject(
-        new Error("리프레시 토큰이 없습니다. 로그아웃 처리됩니다."),
-      );
-    }
-
-    // 403 에러 발생 시
-    if (error.response?.status === 403) {
+    // 403 에러 발생 시 토큰 재발급이 필요한 URL인지 확인
+    if (
+      error.response?.status === 403 &&
+      shouldRetryToken(originalRequest.url)
+    ) {
       originalRequest._retry = true; // 한 번만 재시도하게 설정
+
+      const authData = getAuthData(); // auth 객체에서 refreshToken 가져옴
+      const refreshToken = authData ? authData.refreshToken : null;
+
+      // 리프레시 토큰이 없거나 만료된 경우 에러 처리
+      if (!refreshToken) {
+        console.error("리프레시 토큰이 없습니다.");
+        localStorage.removeItem("auth");
+        return Promise.reject(
+          new Error("리프레시 토큰이 없습니다. 로그아웃 처리됩니다."),
+        );
+      }
 
       try {
         // 리프레시 토큰으로 새 액세스 토큰 요청
