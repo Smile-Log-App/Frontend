@@ -112,47 +112,45 @@ function Calendar({
   const emptyFirstCards = Array.from({ length: dayOfWeek }, (_, v) => v + 1);
 
   return (
-    <div className="flex justify-center items-center h-screen mt-30">
-      <div className="w-[800px] p-6 bg-white/50 rounded-2xl shadow-lg">
-        <CalendarHeader
-          year={year}
-          month={month}
-          onPrevMonth={onPrevMonth}
-          onNextMonth={onNextMonth}
-        />
+    <div className="w-[800px] p-6 bg-white/50 rounded-2xl shadow-lg">
+      <CalendarHeader
+        year={year}
+        month={month}
+        onPrevMonth={onPrevMonth}
+        onNextMonth={onNextMonth}
+      />
 
-        <div className="grid grid-cols-7 gap-0">
-          {WEEK.map((day) => (
-            <div
+      <div className="grid grid-cols-7 gap-0">
+        {WEEK.map((day) => (
+          <div
+            key={day}
+            className="flex items-center justify-center h-50 text-center font-bold text-25"
+          >
+            {day}
+          </div>
+        ))}
+
+        {emptyFirstCards.map((_, idx) => (
+          <div key={idx} className="p-2"></div>
+        ))}
+
+        {allDays.map((day) => {
+          // 현재 날짜와 매치되는 감정 데이터를 찾음
+          const emotion = emotions.find(
+            (emotionData) =>
+              emotionData.date === formatYearMonthDay(year, month, day), // 포맷팅 함수 사용
+          )?.top_emotion;
+
+          return (
+            <CalendarDay
               key={day}
-              className="flex items-center justify-center h-50 text-center font-bold text-25"
-            >
-              {day}
-            </div>
-          ))}
-
-          {emptyFirstCards.map((_, idx) => (
-            <div key={idx} className="p-2"></div>
-          ))}
-
-          {allDays.map((day) => {
-            // 현재 날짜와 매치되는 감정 데이터를 찾음
-            const emotion = emotions.find(
-              (emotionData) =>
-                emotionData.date === formatYearMonthDay(year, month, day), // 포맷팅 함수 사용
-            )?.top_emotion;
-
-            return (
-              <CalendarDay
-                key={day}
-                day={day}
-                year={year}
-                month={month}
-                emotion={emotion} // 감정 데이터가 있으면 전달
-              />
-            );
-          })}
-        </div>
+              day={day}
+              year={year}
+              month={month}
+              emotion={emotion} // 감정 데이터가 있으면 전달
+            />
+          );
+        })}
       </div>
     </div>
   );

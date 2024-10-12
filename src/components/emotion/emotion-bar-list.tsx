@@ -41,7 +41,7 @@ interface EmotionBarListProps {
 export function EmotionBarList({ emotions, label }: EmotionBarListProps) {
   if (!emotions) return;
   return (
-    <div className="flex gap-10 flex-col p-4 bg-blue-100 rounded-lg shadow-md max-w-md mx-auto">
+    <div className="h-300 flex gap-10 flex-col p-4 bg-blue-100 rounded-lg shadow-md">
       <h2 className="text-20 font-bold mb-6 text-center">{label}</h2>
       <div className="flex flex-col gap-10">
         {Object.keys(emotions).map((emotion) => (

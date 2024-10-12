@@ -11,8 +11,7 @@ const EmotionItem = ({ src, label }: { src: string; label: string }) => (
 // 감정 리스트 컴포넌트
 const EmotionList = () => {
   return (
-    <div className="flex flex-col h-600 w-200 p-8 rounded-2xl text-center">
-      <h1 className="text-3xl font-bold mb-6">나의 감정</h1>
+    <div className="flex flex-col  w-200 rounded-2xl text-center">
       <EmotionItem src="/images/emoji/joy.png" label="행복" />
       <EmotionItem src="/images/emoji/neutrality.png" label="평온" />
       <EmotionItem src="/images/emoji/sadness.png" label="슬픔" />

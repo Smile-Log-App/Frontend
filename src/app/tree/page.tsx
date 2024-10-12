@@ -6,6 +6,7 @@ import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribu
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import EmotionList from "@/components/emotion/emotion-list";
 import { getYearMonth } from "@/utils/get-year-and-month";
+import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 
 export default function TreePage() {
   const { year, month } = getYearMonth(new Date());
@@ -23,19 +24,27 @@ export default function TreePage() {
   }, [emotionDistribution]);
 
   return (
-    <div className="h-full flex items-center justify-center">
-      <EmotionList />
+    <>
+      <div className="pt-160 h-full flex px-30 gap-40">
+        <EmotionList />
+        <div className="flex h-800 w-900 translate-y-[-40%]  ">
+          {emotionDistribution && (
+            <TreeCanvas
+              colors={topThreeColors} // 상위 3개의 감정 색상
+              hp={90} // 감정에 따른 HP
+              day={2}
+              widthRatio={2 / 5}
+            />
+          )}
+        </div>
 
-      <div className="flex h-800 w-900 translate-y-[-25%]  ">
         {emotionDistribution && (
-          <TreeCanvas
-            colors={topThreeColors} // 상위 3개의 감정 색상
-            hp={90} // 감정에 따른 HP
-            day={2}
-            widthRatio={2 / 5}
+          <EmotionBarList
+            label="Monthly Feeling"
+            emotions={emotionDistribution}
           />
         )}
       </div>
-    </div>
+    </>
   );
 }
