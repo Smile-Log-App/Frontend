@@ -12,15 +12,6 @@ interface GetDailyDiaryRes {
   emotionAnalysis: EmotionAnalysis & { analysis_id: number; diary_id: number }; // 감정 분석 결과 객체
 }
 
-// 감정 분석 결과에서 ID 필드 제거하는 함수
-const removeIdsFromEmotionAnalysis = (
-  emotionAnalysis: EmotionAnalysis & { analysis_id: number; diary_id: number },
-): EmotionAnalysis => {
-  // EmotionAnalysis 타입으로 변환 (analysis_id와 diary_id 제거)
-  const { analysis_id, diary_id, ...rest } = emotionAnalysis;
-  return rest;
-};
-
 // 서버에서 받아온 데이터를 클라이언트에서 사용할 데이터로 변환
 const getDailyDiary = async (
   date: string | null,
@@ -32,15 +23,10 @@ const getDailyDiary = async (
   // 이미 인터셉터에서 response.data를 반환하므로 바로 할당
   const data: GetDailyDiaryRes = await instance.get(`/daily?date=${date}`);
 
-  // emotionAnalysis에서 ID 필드 제거
-  const transformedEmotionAnalysis = removeIdsFromEmotionAnalysis(
-    data.emotionAnalysis,
-  );
-
   // 변환된 데이터를 포함한 일기 객체 반환
   return {
     ...data,
-    emotionAnalysis: transformedEmotionAnalysis,
+    emotionAnalysis: data.emotionAnalysis,
   };
 };
 

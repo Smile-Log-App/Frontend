@@ -2,6 +2,7 @@
 import useGetUser from "@/api/user/getUserQuery";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
 import { formatDateToISO } from "@/utils/format-date";
+import { getYearMonth } from "@/utils/get-year-and-month";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -9,8 +10,11 @@ export default function Navbar() {
   const [auth, setAuth] = useAuthGlobalAtom();
   const { isLoggedIn } = auth;
   const { data: user } = useGetUser();
+
+  const today = new Date();
   // 오늘 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
-  const todayDate = formatDateToISO(new Date());
+  const todayDate = formatDateToISO(today);
+  const { year, month } = getYearMonth(today);
   const router = useRouter();
   const handleLogout = () => {
     setAuth({
@@ -36,12 +40,15 @@ export default function Navbar() {
                 일기
               </Link>
               <Link
-                href="/calendar"
+                href={`/calendar`}
                 className="text-gray-700 hover:text-black-900"
               >
                 달력
               </Link>
-              <Link href="/tree" className="text-gray-700 hover:text-black-900">
+              <Link
+                href={`/tree?year=${year}&month=${month}`}
+                className="text-gray-700 hover:text-black-900"
+              >
                 나무
               </Link>
               <button
