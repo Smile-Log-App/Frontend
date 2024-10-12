@@ -2,6 +2,7 @@ import Image from "next/image";
 import { formatYearMonthDay } from "@/utils/format-date";
 import { isAfter } from "date-fns";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // 요일 배열
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
@@ -77,7 +78,7 @@ function CalendarDay({ day, emotion, year, month }: CalendarDayProps) {
     router.push(`/diary?date=${formattedDate}`);
   };
   return (
-    <button onClick={handleDayClick}>
+    <Link href={`/diary?date=${formattedDate}`} passHref>
       <div
         className={`p-10 h-100 font-bold text-20 text-center items-center flex flex-col relative cursor-pointer border-1 border-gray-300`}
       >
@@ -91,7 +92,7 @@ function CalendarDay({ day, emotion, year, month }: CalendarDayProps) {
           />
         )}
       </div>
-    </button>
+    </Link>
   );
 }
 

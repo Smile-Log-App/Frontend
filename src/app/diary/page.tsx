@@ -26,15 +26,17 @@ export default function DiaryPage() {
   const { data: user } = useGetUser();
 
   return (
-    <div className="h-full  flex items-center justify-center py-20 gap-60 text-30">
+    <div className="h-full  flex items-center justify-center py-80 gap-60 text-30">
       <div className="flex flex-col items-center gap-30">
         <p className="text-30">{date && formatDate(date)}</p>
         <h1 className="text-40 font-bold mb-8 text-center">
           {user?.username}의 일기
         </h1>
-        {diary ? (
-          <div className="p-6 rounded shadow-md max-w-lg">
-            <p className="text-20 mb-4">{diary.content}</p>
+        {diary?.content ? (
+          <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-lg max-w-lg">
+            <p className="text-20 mb-4 whitespace-pre-wrap leading-relaxed tracking-wide">
+              {diary.content}
+            </p>
           </div>
         ) : (
           <DiaryForm />

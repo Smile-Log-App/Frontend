@@ -4,6 +4,7 @@ import { usePostDiaryMutation } from "@/api/diary/use-post-diary-mutation";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
+import Button from "@/components/common/button";
 
 export default function DiaryForm() {
   const [htmlContent, setHtmlContent] = useState<string>("");
@@ -76,19 +77,16 @@ export default function DiaryForm() {
       className="flex flex-col items-center gap-30"
     >
       <textarea
-        className="w-600 h-200 text-20"
+        className="w-800 h-300 text-20 resize-none rounded-10 focus:outline-none"
         value={htmlContent}
         onChange={(e) => {
           setHtmlContent(e.target.value);
         }}
       />
       <div className="w-full flex justify-center">
-        <button
-          className="font-bold py-2 px-4 bg-white rounded shadow"
-          disabled={analyzeEmotionMutation.isPending}
-        >
+        <Button disabled={analyzeEmotionMutation.isPending}>
           {analyzeEmotionMutation.isPending ? "분석 중..." : "제출하기"}
-        </button>
+        </Button>
       </div>
     </form>
   );
