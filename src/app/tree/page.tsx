@@ -24,27 +24,25 @@ export default function TreePage() {
   }, [emotionDistribution]);
 
   return (
-    <>
-      <div className="pt-160 h-full flex px-30 gap-40">
-        <EmotionList />
-        <div className="flex h-800 w-900 translate-y-[-40%]  ">
-          {emotionDistribution && (
-            <TreeCanvas
-              colors={topThreeColors} // 상위 3개의 감정 색상
-              hp={90} // 감정에 따른 HP
-              day={2}
-              widthRatio={2 / 5}
-            />
-          )}
-        </div>
-
+    <div className="pt-160 h-full flex px-30 gap-40">
+      <EmotionList />
+      <div className="flex h-600 w-900 translate-y-[-20%]  ">
         {emotionDistribution && (
-          <EmotionBarList
-            label="Monthly Feeling"
-            emotions={emotionDistribution}
+          <TreeCanvas
+            colors={topThreeColors} // 상위 3개의 감정 색상
+            hp={90} // 감정에 따른 HP
+            day={2}
+            widthRatio={2 / 5}
           />
         )}
       </div>
-    </>
+
+      {emotionDistribution && (
+        <EmotionBarList
+          label="Monthly Feeling"
+          emotions={emotionDistribution}
+        />
+      )}
+    </div>
   );
 }

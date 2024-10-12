@@ -17,7 +17,7 @@ interface EmotionBarProps {
 
 function EmotionBar({ label, percentage, color }: EmotionBarProps) {
   return (
-    <div className="w-160 h-30 flex flex-col gap-12 mb-4">
+    <div className="h-40 flex flex-col gap-12 mb-4">
       <div className="flex justify-between items-center">
         <span className="text-20">{label}</span>
         <span className="text-20">{percentage}%</span>
@@ -41,7 +41,7 @@ interface EmotionBarListProps {
 export function EmotionBarList({ emotions, label }: EmotionBarListProps) {
   if (!emotions) return;
   return (
-    <div className="h-300 flex gap-10 flex-col p-4 bg-blue-100 rounded-lg shadow-md">
+    <div className="h-360 w-180 flex gap-10 flex-col p-4 bg-blue-100 rounded-lg shadow-md">
       <h2 className="text-20 font-bold mb-6 text-center">{label}</h2>
       <div className="flex flex-col gap-10">
         {Object.keys(emotions).map((emotion) => (
