@@ -4,22 +4,12 @@ import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query";
 import Calendar from "@/app/calendar/components/Calendar";
 import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
+import { getYearMonth } from "@/utils/get-year-and-month";
 
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
 
-export const showTodayDate = () => {
-  const now = new Date();
-  const curYear = now.getFullYear();
-  const curMonth = now.getMonth() + 1;
-  const curDay = now.getDate();
-  const curHour = now.getHours();
-  const curMinute = now.getMinutes();
-
-  return { curYear, curMonth, curDay, curHour, curMinute };
-};
-
 function CalendarPage() {
-  const { curYear, curMonth } = showTodayDate();
+  const { year: curYear, month: curMonth } = getYearMonth(new Date());
   const [year, setYear] = useState<number>(curYear);
   const [month, setMonth] = useState<number>(curMonth);
 
