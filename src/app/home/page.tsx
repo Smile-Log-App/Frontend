@@ -28,7 +28,7 @@ export default function HomePage() {
         <h1 className="text-20 font-light text-gre mb-15">
           깊어지는 고민에도 높은 비용의 상담을 시작하기가 망설여졌다면 언제든
         </h1>
-        <h1 className="text-20 font-light text-grey mb-80">
+        <h1 className="text-20 font-light text-grey mb-110">
           가벼운 마음으로 시작할 수 있는 스마일리와 얘기해보세요!
         </h1>
 
