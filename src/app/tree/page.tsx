@@ -1,11 +1,9 @@
 "use client";
 import { useMemo } from "react";
 import TreeCanvas from "@/components/tree/TreeCanvas";
-
 import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query"; // 월별 감정 데이터를 가져오는 쿼리 훅
 import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
-import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import EmotionList from "@/components/emotion/emotion-list";
 import { getYearMonth } from "@/utils/get-year-and-month";
 

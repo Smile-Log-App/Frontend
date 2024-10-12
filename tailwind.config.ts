@@ -16,14 +16,14 @@ const pxValues = (end: number): AccType => {
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    spacing: pxValues(2000), // For padding, margin, gap, etc.
-    fontSize: pxValues(200), // For font-size
-    height: pxValues(2000), // For height
-    width: pxValues(2000), // For width
-    borderWidth: pxValues(20), // For border-width
-    borderRadius: pxValues(100), // For border-radius
-    lineHeight: pxValues(200), // For line-height
     extend: {
+      spacing: pxValues(2000), // For padding, margin, gap, etc.
+      fontSize: pxValues(200), // For font-size
+      height: pxValues(2000), // For height
+      width: pxValues(2000), // For width
+      borderWidth: pxValues(20), // For border-width
+      borderRadius: pxValues(100), // For border-radius
+      lineHeight: pxValues(200), // For line-height
       colors: {
         // 기본 색상 설정
         white: "#ffffff",
@@ -47,7 +47,7 @@ const config: Config = {
         fatigue: "#B0B0B0", // 피곤
       },
       backgroundImage: {},
-      height: {},
+
       animation: {},
     },
   },
