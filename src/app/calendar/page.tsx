@@ -41,7 +41,7 @@ function CalendarPage() {
   }, [monthlyDiary]);
 
   return (
-    <div className="flex px-150 items-center gap-100 py-50">
+    <div className="flex px-150 items-center justify-between py-50">
       <Calendar
         year={year}
         month={month}

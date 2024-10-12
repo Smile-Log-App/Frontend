@@ -37,19 +37,19 @@ export default function Navbar() {
                 href={`/diary?date=${todayDate}`} // 현재 날짜를 쿼리 파라미터로 추가
                 className="text-gray-700 hover:text-black-900"
               >
-                일기
+                오늘의 일기
               </Link>
               <Link
                 href={`/calendar`}
                 className="text-gray-700 hover:text-black-900"
               >
-                달력
+                캘린더
               </Link>
               <Link
                 href={`/tree?year=${year}&month=${month}`}
                 className="text-gray-700 hover:text-black-900"
               >
-                나무
+                이 달의 나무
               </Link>
               <button
                 onClick={handleLogout}
