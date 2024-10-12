@@ -19,20 +19,16 @@ interface EmotionBarProps {
 
 function EmotionBar({ label, percentage, color, src }: EmotionBarProps) {
   return (
-    <div className="h-40 flex flex-col mb-6">
-      <div className="flex justify-between items-center mb-2">
-        <div className="flex items-center gap-2">
-          <Image src={src} alt={label} width={44} height={44} />
-          <span className="text-20">{label}</span>
-        </div>
-        <span className="text-20">{percentage}%</span>
-      </div>
-      <div className="w-full rounded-full h-4">
+    <div className="h-40 flex items-center mb-6">
+      <Image src={src} alt={label} width={44} height={44} className="mr-2" />
+      <span className="text-20 mr-4">{label}</span>
+      <div className="flex-1 w-full h-4 rounded-full bg-gray-100 mr-4">
         <div
           className="h-4 rounded-full"
           style={{ width: `${percentage}%`, backgroundColor: color }}
         ></div>
       </div>
+      <span className="text-20">{percentage}%</span>
     </div>
   );
 }

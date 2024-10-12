@@ -24,7 +24,7 @@ export default function TreePage() {
   }, [emotionDistribution]);
 
   return (
-    <div className="relative pt-160 h-full flex px-60 gap-40">
+    <div className="relative justify-between pt-160 h-full flex px-100 gap-40">
       <EmotionBarList label="Monthly Feeling" emotions={emotionDistribution} />
 
       <div className="flex h-600 w-900 translate-y-[-20%]  ">
@@ -40,7 +40,7 @@ export default function TreePage() {
 
       {emotionDistribution && (
         <>
-          <button className="absolute bottom-120 right-40 flex flex-col gap-20 items-center">
+          <button className="pt-60 flex flex-col gap-20 items-center">
             <TreeIcon alt="나무 아이콘" />
             <p className="text-24">나무 도감</p>
           </button>
