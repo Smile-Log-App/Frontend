@@ -1,8 +1,8 @@
 "use client";
-import Link from "next/link";
+import useGetUser from "@/api/user/getUserQuery";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
 import { formatDateToISO } from "@/utils/format-date";
-import useGetUser from "@/api/user/getUserQuery";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
@@ -26,7 +26,7 @@ export default function Navbar() {
         <Link href="/home" className="text-25 p-10 pl-30 font-bold">
           Smile Log
         </Link>
-        <div className="flex gap-15 text-20 space-x-10">
+        <div className="flex gap-15 text-20 space-x-10 mr-40">
           {isLoggedIn ? (
             <>
               <Link
