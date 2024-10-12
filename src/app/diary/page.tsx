@@ -26,7 +26,7 @@ export default function DiaryPage() {
   const { data: user } = useGetUser();
 
   return (
-    <div className="h-full min-h-screen flex items-center justify-between px-40 text-30">
+    <div className="h-full  flex items-center justify-center py-20 gap-60 text-30">
       <div className="flex flex-col items-center gap-30">
         <p className="text-30">{date && formatDate(date)}</p>
         <h1 className="text-40 font-bold mb-8 text-center">
@@ -42,7 +42,7 @@ export default function DiaryPage() {
       </div>
       {diary && diary.emotionAnalysis && (
         <>
-          <div className="px-20 flex h-650 w-600 justify-center">
+          <div className="px-20 flex h-600 w-640 justify-center">
             <TreeCanvas
               colors={topThreeColors}
               hp={80}

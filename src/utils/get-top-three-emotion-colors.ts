@@ -9,8 +9,6 @@ import { EmotionAnalysis, EmotionType } from "@/types/emotion";
 export const getTopThreeEmotionColors = (
   emotion: Record<EmotionType, number> | null,
 ): string[] => {
-  console.log("Received emotion object:", emotion); // 추가: 입력 값 로그
-
   if (!emotion) return [];
 
   const sortedEmotions = Object.entries(emotion)
@@ -23,7 +21,6 @@ export const getTopThreeEmotionColors = (
 
   let colors = nonZeroEmotions.map(([emotion]) => {
     const color = EMOTION_COLORS[emotion as EmotionType];
-    console.log(`Mapping ${emotion} to color: ${color}`); // 추가: 색상 매핑 로그
     return color;
   });
 

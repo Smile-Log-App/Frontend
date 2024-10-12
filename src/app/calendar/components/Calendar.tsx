@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { formatYearMonthDay } from "@/utils/format-date";
+import { isAfter } from "date-fns";
+import { useRouter } from "next/navigation";
 
 // 요일 배열
 const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
@@ -64,8 +66,19 @@ function CalendarDay({ day, emotion, year, month }: CalendarDayProps) {
   // 날짜 포맷팅 함수 사용
   const formattedDate = formatYearMonthDay(year, month, day);
 
+  // 오늘 날짜와 비교
+  const today = new Date();
+  const currentDate = new Date(year, month - 1, day);
+  const isFutureDate = isAfter(currentDate, today);
+  const router = useRouter();
+  const handleDayClick = () => {
+    if (isFutureDate) {
+      return;
+    }
+    router.push(`/diary?date=${formattedDate}`);
+  };
   return (
-    <Link href={`/diary?date=${formattedDate}`} passHref>
+    <button onClick={handleDayClick}>
       <div
         className={`p-10 h-100 font-bold text-20 text-center items-center flex flex-col relative cursor-pointer border-1 border-gray-300`}
       >
@@ -79,7 +92,7 @@ function CalendarDay({ day, emotion, year, month }: CalendarDayProps) {
           />
         )}
       </div>
-    </Link>
+    </button>
   );
 }
 

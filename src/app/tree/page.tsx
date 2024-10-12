@@ -7,12 +7,11 @@ import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribu
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
 import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import EmotionList from "@/components/emotion/emotion-list";
+import { getYearMonth } from "@/utils/get-year-and-month";
 
 export default function TreePage() {
-  const { data: monthlyDiary } = useGetMonthlyDiaryQuery(
-    "2024", // 예시로 2024년으로 설정 (필요한 연도와 월을 동적으로 설정할 수 있습니다)
-    "09", // 예시로 9월로 설정
-  );
+  const { year, month } = getYearMonth(new Date());
+  const { data: monthlyDiary } = useGetMonthlyDiaryQuery(year, month);
 
   // 감정 비중을 계산 (monthly_emotions를 기반으로 계산)
   const emotionDistribution = useMemo(() => {

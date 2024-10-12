@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 // POST 메서드 처리
 export async function POST(req: NextRequest) {
   const { entry } = await req.json();
-  console.log(entry);
+
   try {
     // OpenAI API 호출
     const openaiResponse = await axios.post(
@@ -42,7 +42,6 @@ Please ensure that the percentages add up to 100%. If multiple emotions are expr
     // OpenAI 응답 파싱
     const analysisText = openaiResponse.data.choices[0].message.content;
     const emotionPercentages = parseEmotionAnalysis(analysisText); // 감정 분석 파싱
-    console.log(emotionPercentages);
     return NextResponse.json(emotionPercentages); // 성공적인 응답
   } catch (error) {
     console.error("GPT API 요청 오류: ", error);

@@ -43,7 +43,8 @@ function CalendarPage() {
 
   // 감정 비중 계산 로직 호출
   const emotionDistribution = useMemo(() => {
-    if (!monthlyDiary?.monthly_emotions) return null;
+    if (monthlyDiary?.monthly_emotions.length === 0 || !monthlyDiary)
+      return null;
 
     // 한 달 동안 감정 비중 계산
     return calculateEmotionDistribution(monthlyDiary.monthly_emotions);

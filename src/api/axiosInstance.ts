@@ -77,11 +77,13 @@ instance.interceptors.response.use(
       error.response?.status === 403 &&
       shouldRetryToken(originalRequest.url)
     ) {
+      console.log(originalRequest.url);
       originalRequest._retry = true; // 한 번만 재시도하게 설정
 
       const authData = getAuthData(); // auth 객체에서 refreshToken 가져옴
       const refreshToken = authData ? authData.refreshToken : null;
 
+      console.log(refreshToken);
       // 리프레시 토큰이 없거나 만료된 경우 에러 처리
       if (!refreshToken) {
         console.error("리프레시 토큰이 없습니다.");

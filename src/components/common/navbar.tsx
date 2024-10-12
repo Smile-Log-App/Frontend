@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useAuthGlobalAtom } from "@/app/store/auth.store";
 import { formatDateToISO } from "@/utils/format-date";
 import useGetUser from "@/api/user/getUserQuery";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [auth, setAuth] = useAuthGlobalAtom();
@@ -10,12 +11,13 @@ export default function Navbar() {
   const { data: user } = useGetUser();
   // 오늘 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
   const todayDate = formatDateToISO(new Date());
-
+  const router = useRouter();
   const handleLogout = () => {
     setAuth({
       accessToken: "",
       isLoggedIn: false,
     });
+    router.push("/");
   };
 
   return (
