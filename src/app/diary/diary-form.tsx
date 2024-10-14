@@ -85,7 +85,7 @@ export default function DiaryForm() {
       />
       <div className="w-full flex justify-center">
         <Button disabled={analyzeEmotionMutation.isPending}>
-          {analyzeEmotionMutation.isPending ? "분석 중..." : "제출하기"}
+          {analyzeEmotionMutation.isPending ? "저장 중..." : "저장하기"}
         </Button>
       </div>
     </form>

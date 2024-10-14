@@ -92,7 +92,7 @@ export default function HomePage() {
           <div className="w-450 h-240 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-30 mt-20">Step 2.</h2>
             <p className="text-lg mb-20">
-              제출하기를 누르면 AI가 일기를 분석해서
+              저장하기를 누르면 AI가 일기를 분석해서
             </p>
             <p className="text-lg mb-20">오늘의 감정에 대해 알려줍니다.</p>
             <p className="text-lg">
