@@ -95,7 +95,7 @@ export default function HomePage() {
               제출하기를 누르면 AI가 일기를 분석해서
             </p>
             <p className="text-lg mb-20">오늘의 감정에 대해 알려줍니다.</p>
-            <p className="text-lg">
+            <p className="text-lg mb-20">
               오늘의 감정에 따른 색이 반영된 나무가 자라나요.
             </p>
           </div>
