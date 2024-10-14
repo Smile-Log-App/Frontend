@@ -54,6 +54,7 @@ export default function HomePage() {
           <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-40 mt-120">일기 작성</h2>
           </div>
+
           <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-40 mt-120">AI 챗봇</h2>
           </div>

@@ -12,7 +12,7 @@ function MonthButton({
   return (
     <button
       onClick={onClick}
-      className="w-100 h-40 bg-blue-100 rounded-lg text-18 font-semibold m-2"
+      className="w-100 h-60 bg-blue-100 rounded-lg text-20 font-semibold m-10"
     >
       {month}월
     </button>
@@ -38,7 +38,7 @@ export default function TreeBookDialog({
 
   return (
     <DialogDefault isOpen={isOpen} onOpenChange={() => onOpenChange()} overlay>
-      <div className="w-500 h-300 bg-white rounded-20 p-4 flex flex-wrap justify-center items-center">
+      <div className="w-500 bg-white rounded-20 p-10 flex flex-wrap justify-center items-center">
         {Array.from({ length: 12 }, (_, i) => (
           <MonthButton
             key={i + 1}
