@@ -77,7 +77,7 @@ export default function DiaryForm() {
       className="flex flex-col items-center gap-30"
     >
       <textarea
-        className="w-800 h-300 text-20 resize-none rounded-10 focus:outline-none"
+        className="p-20 w-800 h-300 text-20 resize-none rounded-10 leading-30 focus:outline-none"
         value={htmlContent}
         onChange={(e) => {
           setHtmlContent(e.target.value);
