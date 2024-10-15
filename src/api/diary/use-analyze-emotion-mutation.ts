@@ -1,4 +1,4 @@
-import { EmotionAnalysis, EmotionType } from "@/types/emotion";
+import { EmotionAnalysis } from "@/types/emotion";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 

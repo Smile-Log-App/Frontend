@@ -6,8 +6,6 @@ import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
 import { getYearMonth } from "@/utils/get-year-and-month";
 
-const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
-
 function CalendarPage() {
   const { year: curYear, month: curMonth } = getYearMonth(new Date());
   const [year, setYear] = useState<number>(curYear);

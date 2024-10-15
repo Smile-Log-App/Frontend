@@ -37,10 +37,6 @@ function LoginPage() {
 
   const router = useRouter();
 
-  const queryClient = useQueryClient();
-
-  const [, setIsLoggedIn] = useAtom(isLoggedInAtom); // useAtom을 사용합니다
-
   const loginMutation = useLoginMutation();
 
   const handleOnSubmit = async (data: FieldValues) => {
