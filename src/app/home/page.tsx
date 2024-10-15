@@ -52,14 +52,20 @@ export default function HomePage() {
 
         <div className="w-1000 h-200 grid grid-cols-3 gap-50 mb-400">
           <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
-            <h2 className="text-30 font-bold mb-40 mt-120">일기 작성</h2>
+            <h2 className="text-30 font-bold mb-40 mt-100">일기 작성</h2>
+            <img src="/images/diaryIcon.png" className="w-100 h-100 ml-90" />
           </div>
 
           <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
-            <h2 className="text-30 font-bold mb-40 mt-120">AI 챗봇</h2>
+            <h2 className="text-30 font-bold mb-40 mt-100">AI 챗봇</h2>
+            <img src="/images/chatbotIcon.png" className="w-100 h-100 ml-90" />
           </div>
           <div className="w-300 h-400 bg-white p-6 shadow-lg rounded-10">
-            <h2 className="text-30 font-bold mb-40 mt-120">나무 시각화</h2>
+            <h2 className="text-30 font-bold mb-40 mt-100">나무 시각화</h2>
+            <img
+              src="/images/blackTreeIcon.png"
+              className="w-100 h-100 ml-90"
+            />
           </div>
         </div>
 
