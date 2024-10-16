@@ -57,7 +57,7 @@ export default function TreePage() {
   return (
     <div className="relative justify-between pt-160 h-full flex px-100 gap-40">
       <div className="flex flex-col gap-20">
-        <p className="text-center text-2xl font-semibold mb-4">
+        <p className="text-center text-2xl text-black font-semibold mb-4">
           {year}년 {month}월 <br />
           감정 나무
         </p>
@@ -83,7 +83,7 @@ export default function TreePage() {
           className="pt-60 flex flex-col gap-20 items-center"
         >
           <TreeIcon alt="나무 아이콘" />
-          <p className="text-24">나무 도감</p>
+          <p className="text-24 text-black">나무 도감</p>
         </button>
       )}
       <TreeBookDialog

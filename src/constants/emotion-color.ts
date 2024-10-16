@@ -2,7 +2,7 @@ import { EmotionType } from "@/types/emotion";
 
 // constants/emotionColors.ts
 export const EMOTION_COLORS: Record<EmotionType, string> = {
-  joy: "#FFFF9F", // 기쁨
+  joy: "#FFFF5B", // 기쁨
   neutrality: "#C2FFBA", // 중립
   sadness: "#BCDEFF", // 슬픔
   anxiety: "#FFA44F", // 불안

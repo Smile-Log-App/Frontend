@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
 import Providers from "@/app/ReactQueryProvider";
 import Navbar from "@/components/common/navbar";
-import { Toaster } from "react-hot-toast";
 import { Provider as JotaiProvider } from "jotai";
+import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "",

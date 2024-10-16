@@ -28,8 +28,8 @@ export default function DiaryPage() {
   return (
     <div className="h-full  flex items-center justify-center py-80 gap-60 text-30">
       <div className="flex flex-col items-center gap-30">
-        <p className="text-30">{date && formatDate(date)}</p>
-        <h1 className="text-40 font-bold mb-8 text-center">
+        <p className="text-30 text-black">{date && formatDate(date)}</p>
+        <h1 className="text-40 text-black font-bold mb-8 text-center">
           {user?.username}의 일기
         </h1>
         {diary?.content ? (
