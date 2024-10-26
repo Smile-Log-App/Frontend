@@ -1,8 +1,10 @@
 import { GetDailyDiaryRes } from "@/api/diary/use-get-daily-diary-query";
+import ChatBotDialog from "@/app/diary/components/chat-bot-dialog";
 import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
 import TreeCanvas from "@/components/tree/TreeCanvas";
 import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import { formatDate } from "@/utils/get-today-date";
+import { useState } from "react";
 
 interface DiaryContentPageProps {
   diary: GetDailyDiaryRes;
@@ -11,13 +13,17 @@ interface DiaryContentPageProps {
   topThreeColors: string[];
 }
 
-// 일기 내용이 있을 때 페이지
 export default function FilledDiaryPage({
   diary,
   userName,
   date,
   topThreeColors,
 }: DiaryContentPageProps) {
+  const [isChatBotDialogOpen, setIsChatBotDialogOpen] = useState(false);
+
+  const handleChatBotButtonClick = () => {
+    setIsChatBotDialogOpen(true);
+  };
   return (
     <div className="h-full flex items-center justify-center py-80 gap-60 text-30">
       <div className="flex flex-col items-center gap-30">
@@ -43,6 +49,16 @@ export default function FilledDiaryPage({
         <EmotionBarList
           label="Today Feeling"
           emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
+        />
+        <button
+          onClick={handleChatBotButtonClick}
+          className="w-60 h-40 bg-white "
+        >
+          챗봇
+        </button>
+        <ChatBotDialog
+          isOpen={isChatBotDialogOpen}
+          onClose={() => setIsChatBotDialogOpen(false)}
         />
       </div>
     </div>

@@ -2,18 +2,18 @@ import * as ModalPrimitive from "@radix-ui/react-dialog";
 
 interface DefaultDialogProps {
   isOpen: boolean;
-  onOpenChange: (bool: boolean) => void;
+  onClose: () => void;
   children?: React.ReactNode;
   overlay?: boolean;
 }
 
 const DialogDefault = ({
-  onOpenChange,
+  onClose,
   isOpen,
   overlay,
   children,
 }: DefaultDialogProps) => (
-  <ModalPrimitive.Root open={isOpen} onOpenChange={onOpenChange}>
+  <ModalPrimitive.Root open={isOpen} onOpenChange={onClose}>
     <ModalPrimitive.Portal>
       {overlay && (
         <ModalPrimitive.Overlay className=" fixed left-[50%]  top-0 z-50  h-screen w-full translate-x-[-50%] bg-neutral-black opacity-40" />
