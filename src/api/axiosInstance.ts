@@ -15,7 +15,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 // Axios 인스턴스 생성
 export const instance = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: "http://3.34.74.208:8000/api",
   headers: {
     "Content-Type": "application/json",
   },
