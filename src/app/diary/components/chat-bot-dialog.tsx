@@ -15,7 +15,6 @@ export interface Message {
   senderId: string;
   text: string;
   createdAt: string;
-  replyTo: string | null; // 답장 메시지 ID, 없을 경우 null
 }
 const mockUser: User = { id: "1", username: "User1" }; // 예시 사용자 정보
 
@@ -45,7 +44,6 @@ export default function ChatBotDialog({
       senderId: mockUser.id,
       text: inputValue,
       createdAt: new Date().toISOString(),
-      replyTo: null,
     };
     setMessages([...messages, newMessage]);
     setInputValue(""); // 입력 필드 초기화
