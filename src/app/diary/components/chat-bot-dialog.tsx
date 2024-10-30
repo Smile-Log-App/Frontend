@@ -53,7 +53,7 @@ export default function ChatBotDialog({
 
   return (
     <DialogDefault isOpen={isOpen} onClose={onClose} overlay>
-      <div className="bg-white w-400 h-500 rounded-20 p-4 flex flex-col gap-4">
+      <div className="bg-white w-600 h-600 rounded-20 p-4 flex flex-col gap-4">
         <button className="self-end focus:outline-none" onClick={onClose}>
           <CloseIcon alt="닫기 아이콘" />
         </button>

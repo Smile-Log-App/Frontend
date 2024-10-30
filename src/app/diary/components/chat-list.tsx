@@ -39,13 +39,13 @@ export default function ChatList({ messages, me }: ChatListProps) {
 
               {/* 메시지 박스 */}
               <div
-                className={`max-w-xs p-3 rounded-2xl ${
+                className={`max-w-xs px-8 py-4 rounded-2xl whitespace-pre-wrap word-breaks ${
                   isMyMessage
                     ? "rounded-br-none bg-blue-200 text-white"
                     : "rounded-bl-none bg-gray-100 text-black"
                 }`}
               >
-                <p className="text-base">{message.text}</p>
+                <p className="text-base text-20">{message.text}</p>
               </div>
             </div>
           </div>
