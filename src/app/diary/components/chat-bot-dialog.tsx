@@ -1,6 +1,6 @@
 import DialogDefault from "@/components/common/dialog";
 import CloseIcon from "#/icons/ic-close.svg";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import ChatList from "@/app/diary/components/chat-list";
 import ChatInput from "@/app/diary/components/chat-input";
 import axios from "axios";
@@ -22,19 +22,26 @@ export default function ChatBotDialog({
   onClose: () => void;
   diary: string;
 }) {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: "0", text: diary, createdAt: new Date().toISOString(), isBot: false },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
 
+  // 챗봇이 모달을 열 때 첫 메시지를 보내도록 설정
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      handleBotResponse(diary);
+    }
+  }, [isOpen]);
+
+  // 입력 변경 핸들러
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
 
-  const handleBotResponse = async () => {
+  // 챗봇 응답 처리 함수
+  const handleBotResponse = async (userInput: string) => {
     try {
       const response = await axios.post("/api/chat", {
-        messages,
+        messages: [{ text: userInput, isBot: false }],
       });
 
       const botMessage: Message = {
@@ -50,6 +57,7 @@ export default function ChatBotDialog({
     }
   };
 
+  // 메시지 제출 핸들러
   const handleInputSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
@@ -65,7 +73,7 @@ export default function ChatBotDialog({
     setInputValue(""); // 입력 필드 초기화
 
     // 챗봇 응답 호출
-    handleBotResponse();
+    handleBotResponse(inputValue);
   };
 
   return (
