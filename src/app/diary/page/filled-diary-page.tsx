@@ -59,6 +59,7 @@ export default function FilledDiaryPage({
         <ChatBotDialog
           isOpen={isChatBotDialogOpen}
           onClose={() => setIsChatBotDialogOpen(false)}
+          diary={diary.content}
         />
       </div>
     </div>
