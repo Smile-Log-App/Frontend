@@ -28,7 +28,7 @@ export default function ChatBotDialog({
   // 챗봇이 모달을 열 때 첫 메시지를 보내도록 설정
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      handleBotResponse(diary);
+      handleBotResponse(diary, true);
     }
   }, [isOpen]);
 
@@ -37,7 +37,10 @@ export default function ChatBotDialog({
     setInputValue(e.target.value);
   };
   // 챗봇 응답 처리 함수
-  const handleBotResponse = async (userInput: string) => {
+  const handleBotResponse = async (
+    userInput: string,
+    isFirstRequest = false,
+  ) => {
     // 사용자 메시지를 messages 배열에 먼저 추가
     const newUserMessage: Message = {
       id: String(messages.length),
@@ -47,7 +50,9 @@ export default function ChatBotDialog({
     };
 
     // 사용자의 메시지만 우선 추가
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    if (!isFirstRequest) {
+      setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    }
 
     // 사용자 메시지를 포함한 전체 메시지 배열을 API에 전송
     const updatedMessages = [...messages, newUserMessage];
