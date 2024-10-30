@@ -36,44 +36,51 @@ export default function ChatBotDialog({
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
-
   // 챗봇 응답 처리 함수
   const handleBotResponse = async (userInput: string) => {
+    // 사용자 메시지를 messages 배열에 먼저 추가
+    const newUserMessage: Message = {
+      id: String(messages.length),
+      text: userInput,
+      createdAt: new Date().toISOString(),
+      isBot: false,
+    };
+
+    // 사용자의 메시지만 우선 추가
+    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+
+    // 사용자 메시지를 포함한 전체 메시지 배열을 API에 전송
+    const updatedMessages = [...messages, newUserMessage];
+
     try {
       const response = await axios.post("/api/chat", {
-        messages: [{ text: userInput, isBot: false }],
+        messages: updatedMessages.map((msg) => ({
+          text: msg.text,
+          isBot: msg.isBot,
+        })),
       });
 
+      // 챗봇 응답을 messages 배열에 추가
       const botMessage: Message = {
-        id: String(messages.length),
+        id: String(updatedMessages.length),
         text: response.data.message,
         createdAt: new Date().toISOString(),
         isBot: true,
       };
 
+      // 챗봇의 응답을 나중에 추가
       setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
       console.error("챗봇 응답 실패:", error);
     }
   };
-
   // 메시지 제출 핸들러
   const handleInputSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
-    const newMessage: Message = {
-      id: String(messages.length),
-      text: inputValue,
-      createdAt: new Date().toISOString(),
-      isBot: false,
-    };
-
-    setMessages([...messages, newMessage]);
+    handleBotResponse(inputValue); // 사용자 입력을 챗봇 응답 처리로 전달
     setInputValue(""); // 입력 필드 초기화
-
-    // 챗봇 응답 호출
-    handleBotResponse(inputValue);
   };
 
   return (
