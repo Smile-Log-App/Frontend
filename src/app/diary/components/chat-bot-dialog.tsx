@@ -3,15 +3,8 @@ import CloseIcon from "#/icons/ic-close.svg";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import ChatList from "@/app/diary/components/chat-list";
 import ChatInput from "@/app/diary/components/chat-input";
-import axios from "axios";
-
-// Message 타입 정의
-export interface Message {
-  id: string;
-  text: string;
-  createdAt: string;
-  isBot: boolean;
-}
+import { Message, useChatBotMutation } from "@/api/chat/use-chat-mutation";
+import LoadingSpinner from "@/components/common/loading-spinner";
 
 export default function ChatBotDialog({
   isOpen,
@@ -24,6 +17,7 @@ export default function ChatBotDialog({
 }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const { mutate, isPending } = useChatBotMutation(); // 리액트 쿼리 훅 사용
 
   // 챗봇이 모달을 열 때 첫 메시지를 보내도록 설정
   useEffect(() => {
@@ -36,12 +30,9 @@ export default function ChatBotDialog({
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
+
   // 챗봇 응답 처리 함수
-  const handleBotResponse = async (
-    userInput: string,
-    isFirstRequest = false,
-  ) => {
-    // 사용자 메시지를 messages 배열에 먼저 추가
+  const handleBotResponse = (userInput: string, isFirstRequest = false) => {
     const newUserMessage: Message = {
       id: String(messages.length),
       text: userInput,
@@ -49,43 +40,29 @@ export default function ChatBotDialog({
       isBot: false,
     };
 
-    // 사용자의 메시지만 우선 추가
     if (!isFirstRequest) {
       setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     }
 
-    // 사용자 메시지를 포함한 전체 메시지 배열을 API에 전송
     const updatedMessages = [...messages, newUserMessage];
 
-    try {
-      const response = await axios.post("/api/chat", {
-        messages: updatedMessages.map((msg) => ({
-          text: msg.text,
-          isBot: msg.isBot,
-        })),
-      });
-
-      // 챗봇 응답을 messages 배열에 추가
-      const botMessage: Message = {
-        id: String(updatedMessages.length),
-        text: response.data.message,
-        createdAt: new Date().toISOString(),
-        isBot: true,
-      };
-
-      // 챗봇의 응답을 나중에 추가
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
-    } catch (error) {
-      console.error("챗봇 응답 실패:", error);
-    }
+    mutate(updatedMessages, {
+      onSuccess: (botMessage) => {
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      },
+      onError: (error) => {
+        console.error("챗봇 응답 실패:", error);
+      },
+    });
   };
+
   // 메시지 제출 핸들러
   const handleInputSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
-    handleBotResponse(inputValue); // 사용자 입력을 챗봇 응답 처리로 전달
-    setInputValue(""); // 입력 필드 초기화
+    handleBotResponse(inputValue);
+    setInputValue("");
   };
 
   return (
@@ -97,6 +74,13 @@ export default function ChatBotDialog({
 
         {/* 채팅 리스트 */}
         <ChatList messages={messages} />
+
+        {/* 로딩 스피너 표시 */}
+        {isPending && (
+          <div className="flex justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
 
         {/* 입력 폼 */}
         <ChatInput
