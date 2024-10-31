@@ -5,6 +5,8 @@ import TreeCanvas from "@/components/tree/TreeCanvas";
 import { removePctFromEmotionAnalysis } from "@/types/emotion";
 import { formatDate } from "@/utils/get-today-date";
 import { useState } from "react";
+import CloseIcon from "#/icons/ic-close.svg";
+import Image from "next/image";
 
 interface DiaryContentPageProps {
   diary: GetDailyDiaryRes;
@@ -19,11 +21,6 @@ export default function FilledDiaryPage({
   date,
   topThreeColors,
 }: DiaryContentPageProps) {
-  const [isChatBotDialogOpen, setIsChatBotDialogOpen] = useState(false);
-
-  const handleChatBotButtonClick = () => {
-    setIsChatBotDialogOpen(true);
-  };
   return (
     <div className="h-full flex items-center justify-center py-80 gap-60 text-30">
       <div className="flex flex-col items-center gap-30">
@@ -50,18 +47,64 @@ export default function FilledDiaryPage({
           label="Today Feeling"
           emotions={removePctFromEmotionAnalysis(diary.emotionAnalysis)}
         />
-        <button
-          onClick={handleChatBotButtonClick}
-          className="w-60 h-40 bg-white "
-        >
-          챗봇
-        </button>
-        <ChatBotDialog
-          isOpen={isChatBotDialogOpen}
-          onClose={() => setIsChatBotDialogOpen(false)}
-          diary={diary.content}
-        />
+        <ChatButton diaryContent={diary.content} />
       </div>
+    </div>
+  );
+}
+
+interface ChatButtonProps {
+  diaryContent: string;
+}
+
+function ChatButton({ diaryContent }: ChatButtonProps) {
+  const [isChatBotDialogOpen, setIsChatBotDialogOpen] = useState(false);
+
+  const [isDetailOpen, setIsDetailOpen] = useState(true);
+  const handleChatBotButtonClick = () => {
+    setIsChatBotDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsChatBotDialogOpen(false);
+  };
+
+  return (
+    <div className="fixed bottom-80 right-80 flex flex-col items-end gap-4">
+      <ChatBotDialog
+        isOpen={isChatBotDialogOpen}
+        onClose={handleClose}
+        diary={diaryContent}
+      />
+
+      {/* 안내 메시지 박스 */}
+      {isDetailOpen && (
+        <div className="relative bg-white p-10  mr-4 rounded-lg shadow-lg border border-gray-200 text-gray-800 flex items-center w-320">
+          <span className="text-gray-500 text-20">
+            오늘의 감정을 챗봇과 함께 탐구해봐요
+          </span>
+          <button
+            onClick={() => setIsDetailOpen(false)}
+            className="absolute top-10 right-4"
+          >
+            <CloseIcon className=" text-gray-500" alt="닫기 아이콘" />
+          </button>
+        </div>
+      )}
+
+      {/* 챗봇 시작 버튼 */}
+      <button
+        onClick={handleChatBotButtonClick}
+        className="bg-purple-500  flex items-center justify-center rounded-full shadow-lg"
+      >
+        <Image
+          alt="챗봇 아이콘"
+          src={"/images/chatbot.webp"}
+          width={50}
+          height={50}
+          className="rounded-[20px]"
+        />
+      </button>
     </div>
   );
 }

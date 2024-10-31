@@ -21,10 +21,10 @@ export default function ChatBotDialog({
 
   // 챗봇이 모달을 열 때 첫 메시지를 보내도록 설정
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
+    if (messages.length === 0) {
       handleBotResponse(diary, true);
     }
-  }, [isOpen]);
+  }, [messages.length]);
 
   // 입력 변경 핸들러
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
