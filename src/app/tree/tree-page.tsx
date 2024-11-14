@@ -115,8 +115,8 @@ export default function TreePage() {
       {isQuestionDialogOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-20 rounded-lg shadow-lg text-center">
-            <p className="text-2xl font-semibold mb-10">오늘의 질문</p>
-            <p className="mb-20">오늘 가장 기억에 남는 일은 무엇인가요?</p>
+            <p className="text-2xl font-semibold mb-40">오늘의 질문</p>
+            <p className="mb-40">오늘 가장 기억에 남는 일은 무엇인가요?</p>
             <textarea
               placeholder="답변을 입력하세요..."
               className="w-full h-32 p-4 border rounded-lg mb-20 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -127,7 +127,7 @@ export default function TreePage() {
             >
               닫기
             </button>
-            <button className="mt-4 ml-5 px-4 py-2 bg-blue-300 text-white rounded-lg">
+            <button className="mt-4 ml-10 px-4 py-2 bg-blue-300 text-white rounded-lg">
               저장하기
             </button>
           </div>
