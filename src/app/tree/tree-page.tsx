@@ -1,14 +1,15 @@
 "use client";
-import { useMemo, useState } from "react";
-import TreeCanvas from "@/components/tree/TreeCanvas";
+import QuestionIcon from "#/icons/ic-send.svg";
+import TreeIcon from "#/icons/ic-tree.svg";
 import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query"; // 월별 감정 데이터를 가져오는 쿼리 훅
+import TreeBookDialog from "@/app/tree/components/tree-book-dialog";
+import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
+import TreeCanvas from "@/components/tree/TreeCanvas";
 import { calculateEmotionDistribution } from "@/utils/calculate-emotion-distribution";
 import { getTopThreeEmotionColors } from "@/utils/get-top-three-emotion-colors";
-import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
-import TreeIcon from "#/icons/ic-tree.svg";
-import { useSearchParams } from "next/navigation";
-import TreeBookDialog from "@/app/tree/components/tree-book-dialog";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 
 export default function TreePage() {
   const searchParams = useSearchParams();
@@ -22,6 +23,7 @@ export default function TreePage() {
   const { data: monthlyDiary } = useGetMonthlyDiaryQuery(year, month);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
 
   // 감정 비중을 계산 (monthly_emotions를 기반으로 계산)
   const emotionDistribution = useMemo(() => {
@@ -36,6 +38,10 @@ export default function TreePage() {
 
   const handleTreeButtonClick = () => {
     setIsDialogOpen(true);
+  };
+
+  const handleQuestionButtonClick = () => {
+    setIsQuestionDialogOpen(true); // Open "Today's Question" modal
   };
 
   // monthlyDiary가 빈 배열일 경우 메시지와 버튼을 표시
@@ -78,18 +84,43 @@ export default function TreePage() {
       </div>
 
       {emotionDistribution && (
-        <button
-          onClick={handleTreeButtonClick}
-          className="pt-60 flex flex-col gap-20 items-center"
-        >
-          <TreeIcon alt="나무 아이콘" />
-          <p className="text-24 text-black">나무 도감</p>
-        </button>
+        <div className="flex flex-col items-center gap-10">
+          <button
+            onClick={handleTreeButtonClick}
+            className="pt-60 flex flex-col gap-20 items-center mb-20"
+          >
+            <TreeIcon alt="나무 아이콘" />
+            <p className="text-24 text-black">나무 도감</p>
+          </button>
+          <button
+            onClick={handleQuestionButtonClick}
+            className="flex flex-col items-center"
+          >
+            <QuestionIcon alt="오늘의 질문 아이콘" />
+            <p className="text-24 text-black mt-20">하루 질문</p>
+          </button>
+        </div>
       )}
       <TreeBookDialog
         isOpen={isDialogOpen}
         onOpenChange={() => setIsDialogOpen(false)}
       />
+
+      {/* Modal for "Today's Question" */}
+      {isQuestionDialogOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-20 rounded-lg shadow-lg text-center">
+            <p className="text-2xl font-semibold mb-10">오늘의 질문</p>
+            <p className="mb-20">오늘 가장 기억에 남는 일은 무엇인가요?</p>
+            <button
+              onClick={() => setIsQuestionDialogOpen(false)}
+              className="mt-4 px-4 py-2 bg-blue-300 text-white rounded-lg"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
