@@ -3,8 +3,9 @@ import CloseIcon from "#/icons/ic-close.svg";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import ChatList from "@/app/diary/components/chat-list";
 import ChatInput from "@/app/diary/components/chat-input";
-import { Message, useChatBotMutation } from "@/api/chat/use-chat-mutation";
+import { useChatBotMutation } from "@/api/chat/use-chat-mutation";
 import LoadingSpinner from "@/components/common/loading-spinner";
+import { Message } from "@/api/chat/model";
 
 export default function ChatBotDialog({
   isOpen,

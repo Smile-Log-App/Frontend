@@ -41,7 +41,7 @@ export default function TreeBookDialog({
   const handleNextYear = () => setYear((prev) => prev + 1); // 다음 연도로 이동
 
   return (
-    <DialogDefault isOpen={isOpen} onOpenChange={() => onOpenChange()} overlay>
+    <DialogDefault isOpen={isOpen} onClose={onOpenChange} overlay>
       <div className="w-500 bg-white gap-20 rounded-20 p-10 flex flex-col items-center">
         <div className="flex items-center justify-between w-full mb-5 px-5">
           <button

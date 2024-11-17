@@ -1,4 +1,4 @@
-import { Message } from "@/app/diary/components/chat-bot-dialog";
+import { Message } from "@/api/chat/model";
 import { formatDateToTime } from "@/utils/format-date-to-time";
 import { useEffect, useRef } from "react";
 

@@ -1,13 +1,6 @@
+import { Message } from "@/api/chat/model";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-
-// Message 타입 정의
-export interface Message {
-  id: string;
-  text: string;
-  createdAt: string;
-  isBot: boolean;
-}
 
 // 챗봇 API 호출 함수
 export const sendChatBotMessage = async (
