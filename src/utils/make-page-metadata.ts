@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const SITE_NAME = "SMILE-LOG";
-export const BASE_URL = "https://smile-log.vercel.app/";
+export const BASE_URL = "https://smile-log.vercel.app";
 
 const TITLE = "스마일로그 - AI 기반 일기 감정 시각화 및 챗봇 서비스 ";
 const DESC =
@@ -23,7 +23,7 @@ export const makePageMetadata = ({
   const PAGE_TITLE = pageTitle ?? TITLE;
   const PAGE_DESC = pageDescriptioon ?? DESC;
   const PAGE_PATH = pagePath ?? "";
-  const OPEN_GRAHPH_URL = openGraphUrl ?? "/images/logo.png";
+  const OPEN_GRAHPH_URL = openGraphUrl ?? `${BASE_URL}/images/logo.png`;
 
   const metadata: Metadata = {
     title: {
@@ -40,18 +40,6 @@ export const makePageMetadata = ({
       url: BASE_URL,
       type: "website",
       siteName: `${SITE_NAME}`,
-      images: {
-        url: OPEN_GRAHPH_URL,
-        alt: "azito open graph",
-        width: 800,
-        height: 400,
-      },
-    },
-    twitter: {
-      card: "summary",
-      site: BASE_URL,
-      title: PAGE_TITLE,
-      description: PAGE_DESC,
       images: {
         url: OPEN_GRAHPH_URL,
         alt: "smile-log open graph",
