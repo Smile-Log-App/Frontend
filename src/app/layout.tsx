@@ -4,10 +4,10 @@ import { Provider as JotaiProvider } from "jotai";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import { makePageMetadata } from "@/utils/make-page-metadata";
 
 export const metadata: Metadata = {
-  title: "",
-  description: "",
+  ...makePageMetadata({}),
 };
 
 export default function RootLayout({

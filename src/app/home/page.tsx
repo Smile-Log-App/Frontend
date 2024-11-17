@@ -12,7 +12,7 @@ export default function HomePage() {
         {/* Header */}
         <div className="flex flex-row items-center justify-center">
           <img
-            src="/images/스마일로그logo.png"
+            src="/images/logo.png"
             alt="Smile Log Logo"
             className="w-300 h-300 mb-10"
           />
