@@ -24,7 +24,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*", // 모든 /api/* 요청을 프록시
-        destination: "http://3.34.74.208:8000/api/:path*", // 실제 API 경로
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`, // 실제 API 경로
       },
     ];
   },
