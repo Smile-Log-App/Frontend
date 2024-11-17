@@ -1,5 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { postAccessToken } from "@/api/auth/use-post-aceess-token"; // 기존에 정의된 postAccessToken 함수
+const baseURL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
 // 토큰 재발급이 필요한지 판단하는 함수
 const shouldRetryToken = (url: string | undefined): boolean => {
@@ -15,7 +16,8 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 // Axios 인스턴스 생성
 export const instance = axios.create({
-  baseURL: "http://3.34.74.208:8000/api",
+  // baseURL: "http://3.34.74.208:8000/api",
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },
