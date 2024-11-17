@@ -64,7 +64,7 @@ class Branch {
     const ratio = this.lineWidth / 12; // 0 ~ 1 사이의 비율
     let blendedColor: string;
 
-    // colorEnd가 존재하지 않는 경우 (colorStart와 colorMid만 있는 경우)
+    // colorEnd가 존재하지 않는 경우 (2가지 색상, 즉 colorStart와 colorMid만 존재하는 경우)
     if (!this.colorEnd) {
       // colorStart와 colorMid를 반반으로 블렌딩
       const segmentRatio = ratio; // 0 ~ 1 사이 비율로 변환
