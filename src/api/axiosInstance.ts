@@ -2,7 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { postAccessToken } from "@/api/auth/use-post-aceess-token"; // 기존에 정의된 postAccessToken 함수
 const baseURL =
   process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_API_URL // 로컬 환경에서는 직접 외부 API URL 사용
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api` // 로컬 환경에서는 직접 외부 API URL 사용
     : "/api"; // 배포 환경에서는 Next.js의 API 경로 사용
 
 // 토큰 재발급이 필요한지 판단하는 함수
