@@ -32,7 +32,8 @@ export default function ChatInput({
   // textarea 높이 자동 조정
   const handleResizeTextAreaHeight = () => {
     if (!textAreaRef.current) return;
-    textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
+    resetTextAreaHeight();
+    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
   };
 
   return (
@@ -47,7 +48,7 @@ export default function ChatInput({
           handleResizeTextAreaHeight();
         }}
         value={inputValue}
-        className=" py-10 text-30 w-full resize-none overflow-hidden border border-gray-300 rounded-20 pl-10 pr-10 text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
+        className="  py-10 text-30 w-full resize-none overflow-hidden border border-gray-300 rounded-20 pl-10 pr-40 text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
       />
       {inputValue && (
         <button
