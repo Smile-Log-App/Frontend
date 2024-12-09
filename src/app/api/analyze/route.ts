@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
             role: "system",
             content: `당신은 일기에서 표현된 감정을 분석하는 전문가입니다.
             사용자가 작성한 일기 내용을 기반으로 여섯 가지 감정(기쁨, 슬픔, 불안, 화남, 평온, 피로)의 비율을 퍼센트로 계산하여 제공합니다.
-            분석 결과는 다음 형식을 따르세요:
+            분석 결과는 다음 형식 따르세요 :
             - joy_pct: X%
             - sadness_pct: X%
             - anxiety_pct: X%
