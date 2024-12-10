@@ -1,11 +1,6 @@
 "use client";
-import { formatDateToISO } from "@/utils/format-date";
-import Link from "next/link";
 
 export default function HomePage() {
-  // 오늘 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
-  const todayDate = formatDateToISO(new Date());
-
   return (
     <>
       <div className="h-full w-screen min-h-screen flex flex-col items-center bg-blue-100 text-center gap-8 p-10">
@@ -38,13 +33,6 @@ export default function HomePage() {
           <span className="text-30 text-blue-600"> 스마일리 </span>와
           얘기해보세요!
         </h1>
-
-        <Link
-          className="flex justify-center items-center mb-130 w-200 h-50 shadow-lg rounded-10 bg-white text-20"
-          href={`/diary?date=${todayDate}`}
-        >
-          일기 쓰러가기
-        </Link>
 
         <h1 className="text-30 font-light text-grey mb-130">
           저희 스마일로그는 다음과 같은 기능들을 제시합니다
