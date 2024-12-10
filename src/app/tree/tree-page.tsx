@@ -1,6 +1,5 @@
 "use client";
 import TreeIcon from "#/icons/ic-tree.svg";
-import QuestionIcon from "#/images/dailyQuestionIcon.png";
 import useGetMonthlyDiaryQuery from "@/api/diary/use-get-montly-diary-query"; // 월별 감정 데이터를 가져오는 쿼리 훅
 import TreeBookDialog from "@/app/tree/components/tree-book-dialog";
 import { EmotionBarList } from "@/components/emotion/emotion-bar-list";
@@ -23,7 +22,6 @@ export default function TreePage() {
   const { data: monthlyDiary } = useGetMonthlyDiaryQuery(year, month);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isQuestionDialogOpen, setIsQuestionDialogOpen] = useState(false);
 
   // 감정 비중을 계산 (monthly_emotions를 기반으로 계산)
   const emotionDistribution = useMemo(() => {
@@ -38,10 +36,6 @@ export default function TreePage() {
 
   const handleTreeButtonClick = () => {
     setIsDialogOpen(true);
-  };
-
-  const handleQuestionButtonClick = () => {
-    setIsQuestionDialogOpen(true); // Open "Today's Question" modal
   };
 
   // monthlyDiary가 빈 배열일 경우 메시지와 버튼을 표시
@@ -92,47 +86,12 @@ export default function TreePage() {
             <TreeIcon alt="나무 아이콘" />
             <p className="text-24 text-black">나무 도감</p>
           </button>
-          <button
-            onClick={handleQuestionButtonClick}
-            className="flex flex-col items-center"
-          >
-            <img
-              src={QuestionIcon.src}
-              alt="오늘의 질문 아이콘"
-              width={80}
-              height={80}
-            />
-            <p className="text-24 text-black mt-20">하루 질문</p>
-          </button>
         </div>
       )}
       <TreeBookDialog
         isOpen={isDialogOpen}
         onOpenChange={() => setIsDialogOpen(false)}
       />
-
-      {/* Modal for "Today's Question" */}
-      {isQuestionDialogOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-20 rounded-lg shadow-lg text-center">
-            <p className="text-2xl font-semibold mb-40">오늘의 질문</p>
-            <p className="mb-40">오늘 가장 기억에 남는 일은 무엇인가요?</p>
-            <textarea
-              placeholder="답변을 입력하세요..."
-              className="w-full h-32 p-4 border rounded-lg mb-20 resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            <button
-              onClick={() => setIsQuestionDialogOpen(false)}
-              className="mt-4 px-4 py-2 bg-blue-300 text-white rounded-lg"
-            >
-              닫기
-            </button>
-            <button className="mt-4 ml-10 px-4 py-2 bg-blue-300 text-white rounded-lg">
-              저장하기
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
