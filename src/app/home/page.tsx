@@ -133,25 +133,19 @@ export default function HomePage() {
           <div className="w-450 h-260 bg-white p-6 shadow-lg rounded-10">
             <h2 className="text-30 font-bold mb-30 mt-20">Step 4.</h2>
             <p className="text-lg mb-20">
-              달력 화면에서 해당 날짜를 클릭했을 때 작성된 일기가 없다면
+              선택한 날짜의 감정 분석 결과를 기반으로 챗봇과 대화할 수 있어요.
             </p>
-            <p className="text-lg mb-20">새롭게 일기를 작성할 수 있고,</p>
-            <p className="text-lg">
-              작성된 일기가 있다면 작성한 일기를 볼 수 있어요.
+            <p className="text-lg mb-20">
+              챗봇은 작성된 일기의 주요 감정을 탐구하며,
+              <br /> 감정의 원인과 영향을 질문을 통해 알아가도록 도와줍니다.
             </p>
           </div>
           <img
             src="/images/diaryRecord.png"
-            alt="Emotion Tree Visualization"
+            alt="Chatbot Interaction Screen"
             className="w-450 h-260 ml-0 rounded-10 shadow-lg"
           />
         </div>
-        <Link
-          className="flex justify-center items-center mb-100 w-200 h-50 shadow-lg rounded-10 bg-white text-20"
-          href={`/diary?date=${todayDate}`}
-        >
-          일기 쓰러가기
-        </Link>
       </div>
     </>
   );
