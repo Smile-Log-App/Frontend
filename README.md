@@ -8,6 +8,8 @@
 - ID: `youdame`
 - PW: `damdam2!`
 
+** 저희 팀은 프론트엔드 서버를 JavaScript로 코드를 작성하여 별도의 Binary 파일이 없어, 대신 JavaScript 코드를 시제품으로 제출합니다.
+
 ---
 
 ## 📖 프로젝트 소개
