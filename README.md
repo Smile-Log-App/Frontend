@@ -1,6 +1,6 @@
-# Smile Log 🌳🙂
-
-**AI 기반 감정 분석 및 시각화 일기 서비스**
+# AI 기반 감정 분석 및 시각화 일기 서비스 - Smile Log 🌳🙂
+<br/>
+<img src="https://github.com/user-attachments/assets/4a2725ab-4eab-4c0b-b9ad-e289ff7f2742" alt="포스터" width="900px" height="1100px" />
 
 [**웹사이트 바로가기**](https://smile-log.vercel.app)  
 **테스트 계정**:
